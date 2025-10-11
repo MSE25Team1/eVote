@@ -1,35 +1,45 @@
 # eVote
 
-# Git Grundlagen – Team-Handout
+## Git Grundlagen – Team-Handout
 
+### Was ist Git und warum sollte man es verwenden?
 
-## Was ist Git und warum sollte es verwendet werden?
+**Was ist Git?**  
+Git ist ein Tool zur Versionskontrolle von Softwareprojekten. Es ermöglicht, Änderungen an diesen Projekten zu verfolgen und bietet den Entwickler*innen die Möglichkeit, ihre Projekte zu verwalten und an diesen gemeinsam zu arbeiten.
 
+**Warum sollte man Git verwenden?**
+- Nachvollziehbare Versionshistorie und einfache Rückverfolgung von Änderungen,
+- Verteiltes Arbeiten durch vollständige lokale Kopie des Repositories,
+- Branching und Merging erleichtern parallele Entwicklungsprozesse,
+- Kryptografische Hashes (z. B. SHA-1, SHA-256) sorgen für die Integrität der Historie,
+- Schnelle und effiziente Arbeitsweise, auch bei großen Projekten uvm.
 
-## Grundlegende Git-Befehle
+_**Quelle**: [GitLab – Was ist Git? Der ultimative Leitfaden](https://about.gitlab.com/de-de/blog/what-is-git-the-ultimate-guide-to-gits-role-and-functionality/)_
 
-### Start
+### Grundlegende Git-Befehle
+
+#### Start
 `git init` : Initialisiert ein neues, leeres Git-Repository im aktuellen Verzeichnis. Ein **.git-Ordner** wird erstellt, worin alle Informationen zur Versionskontrolle abgelegt werden.  
 `git clone <URL>` : Repository von URL klonen -> Kopiert ein bestehendes Remote-Repository (z. B. von GitHub) auf das eigene lokale System. Dabei wird ein Arbeitsordner erstell worin der Projektinhalt gespeichert wird sowie die Versionsinformationen.  
-### Änderungen in Staging Area
+#### Änderungen in Staging Area
 `git status` : Zeigt den aktuellen Status 
 `git add <Datei>` : eine oder mehrere Dateien werden zur Staging-Area hinzugefügt  
 `git add .` : fügt alle geänderten Dateien hinzu
 `git diff ` : Vergleicht aktuellen Stand mit letzter Version - macht Änderungen der Dateien Zeilenweise sichtbar. (Nur außerhalb der Staging-Area)
-### Versionsänderungen speichern
+#### Versionsänderungen speichern
 `git commit -m "Nachricht" ` : Speichert alle aktuell in der Staging-Area befindlichen Änderungen als neue Version (Commit) mit einer Nachricht.
 `git commit -am "Nachricht" `: Kombiniert add und commit, erfasst jedoch nur Änderungen an bereits versionierten Dateien. Neue Dateien werden nicht berücksichtigt.
-### Versionsänderungen abrufen oder veröffentlichen  
-`git pull` :  Holt neue Änderungen vom Remote-Repository und integriert sie automatisch in den aktuellen Branch
+#### Versionsänderungen abrufen oder veröffentlichen  
+`git pull` : Holt neue Änderungen vom Remote-Repository und integriert sie automatisch in den aktuellen Branch
 `git push` : Überträgt lokale Commits auf das Remote-Repository, um sie für andere verfügbar zu machen.
 `git fetch` : Lädt neue Daten vom Remote-Repository herunter, ohne sie automatisch zu integrieren.
 
-### Änderungen rückgängig machen
+#### Änderungen rückgängig machen
 `git stash` : Speichert aktuelle Arbeitsänderungen temporär, um den Arbeitsordner zu leeren (KEIN Commit).
 `git reset` : Setzt den aktuellen Branch auf einen bestimmten Commit zurück. Modus:`--soft, --mixed, --hard`
 `git restore <Datei>` : Datei wird auf den Zustand des letzten Commits zurückgesetzt.
 
-### Branches verwalten  
+#### Branches verwalten  
 `git branch` : Listet alle lokalen Branches  
 `git branch -a` : Listet auch die remote Branches  
 `git checkout <Branch>` : Wechselt in einen anderen Branch und aktualisiert den Arbeitsstand entsprechend.  
@@ -41,6 +51,7 @@
 
 ### Git mit IntelliJ benutzen: Local Repository und Remote Repository
 
+
 ### Nützliche Git-Tools und Plattformen
 
 #### Git Plattformen
@@ -50,12 +61,14 @@
   >
   > Quelle: https://en.wikipedia.org/wiki/GitHub
 
+
 - [GitLab](https://gitlab.com)
   > GitLab ist eine Softwareentwicklungsplattform auf Git-Basis. GitLab bietet ein Issue-Tracking-System mit Kanban-Board, ein System für Continuous Integration und Continuous Delivery (CI/CD), ein Wiki, eine Container-Registry, einen Sicherheitsscanner für Container und Sourcecode sowie Multi-Cluster-Verwaltung und -Überwachung. GitLab ist in Produkte für Entwickler, wie zum Beispiel AWS oder Google Cloud, integrierbar und über eine API fernsteuerbar. GitLab ist in den Programmiersprachen Ruby und Go geschrieben.
   >
   > Die GitLab Community Edition (CE) wird als Open-Source-Software unter der MIT-Lizenz entwickelt. Seit August 2013 bietet die GitLab Inc. mit der Enterprise Edition (EE) eine speziell für Unternehmen entwickelte Version an. Man kann GitLab auf eigener Hardware betreiben oder seit 2012 auf GitLab.com als GitLab Enterprise Edition – als Software as a Service (SaaS). Neben kostenlosem Hosting privater und öffentlicher Repositorys wird auch kostenpflichtiger Support angeboten.
   >
   > Quelle: https://de.wikipedia.org/wiki/GitLab
+
 
   Viele Hochschulen bieten ihren Studierenden und Mitarbeitenden eigens gehostete GitLab-Instanzen an, z. B.:
     - [GitLab an der THL](https://git.mylab.th-luebeck.de)
