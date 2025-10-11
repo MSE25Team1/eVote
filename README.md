@@ -19,7 +19,7 @@
 ### Versionsänderungen speichern
 `git commit -m "Nachricht" ` : Speichert alle aktuell in der Staging-Area befindlichen Änderungen als neue Version (Commit) mit einer Nachricht.
 `git commit -am "Nachricht" `: Kombiniert add und commit, erfasst jedoch nur Änderungen an bereits versionierten Dateien. Neue Dateien werden nicht berücksichtigt.
-### Versionsänderungen abrufen oder veröffentlichen
+### Versionsänderungen abrufen oder veröffentlichen  
 `git pull` :  Holt neue Änderungen vom Remote-Repository und integriert sie automatisch in den aktuellen Branch
 `git push` : Überträgt lokale Commits auf das Remote-Repository, um sie für andere verfügbar zu machen.
 `git fetch` : Lädt neue Daten vom Remote-Repository herunter, ohne sie automatisch zu integrieren.
@@ -29,11 +29,11 @@
 `git reset` : Setzt den aktuellen Branch auf einen bestimmten Commit zurück. Modus:`--soft, --mixed, --hard`
 `git restore <Datei>` : Datei wird auf den Zustand des letzten Commits zurückgesetzt.
 
-### Branches verwalten
-`git branch` : Listet alle lokalen Branches
-`git checkout <Branch>` : Wechselt in einen anderen Branch und aktualisiert den Arbeitsstand entsprechend.
-`git switch <Branch>` : Branch-Wechsel
-`git merge <Branch>` : Änderungen in den aktuellen Branch zusammenführen.
+### Branches verwalten  
+`git branch` : Listet alle lokalen Branches  
+`git checkout <Branch>` : Wechselt in einen anderen Branch und aktualisiert den Arbeitsstand entsprechend.  
+`git switch <Branch>` : Branch-Wechsel  
+`git merge <Branch>` : Änderungen in den aktuellen Branch zusammenführen.  
 
 ## Branches und ihre Nutzung, Umgang mit Merge-Konflikten
 
