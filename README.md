@@ -1,7 +1,21 @@
 # eVote
 
-## Was ist Git und warum sollte man es verwenden?
 ## Git - Ein Überblick
+
+
+### Was ist Git und warum sollte man es verwenden?
+
+**Was ist Git?**  
+Git ist ein Tool zur Versionskontrolle von Softwareprojekten. Es ermöglicht, Änderungen an diesen Projekten zu verfolgen und bietet den Entwickler*innen die Möglichkeit, ihre Projekte zu verwalten und an diesen gemeinsam zu arbeiten.
+
+**Warum sollte man Git verwenden?**
+- Nachvollziehbare Versionshistorie und einfache Rückverfolgung von Änderungen,
+- Verteiltes Arbeiten durch vollständige lokale Kopie des Repositories,
+- Branching und Merging erleichtern parallele Entwicklungsprozesse,
+- Kryptografische Hashes (z. B. SHA-1, SHA-256) sorgen für die Integrität der Historie,
+- Schnelle und effiziente Arbeitsweise, auch bei großen Projekten uvm.
+
+_**Quelle**: [GitLab – Was ist Git? Der ultimative Leitfaden](https://about.gitlab.com/de-de/blog/what-is-git-the-ultimate-guide-to-gits-role-and-functionality/)_
 
 ### Nützliche Git-Tools und Plattformen
 
@@ -12,8 +26,7 @@
   >
   > Quelle: https://en.wikipedia.org/wiki/GitHub
 
-**Was ist Git?**  
-Git ist ein Tool zur Versionskontrolle von Softwareprojekten. Es ermöglicht, Änderungen an diesen Projekten zu verfolgen und bietet den Entwickler*innen die Möglichkeit, ihre Projekte zu verwalten und an diesen gemeinsam zu arbeiten.
+
 - [GitLab](https://gitlab.com)
   > GitLab ist eine Softwareentwicklungsplattform auf Git-Basis. GitLab bietet ein Issue-Tracking-System mit Kanban-Board, ein System für Continuous Integration und Continuous Delivery (CI/CD), ein Wiki, eine Container-Registry, einen Sicherheitsscanner für Container und Sourcecode sowie Multi-Cluster-Verwaltung und -Überwachung. GitLab ist in Produkte für Entwickler, wie zum Beispiel AWS oder Google Cloud, integrierbar und über eine API fernsteuerbar. GitLab ist in den Programmiersprachen Ruby und Go geschrieben.
   >
@@ -21,14 +34,7 @@ Git ist ein Tool zur Versionskontrolle von Softwareprojekten. Es ermöglicht, Ä
   >
   > Quelle: https://de.wikipedia.org/wiki/GitLab
 
-**Warum sollte man Git verwenden?**
-- Nachvollziehbare Versionshistorie und einfache Rückverfolgung von Änderungen,
-- Verteiltes Arbeiten durch vollständige lokale Kopie des Repositories,
-- Branching und Merging erleichtern parallele Entwicklungsprozesse,
-- Kryptografische Hashes (z. B. SHA-1, SHA-256) sorgen für die Integrität der Historie,
-- Schnelle und effiziente Arbeitsweise, auch bei großen Projekten uvm.
 
-_**Quelle**: [GitLab – Was ist Git? Der ultimative Leitfaden](https://about.gitlab.com/de-de/blog/what-is-git-the-ultimate-guide-to-gits-role-and-functionality/)_
   Viele Hochschulen bieten ihren Studierenden und Mitarbeitenden eigens gehostete GitLab-Instanzen an, z. B.:
     - [GitLab an der THL](https://git.mylab.th-luebeck.de)
     - [GitLab an der BHT](https://gitlab.bht-berlin.de)
