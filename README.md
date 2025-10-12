@@ -20,7 +20,7 @@ _**Quelle**: [GitLab – Was ist Git? Der ultimative Leitfaden](https://about.gi
 
 #### Start
 `git init` : Initialisiert ein neues, leeres Git-Repository im aktuellen Verzeichnis. Ein **.git-Ordner** wird erstellt, worin alle Informationen zur Versionskontrolle abgelegt werden.  
-`git clone <URL>` : Repository von URL klonen -> Kopiert ein bestehendes Remote-Repository (z. B. von GitHub) auf das eigene lokale System. Dabei wird ein Arbeitsordner erstell worin der Projektinhalt gespeichert wird sowie die Versionsinformationen.  
+`git clone <URL>` : Repository von URL klonen → Kopiert ein bestehendes Remote-Repository (z. B. von GitHub) auf das eigene lokale System. Dabei wird ein Arbeitsordner erstell worin der Projektinhalt gespeichert wird sowie die Versionsinformationen.  
 #### Änderungen in Staging Area
 `git status` : Zeigt den aktuellen Status 
 `git add <Datei>` : eine oder mehrere Dateien werden zur Staging-Area hinzugefügt  
@@ -47,7 +47,8 @@ _**Quelle**: [GitLab – Was ist Git? Der ultimative Leitfaden](https://about.gi
 `git merge <Branch>` : Änderungen in den aktuellen Branch zusammenführen.  
 
 ### Branches und ihre Nutzung, Umgang mit Merge-Konflikten
-Branches ermöglichen paralleles Arbeiten, indem sie voneinander separate Entwicklingszweige schaffen.
+
+Branches ermöglichen paralleles Arbeiten, indem sie voneinander separate Entwicklungszweige schaffen.
 So können mehrere Funktionen unabhängig entwickelt und später zusammengeführt werden.
 
 Beim Zusammenführen, also dem "Merge", kann es zu Konflikten kommen. Gerade dann, wenn in beiden Branches die gleichen Stellen einer Datei verändert wurden.
@@ -57,39 +58,45 @@ In diesem Fall kann Git nicht automatisch erkennen, welche Änderung genau über
 **Grundlegend kann man zwei Arten von Merge-Konflikten definieren:**
 
 1. Git kann Merge nicht starten
-Ein Merge-Vorgang kann fehlschlagen, wenn sich im Arbeitsverzeichnis oder im Staging-Bereich nicht gespeicherte Änderungen befinden.
-Git verhindert in diesem Fall den Merge, um zu vermeiden, dass diese lokalen Anpassungen von den neuen Commits überschrieben werden.
 
-Dabei handelt es sich nicht um einen Konflikt mit anderen Branches, sondern um Konflikte mit eigenen, noch nicht gesicherten Änderungen.
-Um fortzufahren, sollte der lokale Zustand bereinigt oder gesichert werden.
+    Ein Merge-Vorgang kann fehlschlagen, wenn sich im Arbeitsverzeichnis oder im Staging-Bereich nicht gespeicherte Änderungen befinden.
+    Git verhindert in diesem Fall den Merge, um zu vermeiden, dass diese lokalen Anpassungen von den neuen Commits überschrieben werden.
+    
+    Dabei handelt es sich nicht um einen Konflikt mit anderen Branches, sondern um Konflikte mit eigenen, noch nicht gesicherten Änderungen.
+    Um fortzufahren, sollte der lokale Zustand bereinigt oder gesichert werden.
+    
+    ```
+    git stash     - Änderungen zwischenspeichern
+    git commit    - Änderungen festschreiben
+    git reset     - Änderungen verwerfen
+    git checkout  - zu einem anderen Branch wechseln
+    ```
 
-```
-git stash     - Änderungen zwischenspeichern
-git commit    - Änderungen festschreiben
-git reset     - Änderungen verwerfen
-git checkout  - zu einem anderen Branch wechseln
-```
-
-Erst danach kann der Merge erfolgreich ausgeführt werden.
+    Erst danach kann der Merge erfolgreich ausgeführt werden.
 
 2. Während des Merge-Vorgangs tritt ein Fehler auf
-Tritt ein Fehler während eines Merge-Vorgangs auf, gibt es Konflikte zwischen dem aktuellen Branch und dem Branch, der gemergt wird.
-Diese Konflikte entstehen dann, wenn einer oder mehrere Personen denselben Codeabschnitt verändert haben.
 
-Git versucht hier dann, die Änderungen automatisch zusammenzuführen, kann dies jedoch nicht in allen Fällen.
-Die betroffenen Dateien müssen dann manuell überprüft und angepasst werden.
-In solchen Fällen zeigt Git eine entsprechende Fehlermeldung an, die auf den Konflikt hinweist und die betroffenen Dateien nennt.
+    Tritt ein Fehler während eines Merge-Vorgangs auf, gibt es Konflikte zwischen dem aktuellen Branch und dem Branch, der gemergt wird.
+    Diese Konflikte entstehen dann, wenn einer oder mehrere Personen denselben Codeabschnitt verändert haben.
+    
+    Git versucht hier dann, die Änderungen automatisch zusammenzuführen, kann dies jedoch nicht in allen Fällen.
+    Die betroffenen Dateien müssen dann manuell überprüft und angepasst werden.
+    In solchen Fällen zeigt Git eine entsprechende Fehlermeldung an, die auf den Konflikt hinweist und die betroffenen Dateien nennt.
 
-### Merge-Konflikte beheben
+#### Merge-Konflikte beheben
+
 Ein Weg, einen Merge-Konflikt zu lösen, ist das manuelle Bearbeiten der betroffenen Datei.
 Man öffnet dazu die Datei in deinem Editor, entfernt die Konfliktmarker und übernimmt die gewünschten Änderungen.
+
 ```
 git add <Dateiname>
 git commit -m "Merge-Konflikt in <Dateiname> behoben"
 ```
+
 Git erkennt, dass der Konflikt gelöst wurde, und erstellt dann automatisch einen Merge-Commit um den Vorgang abzuschließen.
 
 **Nützliche Befehle bei Merge-Konflikten:**
+
 ```
 git status          - zeigt Status der Dateien
 git log             - zeigt Commit-Verlauf
