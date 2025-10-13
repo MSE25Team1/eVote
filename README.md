@@ -1,8 +1,8 @@
-# eVote
+# Git Grundlagen – Team-Handout
 
-## Git Grundlagen – Team-Handout
+___
 
-### Was ist Git und warum sollte man es verwenden?
+## Was ist Git und warum sollte man es verwenden?
 
 **Was ist Git?**  
 Git ist ein Tool zur Versionskontrolle von Softwareprojekten. Es ermöglicht, Änderungen an diesen Projekten zu verfolgen und bietet den Entwickler*innen die Möglichkeit, ihre Projekte zu verwalten und an diesen gemeinsam zu arbeiten.
@@ -16,37 +16,41 @@ Git ist ein Tool zur Versionskontrolle von Softwareprojekten. Es ermöglicht, Ä
 
 _**Quelle**: [GitLab – Was ist Git? Der ultimative Leitfaden](https://about.gitlab.com/de-de/blog/what-is-git-the-ultimate-guide-to-gits-role-and-functionality/)_
 
-### Grundlegende Git-Befehle
+___
 
-#### Start
+## Grundlegende Git-Befehle
+
+### Start
 `git init` : Initialisiert ein neues, leeres Git-Repository im aktuellen Verzeichnis. Ein **.git-Ordner** wird erstellt, worin alle Informationen zur Versionskontrolle abgelegt werden.  
 `git clone <URL>` : Repository von URL klonen → Kopiert ein bestehendes Remote-Repository (z. B. von GitHub) auf das eigene lokale System. Dabei wird ein Arbeitsordner erstell worin der Projektinhalt gespeichert wird sowie die Versionsinformationen.  
-#### Änderungen in Staging Area
+### Änderungen in Staging Area
 `git status` : Zeigt den aktuellen Status 
 `git add <Datei>` : eine oder mehrere Dateien werden zur Staging-Area hinzugefügt  
 `git add .` : fügt alle geänderten Dateien hinzu
 `git diff ` : Vergleicht aktuellen Stand mit letzter Version - macht Änderungen der Dateien Zeilenweise sichtbar. (Nur außerhalb der Staging-Area)
-#### Versionsänderungen speichern
+### Versionsänderungen speichern
 `git commit -m "Nachricht" ` : Speichert alle aktuell in der Staging-Area befindlichen Änderungen als neue Version (Commit) mit einer Nachricht.
 `git commit -am "Nachricht" `: Kombiniert add und commit, erfasst jedoch nur Änderungen an bereits versionierten Dateien. Neue Dateien werden nicht berücksichtigt.
-#### Versionsänderungen abrufen oder veröffentlichen  
+### Versionsänderungen abrufen oder veröffentlichen  
 `git pull` : Holt neue Änderungen vom Remote-Repository und integriert sie automatisch in den aktuellen Branch
 `git push` : Überträgt lokale Commits auf das Remote-Repository, um sie für andere verfügbar zu machen.
 `git fetch` : Lädt neue Daten vom Remote-Repository herunter, ohne sie automatisch zu integrieren.
 
-#### Änderungen rückgängig machen
+### Änderungen rückgängig machen
 `git stash` : Speichert aktuelle Arbeitsänderungen temporär, um den Arbeitsordner zu leeren (KEIN Commit).
 `git reset` : Setzt den aktuellen Branch auf einen bestimmten Commit zurück. Modus:`--soft, --mixed, --hard`
 `git restore <Datei>` : Datei wird auf den Zustand des letzten Commits zurückgesetzt.
 
-#### Branches verwalten  
+### Branches verwalten  
 `git branch` : Listet alle lokalen Branches  
 `git branch -a` : Listet auch die remote Branches  
 `git checkout <Branch>` : Wechselt in einen anderen Branch und aktualisiert den Arbeitsstand entsprechend.  
 `git switch <Branch>` : Branch-Wechsel  
 `git merge <Branch>` : Änderungen in den aktuellen Branch zusammenführen.  
 
-### Branches und ihre Nutzung, Umgang mit Merge-Konflikten
+___
+
+## Branches und ihre Nutzung, Umgang mit Merge-Konflikten
 
 Branches ermöglichen paralleles Arbeiten, indem sie voneinander separate Entwicklungszweige schaffen.
 So können mehrere Funktionen unabhängig entwickelt und später zusammengeführt werden.
@@ -83,7 +87,7 @@ In diesem Fall kann Git nicht automatisch erkennen, welche Änderung genau über
     Die betroffenen Dateien müssen dann manuell überprüft und angepasst werden.
     In solchen Fällen zeigt Git eine entsprechende Fehlermeldung an, die auf den Konflikt hinweist und die betroffenen Dateien nennt.
 
-#### Merge-Konflikte beheben
+### Merge-Konflikte beheben
 
 Ein Weg, einen Merge-Konflikt zu lösen, ist das manuelle Bearbeiten der betroffenen Datei.
 Man öffnet dazu die Datei in deinem Editor, entfernt die Konfliktmarker und übernimmt die gewünschten Änderungen.
@@ -106,12 +110,42 @@ git reset           - setzt Änderungen zurück
 git merge --abort   - Merge-Prozess verlassen, Branch auf Status vor dem Merge zurücksetzen.
 ```
 
-### Git mit IntelliJ benutzen: Local Repository und Remote Repository
+___
 
+## Git mit IntelliJ benutzen: Local Repository und Remote Repository
 
-### Nützliche Git-Tools und Plattformen
+IntelliJ IDEA bietet eine integrierte Git-Unterstützung, wodurch sich alle grundlegenden Git-Funktionen direkt aus der Entwicklungsumgebung heraus nutzen lassen. So kann sowohl das lokale als auch das Remote Repository ohne die Kommandozeile verwaltet werden. 
 
-#### Git Plattformen
+Wie in der Sektion „Grundlegende Git-Befehle“ beschrieben, wird beim Ausführen von `git init` im Projektverzeichnis ein versteckter Ordner `.git/` angelegt. Dieser Ordner enthält alle Versionsinformationen und stellt somit das lokale Repository dar. 
+
+### ___Lokales Repository___ 
+
+Das lokale Repository bildet die Grundlage der Versionsverwaltung. Alle Änderungen an Projektdateien finden zunächst lokal statt. Um sie zu versionieren, werden diese in zwei Schritten übernommen: 
+1. **Staging Area**: Mit `git add .` werden Änderungen in die Staging Area übernommen. 
+2. **Commit**: Mit `git commit -m "Nachricht"` werden die Änderungen dauerhaft im lokalen Repository gespeichert. 
+
+Nachdem ein Projekt lokal eingerichtet wurde, kann es über IntelliJ mit einem Remote Repository verbunden werden. Dazu wird im Terminal der Remote-Link hinzugefügt: `git remote add origin https://github.com/Benutzername/Repositoryname.git
+`  Dadurch wird spezifiziert, mit welchem entfernten Repository das lokale Projekt verknüpft ist.
+
+### ___Remote Repository___ 
+Ein Remote Repository liegt auf einem Server (z. B. GitHub oder GitLab) und ermöglicht die Zusammenarbeit im Team. Typischerweise wird auf der Plattform zunächst ein leeres Repository erstellt. Anschließend kann man das Remote Repository klonen `git clone <URL>`. Durch das Klonen entsteht automatisch ein vollständiges lokales Repository mit der Remote-Verknüpfung. Die Verbindung erfolgt in der Regel über eine HTTPS- oder SSH-URL, die im Git-Konfigurationsfile gespeichert wird. 
+
+Sobald die Verbindung steht, können Änderungen einfach synchronisiert werden: 
+1. **Push**: Überträgt lokale Commits auf das Remote Repository `git push` 
+2. **Pull**: Holt aktuelle Änderungen anderer Teammitglieder `git pull`
+
+ **Vorteile der Git-Integration in IntelliJ sind:**
+- visuelle Darstellung des Versionsverlaufs und der Branch-Struktur 
+- Einfache Konfliktauflösung über integrierte Merge-Tools 
+- Automatische Erkennung von Änderungen und Statusanzeigen direkt im Editor 
+- Nahtlose Verbindung zu Git-Plattformen wie GitHub und GitLab 
+
+> Kursmaterial „Distributed Version Control Systems Vertiefung“, Kapitel 6.3 - 6.5.3
+___
+
+## Nützliche Git-Tools und Plattformen
+
+### Git Plattformen
 
 - [GitHub](https://github.com)
   > GitHub ist eine proprietäre und öffentliche Softwareentwicklungsplattform auf Grundlage der Versionsverwaltungs-Software Git. GitHub war im Jahr 2011 bei Open-Source-Software der populärste Dienst seiner Art, gemessen an der Anzahl der Codebeiträge („Commits“). Der Dienst hat über 83 Millionen registrierte Nutzer und verwaltet über 200 Millionen Repositories (Stand: August 2022). Neben vielen sehr kleinen oder oft nur vom Besitzer genutzten Projekten gibt es mehrere bekannte größere Open-Source-Projekte, die bei der Versionsverwaltung ihres Quelltextes GitHub verwenden. Das Unternehmen GitHub, Inc. hat seinen Sitz in San Francisco in den USA und gehört zu Microsoft.
@@ -131,7 +165,7 @@ git merge --abort   - Merge-Prozess verlassen, Branch auf Status vor dem Merge z
     - [GitLab an der THL](https://git.mylab.th-luebeck.de)
     - [GitLab an der BHT](https://gitlab.bht-berlin.de)
 
-#### Git Clients
+### Git Clients
 
 - [GitHub Desktop](https://desktop.github.com)
   > Experience Git without the struggle
@@ -152,7 +186,7 @@ git merge --abort   - Merge-Prozess verlassen, Branch auf Status vor dem Merge z
   >
   > Quelle: https://www.gitkraken.com/git-client
 
-#### Git Lernressourcen
+### Git Lernressourcen
 
 - [Learn Git Branching](https://learngitbranching.js.org/) - Interaktives Git-Lernspiel
   > Interested in learning Git? Well you've come to the right place! "Learn Git Branching" is the most visual and interactive way to learn Git on the web; you'll be challenged with exciting levels, given step-by-step demonstrations of powerful features, and maybe even have a bit of fun along the way.
