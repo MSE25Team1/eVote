@@ -1,0 +1,78 @@
+name: Test, Build Site and Publish
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:    # no branch filter -> runs on pushes to any branch
+  pull_request:    # runs on PRs from any branch
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 25 (with Maven cache)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Run tests and build
+        run: mvn -B -DskipTests=false package
+
+  publish:
+    name: Publish site to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.build.result == 'success'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 25 (with Maven cache)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Build site
+        run: mvn -B -DskipTests=false site jacoco:report
+
+      - name: Verify site and index
+        run: |
+          if [ -d target/site ] && [ -n "$(ls -A target/site 2>/dev/null)" ]; then
+            echo "target/site contains:"
+            ls -la target/site || true
+          else
+            echo "ERROR: target/site is missing or empty. Aborting before publish." >&2
+            exit 1
+          fi
+          if [ ! -f target/site/index.html ]; then
+            echo "ERROR: target/site/index.html missing. Aborting before publish." >&2
+            exit 1
+          fi
+
+      - name: Publish site to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/site
+          publish_branch: gh-pages
+          allow_empty_commit: false
+          commit_message: 'ci(site): update site from ${{ github.sha }}'
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
