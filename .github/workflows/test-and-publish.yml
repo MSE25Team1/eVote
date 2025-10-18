@@ -5,8 +5,7 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  push:    # no branch filter -> runs on pushes to any branch
-  pull_request:    # runs on PRs from any branch
+  push:  # run on pushes to any branch (tests will run for all branches); publish job is gated to main via job-level if
 
 permissions:
   contents: write
