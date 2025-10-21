@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<title>Team1_Uebung1.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .breadcrumb-container {
+        background: white;
+        padding: 1.5rem;
+        margin: 1.5rem 0rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #667eea;
+    }
+    .breadcrumb {
+        margin-bottom: 0;
+    }
+    .breadcrumb a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .breadcrumb a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body class="container">
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+  <nav class="breadcrumb-container">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../">📚 Zur Übersicht</a></li>
+        <li class="breadcrumb-item active">Git Grundlagen – Team-Handout</li>
+    </ol>
+</nav>
+<h1 id="git-grundlagen-%E2%80%93-team-handout">Git Grundlagen – Team-Handout</h1>
+<hr>
+<h2 id="was-ist-git-und-warum-sollte-man-es-verwenden">Was ist Git und warum sollte man es verwenden?</h2>
+<p><strong>Was ist Git?</strong><br>
+Git ist ein Tool zur Versionskontrolle von Softwareprojekten. Es ermöglicht, Änderungen an diesen Projekten zu verfolgen und bietet den Entwickler*innen die Möglichkeit, ihre Projekte zu verwalten und an diesen gemeinsam zu arbeiten.</p>
+<p><strong>Warum sollte man Git verwenden?</strong></p>
+<ul>
+<li>Nachvollziehbare Versionshistorie und einfache Rückverfolgung von Änderungen,</li>
+<li>Verteiltes Arbeiten durch vollständige lokale Kopie des Repositories,</li>
+<li>Branching und Merging erleichtern parallele Entwicklungsprozesse,</li>
+<li>Kryptografische Hashes (z. B. SHA-1, SHA-256) sorgen für die Integrität der Historie,</li>
+<li>Schnelle und effiziente Arbeitsweise, auch bei großen Projekten uvm.</li>
+</ul>
+<p><em><strong>Quelle</strong>: <a href="https://about.gitlab.com/de-de/blog/what-is-git-the-ultimate-guide-to-gits-role-and-functionality/">GitLab – Was ist Git? Der ultimative Leitfaden</a></em></p>
+<hr>
+<h2 id="grundlegende-git-befehle">Grundlegende Git-Befehle</h2>
+<h3 id="start">Start</h3>
+<p><code>git init</code> : Initialisiert ein neues, leeres Git-Repository im aktuellen Verzeichnis. Ein <strong>.git-Ordner</strong> wird erstellt, worin alle Informationen zur Versionskontrolle abgelegt werden.<br>
+<code>git clone &lt;URL&gt;</code> : Repository von URL klonen → Kopiert ein bestehendes Remote-Repository (z. B. von GitHub) auf das eigene lokale System. Dabei wird ein Arbeitsordner erstell worin der Projektinhalt gespeichert wird sowie die Versionsinformationen.</p>
+<h3 id="%C3%A4nderungen-in-staging-area">Änderungen in Staging Area</h3>
+<p><code>git status</code> : Zeigt den aktuellen Status
+<code>git add &lt;Datei&gt;</code> : eine oder mehrere Dateien werden zur Staging-Area hinzugefügt<br>
+<code>git add .</code> : fügt alle geänderten Dateien hinzu
+<code>git diff </code> : Vergleicht aktuellen Stand mit letzter Version - macht Änderungen der Dateien Zeilenweise sichtbar. (Nur außerhalb der Staging-Area)</p>
+<h3 id="versions%C3%A4nderungen-speichern">Versionsänderungen speichern</h3>
+<p><code>git commit -m &quot;Nachricht&quot; </code> : Speichert alle aktuell in der Staging-Area befindlichen Änderungen als neue Version (Commit) mit einer Nachricht.
+<code>git commit -am &quot;Nachricht&quot; </code>: Kombiniert add und commit, erfasst jedoch nur Änderungen an bereits versionierten Dateien. Neue Dateien werden nicht berücksichtigt.</p>
+<h3 id="versions%C3%A4nderungen-abrufen-oder-ver%C3%B6ffentlichen">Versionsänderungen abrufen oder veröffentlichen</h3>
+<p><code>git pull</code> : Holt neue Änderungen vom Remote-Repository und integriert sie automatisch in den aktuellen Branch
+<code>git push</code> : Überträgt lokale Commits auf das Remote-Repository, um sie für andere verfügbar zu machen.
+<code>git fetch</code> : Lädt neue Daten vom Remote-Repository herunter, ohne sie automatisch zu integrieren.</p>
+<h3 id="%C3%A4nderungen-r%C3%BCckg%C3%A4ngig-machen">Änderungen rückgängig machen</h3>
+<p><code>git stash</code> : Speichert aktuelle Arbeitsänderungen temporär, um den Arbeitsordner zu leeren (KEIN Commit).
+<code>git reset</code> : Setzt den aktuellen Branch auf einen bestimmten Commit zurück. Modus:<code>--soft, --mixed, --hard</code>
+<code>git restore &lt;Datei&gt;</code> : Datei wird auf den Zustand des letzten Commits zurückgesetzt.</p>
+<h3 id="branches-verwalten">Branches verwalten</h3>
+<p><code>git branch</code> : Listet alle lokalen Branches<br>
+<code>git branch -a</code> : Listet auch die remote Branches<br>
+<code>git checkout &lt;Branch&gt;</code> : Wechselt in einen anderen Branch und aktualisiert den Arbeitsstand entsprechend.<br>
+<code>git switch &lt;Branch&gt;</code> : Branch-Wechsel<br>
+<code>git merge &lt;Branch&gt;</code> : Änderungen in den aktuellen Branch zusammenführen.</p>
+<hr>
+<h2 id="branches-und-ihre-nutzung-umgang-mit-merge-konflikten">Branches und ihre Nutzung, Umgang mit Merge-Konflikten</h2>
+<p>Branches ermöglichen paralleles Arbeiten, indem sie voneinander separate Entwicklungszweige schaffen.
+So können mehrere Funktionen unabhängig entwickelt und später zusammengeführt werden.</p>
+<p>Beim Zusammenführen, also dem &quot;Merge&quot;, kann es zu Konflikten kommen. Gerade dann, wenn in beiden Branches die gleichen Stellen einer Datei verändert wurden.
+Die Konflikte betreffen nur die Person, die den Merge durchführt. Der Rest des Teams bemerkt von dem Konflikt nichts.
+In diesem Fall kann Git nicht automatisch erkennen, welche Änderung genau übernommen werden soll und unterbricht deswegen den Merge-Prozess.</p>
+<p><strong>Grundlegend kann man zwei Arten von Merge-Konflikten definieren:</strong></p>
+<ol>
+<li>
+<p>Git kann Merge nicht starten</p>
+<p>Ein Merge-Vorgang kann fehlschlagen, wenn sich im Arbeitsverzeichnis oder im Staging-Bereich nicht gespeicherte Änderungen befinden.
+Git verhindert in diesem Fall den Merge, um zu vermeiden, dass diese lokalen Anpassungen von den neuen Commits überschrieben werden.</p>
+<p>Dabei handelt es sich nicht um einen Konflikt mit anderen Branches, sondern um Konflikte mit eigenen, noch nicht gesicherten Änderungen.
+Um fortzufahren, sollte der lokale Zustand bereinigt oder gesichert werden.</p>
+<pre class="hljs"><code><div>git stash     - Änderungen zwischenspeichern
+git commit    - Änderungen festschreiben
+git reset     - Änderungen verwerfen
+git checkout  - zu einem anderen Branch wechseln
+</div></code></pre>
+<p>Erst danach kann der Merge erfolgreich ausgeführt werden.</p>
+</li>
+<li>
+<p>Während des Merge-Vorgangs tritt ein Fehler auf</p>
+<p>Tritt ein Fehler während eines Merge-Vorgangs auf, gibt es Konflikte zwischen dem aktuellen Branch und dem Branch, der gemergt wird.
+Diese Konflikte entstehen dann, wenn einer oder mehrere Personen denselben Codeabschnitt verändert haben.</p>
+<p>Git versucht hier dann, die Änderungen automatisch zusammenzuführen, kann dies jedoch nicht in allen Fällen.
+Die betroffenen Dateien müssen dann manuell überprüft und angepasst werden.
+In solchen Fällen zeigt Git eine entsprechende Fehlermeldung an, die auf den Konflikt hinweist und die betroffenen Dateien nennt.</p>
+</li>
+</ol>
+<h3 id="merge-konflikte-beheben">Merge-Konflikte beheben</h3>
+<p>Ein Weg, einen Merge-Konflikt zu lösen, ist das manuelle Bearbeiten der betroffenen Datei.
+Man öffnet dazu die Datei in deinem Editor, entfernt die Konfliktmarker und übernimmt die gewünschten Änderungen.</p>
+<pre class="hljs"><code><div>git add &lt;Dateiname&gt;
+git commit -m &quot;Merge-Konflikt in &lt;Dateiname&gt; behoben&quot;
+</div></code></pre>
+<p>Git erkennt, dass der Konflikt gelöst wurde, und erstellt dann automatisch einen Merge-Commit um den Vorgang abzuschließen.</p>
+<p><strong>Nützliche Befehle bei Merge-Konflikten:</strong></p>
+<pre class="hljs"><code><div>git status          - zeigt Status der Dateien
+git log             - zeigt Commit-Verlauf
+git log --merge     - Protokoll-Liste wird erstellt, die zwischen mergenden Branches für Konflikte sorgen.
+git checkout        - wechselt zu einem anderen Branch oder verwirft Änderungen
+git reset           - setzt Änderungen zurück
+git merge --abort   - Merge-Prozess verlassen, Branch auf Status vor dem Merge zurücksetzen.
+</div></code></pre>
+<hr>
+<h2 id="git-mit-intellij-benutzen-local-repository-und-remote-repository">Git mit IntelliJ benutzen: Local Repository und Remote Repository</h2>
+<p>IntelliJ IDEA bietet eine integrierte Git-Unterstützung, wodurch sich alle grundlegenden Git-Funktionen direkt aus der Entwicklungsumgebung heraus nutzen lassen. So kann sowohl das lokale als auch das Remote Repository ohne die Kommandozeile verwaltet werden.</p>
+<p>Wie in der Sektion „Grundlegende Git-Befehle“ beschrieben, wird beim Ausführen von <code>git init</code> im Projektverzeichnis ein versteckter Ordner <code>.git/</code> angelegt. Dieser Ordner enthält alle Versionsinformationen und stellt somit das lokale Repository dar.</p>
+<h3 id="lokales-repository"><em><strong>Lokales Repository</strong></em></h3>
+<p>Das lokale Repository bildet die Grundlage der Versionsverwaltung. Alle Änderungen an Projektdateien finden zunächst lokal statt. Um sie zu versionieren, werden diese in zwei Schritten übernommen:</p>
+<ol>
+<li><strong>Staging Area</strong>: Mit <code>git add .</code> werden Änderungen in die Staging Area übernommen.</li>
+<li><strong>Commit</strong>: Mit <code>git commit -m &quot;Nachricht&quot;</code> werden die Änderungen dauerhaft im lokalen Repository gespeichert.</li>
+</ol>
+<p>Nachdem ein Projekt lokal eingerichtet wurde, kann es über IntelliJ mit einem Remote Repository verbunden werden. Dazu wird im Terminal der Remote-Link hinzugefügt: <code>git remote add origin https://github.com/Benutzername/Repositoryname.git </code>  Dadurch wird spezifiziert, mit welchem entfernten Repository das lokale Projekt verknüpft ist.</p>
+<h3 id="remote-repository"><em><strong>Remote Repository</strong></em></h3>
+<p>Ein Remote Repository liegt auf einem Server (z. B. GitHub oder GitLab) und ermöglicht die Zusammenarbeit im Team. Typischerweise wird auf der Plattform zunächst ein leeres Repository erstellt. Anschließend kann man das Remote Repository klonen <code>git clone &lt;URL&gt;</code>. Durch das Klonen entsteht automatisch ein vollständiges lokales Repository mit der Remote-Verknüpfung. Die Verbindung erfolgt in der Regel über eine HTTPS- oder SSH-URL, die im Git-Konfigurationsfile gespeichert wird.</p>
+<p>Sobald die Verbindung steht, können Änderungen einfach synchronisiert werden:</p>
+<ol>
+<li><strong>Push</strong>: Überträgt lokale Commits auf das Remote Repository <code>git push</code></li>
+<li><strong>Pull</strong>: Holt aktuelle Änderungen anderer Teammitglieder <code>git pull</code></li>
+</ol>
+<p><strong>Vorteile der Git-Integration in IntelliJ sind:</strong></p>
+<ul>
+<li>visuelle Darstellung des Versionsverlaufs und der Branch-Struktur</li>
+<li>Einfache Konfliktauflösung über integrierte Merge-Tools</li>
+<li>Automatische Erkennung von Änderungen und Statusanzeigen direkt im Editor</li>
+<li>Nahtlose Verbindung zu Git-Plattformen wie GitHub und GitLab</li>
+</ul>
+<blockquote>
+<p>Kursmaterial „Distributed Version Control Systems Vertiefung“, Kapitel 6.3 - 6.5.3</p>
+</blockquote>
+<hr>
+<h2 id="n%C3%BCtzliche-git-tools-und-plattformen">Nützliche Git-Tools und Plattformen</h2>
+<h3 id="git-plattformen">Git Plattformen</h3>
+<ul>
+<li>
+<p><a href="https://github.com">GitHub</a></p>
+<blockquote>
+<p>GitHub ist eine proprietäre und öffentliche Softwareentwicklungsplattform auf Grundlage der Versionsverwaltungs-Software Git. GitHub war im Jahr 2011 bei Open-Source-Software der populärste Dienst seiner Art, gemessen an der Anzahl der Codebeiträge („Commits“). Der Dienst hat über 83 Millionen registrierte Nutzer und verwaltet über 200 Millionen Repositories (Stand: August 2022). Neben vielen sehr kleinen oder oft nur vom Besitzer genutzten Projekten gibt es mehrere bekannte größere Open-Source-Projekte, die bei der Versionsverwaltung ihres Quelltextes GitHub verwenden. Das Unternehmen GitHub, Inc. hat seinen Sitz in San Francisco in den USA und gehört zu Microsoft.</p>
+<p>Quelle: https://en.wikipedia.org/wiki/GitHub</p>
+</blockquote>
+</li>
+<li>
+<p><a href="https://gitlab.com">GitLab</a></p>
+<blockquote>
+<p>GitLab ist eine Softwareentwicklungsplattform auf Git-Basis. GitLab bietet ein Issue-Tracking-System mit Kanban-Board, ein System für Continuous Integration und Continuous Delivery (CI/CD), ein Wiki, eine Container-Registry, einen Sicherheitsscanner für Container und Sourcecode sowie Multi-Cluster-Verwaltung und -Überwachung. GitLab ist in Produkte für Entwickler, wie zum Beispiel AWS oder Google Cloud, integrierbar und über eine API fernsteuerbar. GitLab ist in den Programmiersprachen Ruby und Go geschrieben.</p>
+<p>Die GitLab Community Edition (CE) wird als Open-Source-Software unter der MIT-Lizenz entwickelt. Seit August 2013 bietet die GitLab Inc. mit der Enterprise Edition (EE) eine speziell für Unternehmen entwickelte Version an. Man kann GitLab auf eigener Hardware betreiben oder seit 2012 auf GitLab.com als GitLab Enterprise Edition – als Software as a Service (SaaS). Neben kostenlosem Hosting privater und öffentlicher Repositorys wird auch kostenpflichtiger Support angeboten.</p>
+<p>Quelle: https://de.wikipedia.org/wiki/GitLab</p>
+</blockquote>
+<p>Viele Hochschulen bieten ihren Studierenden und Mitarbeitenden eigens gehostete GitLab-Instanzen an, z. B.:</p>
+<ul>
+<li><a href="https://git.mylab.th-luebeck.de">GitLab an der THL</a></li>
+<li><a href="https://gitlab.bht-berlin.de">GitLab an der BHT</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="git-clients">Git Clients</h3>
+<ul>
+<li><a href="https://desktop.github.com">GitHub Desktop</a>
+<blockquote>
+<p>Experience Git without the struggle</p>
+<p>Whether you're new to Git or a seasoned user, GitHub Desktop simplifies your development workflow.</p>
+<p>Quelle: https://desktop.github.com</p>
+</blockquote>
+</li>
+<li><a href="https://www.sourcetreeapp.com">Sourcetree</a>
+<blockquote>
+<p>A free Git client for Windows and Mac</p>
+<p>Sourcetree simplifies how you interact with your Git repositories so you can focus on coding. Visualize and manage your repositories through Sourcetree's simple Git GUI.</p>
+<p>Quelle: https://www.sourcetreeapp.com</p>
+</blockquote>
+</li>
+<li><a href="https://www.gitkraken.com/git-client">GitKraken Desktop</a>
+<blockquote>
+<p>Simplifying Git for any OS</p>
+<p>Countless developers and teams worldwide use GitKraken Desktop for its intuitive GUI, powerful terminal, and cross-platform support for Windows, Mac, and Linux.</p>
+<p>Quelle: https://www.gitkraken.com/git-client</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="git-lernressourcen">Git Lernressourcen</h3>
+<ul>
+<li><a href="https://learngitbranching.js.org/">Learn Git Branching</a> - Interaktives Git-Lernspiel
+<blockquote>
+<p>Interested in learning Git? Well you've come to the right place! &quot;Learn Git Branching&quot; is the most visual and interactive way to learn Git on the web; you'll be challenged with exciting levels, given step-by-step demonstrations of powerful features, and maybe even have a bit of fun along the way.</p>
+<p>Quelle: https://learngitbranching.js.org/</p>
+</blockquote>
+</li>
+<li><a href="https://www.youtube.com/watch?v=hwP7WQkmECE&amp;t=9s">Git Explained in 100 Seconds</a> von <a href="https://www.youtube.com/@Fireship">Fireship</a> - Kurzvideo über Git
+<blockquote>
+<p>Learn the basics of Git in 100 seconds.</p>
+<p>Quelle: https://www.youtube.com/watch?v=hwP7WQkmECE&amp;t=9s</p>
+</blockquote>
+</li>
+<li><a href="https://www.youtube.com/watch?v=RGOj5yH7evk&amp;t=70s">Git and GitHub for Beginners - Crash Course</a> von <a href="https://www.youtube.com/@freecodecamp">freeCodeCamp</a> - 1-stündiger Crash-Kurs über Git und GitHub
+<blockquote>
+<p>Learn about Git and GitHub in this tutorial. These are important tools for all developers to understand. Git and GitHub make it easier to manage different software versions and make it easier for multiple people to work on the same software project.</p>
+<p>Quelle: https://www.youtube.com/watch?v=RGOj5yH7evk&amp;t=70s</p>
+</blockquote>
+</li>
+<li><a href="https://github.com/dictcp/awesome-git">Awesome Git</a> - Eine kuratierte Liste von Git-Ressourcen
+<blockquote>
+<p>A curated list of amazingly awesome Git tools, resources and shiny things.</p>
+<p>Quelle: https://github.com/dictcp/awesome-git</p>
+</blockquote>
+</li>
+</ul>
+
+</body>
+</html>
