@@ -1,3 +1,5 @@
+package com.mse.eVote.buergerVerwaltung.domain.model;
+
 import com.mse.eVote.buergerVerwaltung.domain.valueobjects.Adresse;
 import com.mse.eVote.buergerVerwaltung.domain.valueobjects.Name;
 import org.junit.jupiter.api.Test;
