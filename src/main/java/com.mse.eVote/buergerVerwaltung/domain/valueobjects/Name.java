@@ -70,10 +70,6 @@ public class Name {
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
 
-    // ============ Legacy German aliases (for backward compatibility) ============
-    public String getVorname() { return firstName; }
-    public String getNachname() { return lastName; }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

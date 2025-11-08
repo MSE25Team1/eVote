@@ -167,6 +167,44 @@ class VoterTest {
     // ============ Aggregate Identity Tests ============
 
     @Test
+    // if (this == o) return true;
+    @DisplayName("Voter equals itself should return this == o) ")
+    void voter_equalsItself_shouldReturnTrue() {
+        Voter voter = Voter.register(
+                VALID_NAME,
+                VALID_ADRESSE,
+                VALID_EMAIL,
+                java.time.LocalDate.of(1990, 1, 1),
+                VALID_WAHLKREIS
+        );
+        assertTrue(voter.equals(voter));
+    }
+
+    @Test
+    @DisplayName("Voter should not equal null")
+    void voter_equalsNULL_shouldBeFalse() {
+        Voter voter = Voter.register(
+                VALID_NAME,
+                VALID_ADRESSE,
+                VALID_EMAIL,
+                java.time.LocalDate.of(1990, 1, 1),
+                VALID_WAHLKREIS
+        );
+        assertNotEquals(voter, null);
+        assertFalse(voter.equals(null));
+    }
+
+    @Test
+    @DisplayName("Voter should not equal non voter")
+    void voter_shouldNotEqualString() {
+        Voter voter1 = Voter.register(VALID_NAME, VALID_ADRESSE, VALID_EMAIL, java.time.LocalDate.of(1990, 1, 1), VALID_WAHLKREIS);
+        String voterId = voter1.getVoterId();
+
+        assertNotEquals(voter1, "not a voter");
+        assertFalse(voter1.equals("not a voter"));
+    }
+
+    @Test
     @DisplayName("Two voters with same voterId should be equal")
     void identicalVoterIds_shouldBeEqual() {
         Voter voter1 = Voter.register(VALID_NAME, VALID_ADRESSE, VALID_EMAIL, java.time.LocalDate.of(1990, 1, 1), VALID_WAHLKREIS);

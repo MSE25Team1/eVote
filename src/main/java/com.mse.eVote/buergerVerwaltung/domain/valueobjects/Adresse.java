@@ -106,12 +106,6 @@ public class Adresse {
     public String getPostalCode() { return postalCode; }
     public String getCity() { return city; }
 
-    // ============ German aliases (for backward compatibility) ============
-    public String getStrasse() { return street; }
-    public String getHausnummer() { return houseNumber; }
-    public String getAdresszusatz() { return addressComplement; }
-    public String getPlz() { return postalCode; }
-    public String getStadt() { return city; }
 
     @Override
     public boolean equals(Object o) {
