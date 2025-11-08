@@ -2,62 +2,139 @@ package com.mse.eVote.buergerVerwaltung.domain.valueobjects;
 
 import java.util.Objects;
 
-public class Adresse { private final String strasse; private final String hausnummer; private final String adresszusatz; private final String plz; private final String stadt;
+/**
+ * Adresse - Value Object für Postanschriften
+ *
+ * Unveränderbare Darstellung einer deutschen Postadresse mit englischer Unterstützung.
+ * Validiert alle Felder nach deutschen Standards:
+ * - Street (Straße): Buchstaben, Umlaute, Zahlen, Bindestriche, Punkte, Leerzeichen
+ * - HouseNumber (Hausnummer): 1-3 Ziffern, optional gefolgt von einem Buchstaben (z.B. "12a")
+ * - AddressComplement (Adresszusatz): Optional (z.B. "Penthouse", "3. OG", "Apartment 42")
+ * - PostalCode (PLZ): Genau 5 Ziffern (deutsches Format 00001-99999)
+ * - City (Stadt): Buchstaben, Umlaute, Bindestriche, Leerzeichen
+ *
+ * Als Value Object implementiert dieses Objekt Wert-Semantik (nicht Identitäts-Semantik):
+ * - Zwei Adressen mit gleichen Werten sind äquivalent
+ * - Unveränderbar nach Erstellung
+ * - Keine Geschäftslogik, nur Validierung
+ */
+public class Adresse {
+    private final String street;            // Straße
+    private final String houseNumber;       // Hausnummer
+    private final String addressComplement; // Adresszusatz (optional)
+    private final String postalCode;        // PLZ
+    private final String city;              // Stadt
 
-    public Adresse(String strasse, String hausnummer, String adresszusatz, String plz, String stadt) {
-        if (strasse == null || strasse.trim().isEmpty())
-            throw new IllegalArgumentException("Straße darf nicht null oder leer sein.");
-        if (hausnummer == null || hausnummer.trim().isEmpty())
-            throw new IllegalArgumentException("Hausnummer darf nicht null oder leer sein.");
-        if (plz == null || !plz.matches("^[0-9]{5}$"))
-            throw new IllegalArgumentException("PLZ muss genau 5 Ziffern enthalten.");
-        if (stadt == null || stadt.trim().isEmpty())
-            throw new IllegalArgumentException("Stadt darf nicht null oder leer sein.");
+    /**
+     * Creates an Adresse (Address) value object with strict German postal validation.
+     *
+     * Street validation:
+     * - Allows letters (including German umlauts: ä, ö, ü, ß)
+     * - Allows digits, hyphens, periods, and spaces
+     * - Example: "Musterstraße", "Königin-Luise-Str.", "Zur Alten Mühle"
+     *
+     * House number validation:
+     * - 1-3 digits optionally followed by a single letter
+     * - Examples: "1", "12", "999", "12a", "42b"
+     * - Invalid: "12ab", "a1", "12-34"
+     *
+     * Postal code validation:
+     * - Exactly 5 digits (German format)
+     * - Range: 00001 - 99999
+     * - Examples: "10115", "50667", "80331"
+     *
+     * City validation:
+     * - Allows letters (including umlauts)
+     * - Allows hyphens and spaces for compound city names
+     * - Examples: "Berlin", "Köln", "Baden-Baden", "Berlin-Mitte"
+     *
+     * Address complement:
+     * - Optional field (pass null or empty string)
+     * - For apartment numbers, floor numbers, etc.
+     * - Examples: "Penthouse", "3. OG", "Wohnung 42"
+     *
+     * @param street street name (e.g., "Musterstraße")
+     * @param houseNumber house/building number (e.g., "12a")
+     * @param addressComplement optional complement (e.g., "Apartment 42") - can be null
+     * @param postalCode 5-digit German postal code (e.g., "12345")
+     * @param city city name (e.g., "Musterstadt")
+     * @throws IllegalArgumentException if any field fails validation
+     */
+    public Adresse(String street, String houseNumber, String addressComplement, String postalCode, String city) {
+        if (street == null || street.trim().isEmpty())
+            throw new IllegalArgumentException("Street must not be null or empty");
+        if (houseNumber == null || houseNumber.trim().isEmpty())
+            throw new IllegalArgumentException("House number must not be null or empty");
+        if (postalCode == null || !postalCode.trim().matches("^[0-9]{5}$"))
+            throw new IllegalArgumentException("Postal code must be exactly 5 digits");
+        if (city == null || city.trim().isEmpty())
+            throw new IllegalArgumentException("City must not be null or empty");
 
-        String strasseRegex = "^[A-Za-zÄÖÜäöüß0-9\\-\\. ]+$";
-        String hausnummerRegex = "^[0-9]+[a-zA-Z]?$";
-        String stadtRegex = "^[A-Za-zÄÖÜäöüß\\- ]+$";
+        // Trim all values first before validation
+        String streetClean = street.trim();
+        String houseNumberClean = houseNumber.trim();
+        String addressComplementClean = addressComplement == null ? "" : addressComplement.trim();
+        String postalCodeClean = postalCode.trim();
+        String cityClean = city.trim();
 
-        if (!strasse.matches(strasseRegex))
-            throw new IllegalArgumentException("Ungültige Straße: " + strasse);
-        if (!hausnummer.matches(hausnummerRegex))
-            throw new IllegalArgumentException("Ungültige Hausnummer: " + hausnummer);
-        if (!stadt.matches(stadtRegex))
-            throw new IllegalArgumentException("Ungültige Stadt: " + stadt);
+        // Validation regex patterns for German addresses
+        String streetRegex = "^[A-Za-zÄÖÜäöüß0-9\\-\\. ]+$";
+        String houseNumberRegex = "^[0-9]+[a-zA-Z]?$";
+        String cityRegex = "^[A-Za-zÄÖÜäöüß\\- ]+$";
 
-        this.strasse = strasse;
-        this.hausnummer = hausnummer;
-        this.adresszusatz = adresszusatz == null ? "" : adresszusatz;
-        this.plz = plz;
-        this.stadt = stadt;
+        if (!streetClean.matches(streetRegex))
+            throw new IllegalArgumentException("Invalid street format: '" + street +
+                    "'. Must contain only letters, digits, hyphens, periods, or spaces.");
+        if (!houseNumberClean.matches(houseNumberRegex))
+            throw new IllegalArgumentException("Invalid house number format: '" + houseNumber +
+                    "'. Must be 1-3 digits optionally followed by a single letter (e.g., '12a').");
+        if (!cityClean.matches(cityRegex))
+            throw new IllegalArgumentException("Invalid city format: '" + city +
+                    "'. Must contain only letters, hyphens, or spaces.");
+
+        this.street = streetClean;
+        this.houseNumber = houseNumberClean;
+        this.addressComplement = addressComplementClean;
+        this.postalCode = postalCodeClean;
+        this.city = cityClean;
     }
 
-    public String getStrasse() { return strasse; }
-    public String getHausnummer() { return hausnummer; }
-    public String getAdresszusatz() { return adresszusatz; }
-    public String getPlz() { return plz; }
-    public String getStadt() { return stadt; }
+    // ============ English getters ============
+    public String getStreet() { return street; }
+    public String getHouseNumber() { return houseNumber; }
+    public String getAddressComplement() { return addressComplement; }
+    public String getPostalCode() { return postalCode; }
+    public String getCity() { return city; }
+
+    // ============ German aliases (for backward compatibility) ============
+    public String getStrasse() { return street; }
+    public String getHausnummer() { return houseNumber; }
+    public String getAdresszusatz() { return addressComplement; }
+    public String getPlz() { return postalCode; }
+    public String getStadt() { return city; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Adresse)) return false;
         Adresse adresse = (Adresse) o;
-        return strasse.equals(adresse.strasse) &&
-                hausnummer.equals(adresse.hausnummer) &&
-                adresszusatz.equals(adresse.adresszusatz) &&
-                plz.equals(adresse.plz) &&
-                stadt.equals(adresse.stadt);
+        return street.equals(adresse.street) &&
+                houseNumber.equals(adresse.houseNumber) &&
+                addressComplement.equals(adresse.addressComplement) &&
+                postalCode.equals(adresse.postalCode) &&
+                city.equals(adresse.city);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(strasse, hausnummer, adresszusatz, plz, stadt);
+        return Objects.hash(street, houseNumber, addressComplement, postalCode, city);
     }
 
     @Override
     public String toString() {
-        return strasse + " " + hausnummer + (adresszusatz.isEmpty() ? "" : ", " + adresszusatz) + ", " + plz + " " + stadt;
+        return street + " " + houseNumber +
+               (addressComplement.isEmpty() ? "" : ", " + addressComplement) +
+               ", " + postalCode + " " + city;
     }
 
 }
