@@ -30,6 +30,10 @@ jobs:
       - name: Run tests and build
         run: mvn -B -DskipTests=false package
 
+      - name: Enforce 80% coverage gate (main branch only)
+        if: github.ref == 'refs/heads/main'
+        run: mvn -B jacoco:check
+
   publish:
     name: Publish site to GitHub Pages
     runs-on: ubuntu-latest
