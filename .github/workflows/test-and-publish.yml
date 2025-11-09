@@ -27,11 +27,8 @@ jobs:
           java-version: '25'
           cache: maven
 
-      - name: Run tests and build
-        run: mvn -B -DskipTests=false package
-
-      - name: Enforce 80% coverage gate
-        run: mvn -B jacoco:check
+      - name: Run tests and build and enforce test-coverage gate
+        run: mvn -B -DskipTests=false verify
 
   publish:
     name: Publish site to GitHub Pages
