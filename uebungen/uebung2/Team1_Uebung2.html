@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<title>Team1_Uebung2.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .breadcrumb-container {
+        background: white;
+        padding: 1.5rem;
+        margin: 1.5rem 0rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #667eea;
+    }
+    .breadcrumb {
+        margin-bottom: 0;
+    }
+    .breadcrumb a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .breadcrumb a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body class="container">
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+
+<nav class="breadcrumb-container">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../">📚 Zur Übersicht</a></li>
+        <li class="breadcrumb-item active">CI/CD Pipeline – Team-Handout</li>
+    </ol>
+</nav>
+<h1 id="%C3%BCbung-2-cicd-pipeline-%E2%80%93-team-handout">Übung 2: CI/CD Pipeline – Team-Handout</h1>
+<h2 id="einf%C3%BChrung-in-cicd">Einführung in CI/CD</h2>
+<h3 id="was-ist-cicd-%E2%80%93-in-2-s%C3%A4tzen">Was ist CI/CD – in 2 Sätzen</h3>
+<ul>
+<li>Continuous Integration (CI): Jede Codeänderung wird automatisch geprüft – Build, Tests, Qualitätssicherung.</li>
+<li>Continuous Deployment (CD): Änderungen, die Tests bestehen, werden automatisch (oder halbautomatisch) auf einen Zielserver oder Cloud-Dienst ausgeliefert.</li>
+</ul>
+<h3 id="ci-und-cd-%E2%80%93-grundlagen">CI und CD – Grundlagen</h3>
+<ul>
+<li>CI (Continuous Integration): Codeänderungen werden regelmäßig (mehrmals täglich) in das zentrale Repository integriert und automatisch getestet.</li>
+<li>CD (Continuous Deployment/Delivery): Der geprüfte Code wird automatisch auf Test- oder Produktionsserver bereitgestellt.</li>
+</ul>
+<h3 id="vorteile-f%C3%BCr-evote">Vorteile für eVote</h3>
+<ul>
+<li>Schnellere Entwicklung: Änderungen werden sofort geprüft und integriert.</li>
+<li>Weniger Integrationsprobleme: Konflikte im Code werden früh erkannt.</li>
+<li>Stabile Releases: Durch automatisierte Tests und Builds wird die Qualität jedes Updates gesichert.</li>
+<li>Transparenz im Team: Jeder sieht den aktuellen Stand und Build-Status.</li>
+</ul>
+<h3 id="automatische-tests--builds">Automatische Tests &amp; Builds</h3>
+<ul>
+<li>Automatische Builds: Prüfen, ob der Code kompiliert und das Projekt lauffähig ist.</li>
+<li>Unit- und Integrationstests: Entdecken Logikfehler und unerwartetes Verhalten direkt nach dem Commit.</li>
+<li>Früherkennung von Fehlern: Probleme werden identifiziert, bevor sie in die Live-Version gelangen.</li>
+<li>Zeitersparnis: Weniger manuelle Prüfungen, mehr Fokus auf neue Features.</li>
+</ul>
+<h2 id="einrichtung-der-cicd-pipeline">Einrichtung der CI/CD-Pipeline</h2>
+<p>Für das Einrichten der CI/CD-Pipeline gibt es zwei Möglichkeiten:</p>
+<ul>
+<li>Manuell: Erstellung einer <code>.yml-Datei</code> mit definierten Schritten und Parametern.</li>
+<li>Automatisch: Nutzung von GitHub-Vorlagen (Presets) für Standart-Workflows.</li>
+</ul>
+<p>Diese vordefinierten Workflow-Vorlagen können direkt genutzt oder angepasst werden. Basierend auf dem Code im Repository schlägt GitHub passende Presets vor (z.B. für Node.js Projekte). Diese Vorlagen erleichtern den Einstieg und decken verschiedene Bereiche ab.
+Beispielsweise:</p>
+<ul>
+<li>CI bzw. Erstellen und Testen von Pull Requests</li>
+<li>Bereitstellung von Releases</li>
+<li>Automatisierungen (Labeln neuer Issues)</li>
+<li>Code-Überprüfungen</li>
+<li>CD bzw. Page-Deployment (GitHub Pages)</li>
+</ul>
+<p>Workflows werden in YAML-Datein im Ordner <code>.github/workflows</code> definiert. Sie können automatisch durch Ereignisse, manuell oder zeitgesteuert ausgelöst werden. GitHub Actions dient dabei als Plattform für CI/CD, um Build-, Test- und Deployment-Prozesse zu automatisieren.</p>
+<p>Für mehr Informationen kann die <a href="https://docs.github.com/de/actions/get-started/quickstart">GitHub-Dokumentation</a> verwendet werden.</p>
+<h2 id="testing-in-cicd">Testing in CI/CD</h2>
+<p>In modernen <strong>CI/CD-Prozessen</strong> sind automatisierte Tests ein zentraler Bestandteil der Build-Pipeline. Sie stellen sicher, dass neuer Code nur dann integriert und bereitgestellt wird, wenn alle definierten Tests erfolgreich durchlaufen wurden. Dadurch wird die Codequalität gesichert und Fehler werden frühzeitig erkannt.</p>
+<p>In unserem Projekt wird das Testen über Maven ausgeführt, das in der <strong><code>pom.xml</code></strong> konfiguriert ist. Maven ist ein Build-Management- und Projektautomatisierungstool, das Abhängigkeiten verwaltet, den Quellcode kompiliert und Tests ausführt.</p>
+<p>User CI/CD-Workflow (<code>test-and-publish.yml</code>) enthält den zentralen Befehl:</p>
+<pre class="hljs"><code><div><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">tests</span> <span class="hljs-string">and</span> <span class="hljs-string">build</span>
+  <span class="hljs-attr">run:</span> <span class="hljs-string">mvn</span> <span class="hljs-string">-B</span> <span class="hljs-string">-DskipTests=false</span> <span class="hljs-string">package</span>
+</div></code></pre>
+<h3 id="parametererkl%C3%A4rung">Parametererklärung</h3>
+<ul>
+<li><strong><code>-B</code></strong> steht für <em>Batch Mode</em> und sorgt dafür, dass Maven ohne interaktive Eingaben ausgeführt wird – ideal für automatisierte, skriptgesteuerte Builds.</li>
+<li><strong><code>-DskipTests=false</code></strong> stellt sicher, dass die Tests <strong>nicht</strong> übersprungen, sondern tatsächlich ausgeführt werden.</li>
+</ul>
+<h3 id="maven-build-lifecycle">Maven Build Lifecycle</h3>
+<p>Der Befehl <code>mvn package</code> liest die Konfigurationen aus der <strong><code>pom.xml</code></strong>, in der Compiler-, Test- und Plugin-Definitionen enthalten sind.<br>
+Maven durchläuft dabei automatisch alle Phasen des standardisierten <strong>Build-Lifecycles</strong>:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Phase</strong></th>
+<th><strong>Beschreibung</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>validate</code></td>
+<td>prüft die Projektstruktur</td>
+</tr>
+<tr>
+<td><code>compile</code></td>
+<td>kompiliert den Quellcode aus <code>src/main/java</code></td>
+</tr>
+<tr>
+<td><code>test-compile</code></td>
+<td>kompiliert den Testcode aus <code>src/test/java</code></td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>führt automatisiert <strong>JUnit 5 Tests</strong> aus (über das Surefire Plugin)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="aufbau-und-funktionsweise-der-tests">Aufbau und Funktionsweise der Tests</h3>
+<p>Die <strong>Testklasse</strong> <code>AppTest.java</code> liegt unter <code>src/test/java</code> und überprüft mit <strong>JUnit 5</strong> die Funktionen der <strong>Produktivklasse</strong> <code>App.java</code>.<br>
+Durch die Annotation <code>@Test</code> erkennt Maven automatisch, welche Methoden getestet werden sollen.</p>
+<p>Beispielsweise wird geprüft, ob die Methode <code>greet()</code> den richtigen Standardtext zurückgibt, wenn kein Benutzername angegeben wird.</p>
+<h3 id="automatische-testausf%C3%BChrung-in-der-cicd-pipeline">Automatische Testausführung in der CI/CD-Pipeline</h3>
+<p>Sobald neuer Code gepusht wird, führt GitHub Actions automatisch mvn package aus, startet die Tests und bricht den Build ab, falls ein Test fehlschlägt. Nur bei „grünen“ Tests wird der nächste Schritt der Pipeline, das Bauen und Veröffentlichen der Seite, ausgeführt.</p>
+<h2 id="cd--deployment-konzepte">CD / Deployment-Konzepte</h2>
+<h2 id="deployment-konzept">Deployment-Konzept</h2>
+<p>Continuous Deployment (CD) automatisiert den Prozess der Bereitstellung von Softwareänderungen in einer Produktionsumgebung. Es stellt sicher, dass nur getestete und geprüfte Änderungen live geschaltet werden, wodurch die Qualität und Stabilität der Anwendung gewährleistet wird. Als Beispiel haben wir vorerst eine Pipeline implementiert, die nach erfolgreichem Build und Test automatisch eine statische Website auf GitHub Pages veröffentlicht. Später könnte hier auch die dann weiterentwickelte eVote-Anwendung deployed werden.</p>
+<h3 id="vor%C3%BCbergehende-implementierung-deployment-auf-github-pages">Vorübergehende Implementierung: Deployment auf GitHub Pages</h3>
+<p>Unser CD-Prozess (<code>test-and-publish.yml</code>) umfasst folgende Schritte:</p>
+<ol>
+<li><strong>Build &amp; Test</strong>: <code>mvn -B -DskipTests=false package</code></li>
+<li><strong>Site-Generierung</strong>: <code>mvn -B -DskipTests=false site jacoco:report</code></li>
+<li><strong>Verifikation</strong>: Automatische Prüfung, ob <code>target/site/</code> erstellt wurde</li>
+<li><strong>Content-Integration</strong>: Kopieren der <code>uebungen/</code> in die generierte Site</li>
+<li><strong>Deployment</strong>: Automatische Veröffentlichung auf GitHub Pages</li>
+</ol>
+<h4 id="was-wird-deployed">Was wird deployed?</h4>
+<ul>
+<li><strong>Maven Site</strong>: Projektdokumentation mit Dependencies, Plugins und Reports</li>
+<li><strong>JaCoCo Reports</strong>: Test-Coverage-Berichte mit visueller Darstellung</li>
+<li><strong>Team-Übungen</strong>: Markdown-Dateien werden direkt in die Site integriert</li>
+<li><strong>Statische Assets</strong>: CSS, JavaScript und Bilder für die Website</li>
+</ul>
+<h4 id="cd-pipeline-details">CD-Pipeline Details</h4>
+<pre class="hljs"><code><div><span class="hljs-attr">publish:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">Publish</span> <span class="hljs-string">site</span> <span class="hljs-string">to</span> <span class="hljs-string">GitHub</span> <span class="hljs-string">Pages</span>
+  <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+  <span class="hljs-attr">needs:</span> <span class="hljs-string">build</span>
+  <span class="hljs-attr">if:</span> <span class="hljs-string">github.event_name</span> <span class="hljs-string">==</span> <span class="hljs-string">'push'</span> <span class="hljs-string">&amp;&amp;</span> <span class="hljs-string">github.ref</span> <span class="hljs-string">==</span> <span class="hljs-string">'refs/heads/main'</span> <span class="hljs-string">&amp;&amp;</span> <span class="hljs-string">needs.build.result</span> <span class="hljs-string">==</span> <span class="hljs-string">'success'</span>
+  <span class="hljs-attr">steps:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span>
+    <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v4</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Set</span> <span class="hljs-string">up</span> <span class="hljs-string">JDK</span> <span class="hljs-number">25</span> <span class="hljs-string">(with</span> <span class="hljs-string">Maven</span> <span class="hljs-string">cache)</span>
+    <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-java@v4</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Build</span> <span class="hljs-string">site</span>
+    <span class="hljs-attr">run:</span> <span class="hljs-string">mvn</span> <span class="hljs-string">-B</span> <span class="hljs-string">-DskipTests=false</span> <span class="hljs-string">site</span> <span class="hljs-string">jacoco:report</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Verify</span> <span class="hljs-string">site</span> <span class="hljs-string">and</span> <span class="hljs-string">index</span>
+    <span class="hljs-attr">run:</span> <span class="hljs-string">...</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Copy</span> <span class="hljs-string">uebungen</span> <span class="hljs-string">into</span> <span class="hljs-string">site</span>
+    <span class="hljs-attr">run:</span> <span class="hljs-string">...</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Ensure</span> <span class="hljs-string">Pages</span> <span class="hljs-string">serves</span> <span class="hljs-string">static</span> <span class="hljs-string">files</span> <span class="hljs-string">(.nojekyll)</span>
+    <span class="hljs-attr">run:</span> <span class="hljs-string">...</span>
+
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Publish</span> <span class="hljs-string">site</span> <span class="hljs-string">to</span> <span class="hljs-string">GitHub</span> <span class="hljs-string">Pages</span>
+    <span class="hljs-attr">uses:</span> <span class="hljs-string">peaceiris/actions-gh-pages@v4</span>
+    <span class="hljs-attr">with:</span>
+        <span class="hljs-attr">publish_dir:</span> <span class="hljs-string">./target/site</span>
+        <span class="hljs-attr">publish_branch:</span> <span class="hljs-string">gh-pages</span>
+</div></code></pre>
+<p><strong>Merkmale der Pipeline:</strong></p>
+<ul>
+<li><strong>Gating</strong>: Deployment erfolgt nur nach erfolgreichem Build und Tests</li>
+<li><strong>Branching</strong>: Nur <code>main</code>-Branch löst Deployment aus</li>
+<li><strong>Automatisierung</strong>: Vollautomatischer Prozess ohne manuelle Eingriffe</li>
+<li><strong>Validierung</strong>: Prüfung der generierten Artefakte vor Deployment</li>
+<li><strong>Rollback-Fähigkeit</strong>: Git-basiertes Versioning ermöglicht einfache Rollbacks</li>
+</ul>
+<h3 id="ausblick-skalierung-f%C3%BCr-produktionsanwendungen">Ausblick: Skalierung für Produktionsanwendungen</h3>
+<p>Für eine weiterentwickelte eVote-Anwendung würde sich eine Erweiterung der Pipeline in folgenden Bereichen empfehlen. Die Reihenfolge folgt dem logischen Fluss von der Anwendung zur Infrastruktur:</p>
+<ol>
+<li>
+<p><strong>Artifact &amp; Container-Management</strong> – Wie wird Code in reproduzierbare Artefakte verpackt?</p>
+<ul>
+<li>Nutzung von Artefakt-Repositorys (z.B. Nexus, Artifactory) für JAR-Binaries</li>
+<li>Docker-Images in Container-Registries (z.B. Docker Hub, GitHub Container Registry)</li>
+<li>Versionierung und Signierung für Sicherheit und Nachverfolgbarkeit</li>
+</ul>
+</li>
+<li>
+<p><strong>Multi-Environment-Strategie</strong> – Wo und wie wird deployt?</p>
+<ul>
+<li><code>dev</code> → <code>staging</code> → <code>production</code> Pipeline mit separaten Konfigurationen</li>
+<li>Konfigurationsmanagement pro Environment (Datenbanken, APIs, Secrets)</li>
+<li>Automatische Promotion zwischen Environments nach Validierung</li>
+</ul>
+</li>
+<li>
+<p><strong>Sichere &amp; robuste Deployment-Strategien</strong> – Wie wird sicher ausgerollt?</p>
+<ul>
+<li>Blue-Green oder Canary-Deployments für Zero-Downtime-Updates</li>
+<li>Healthchecks und Integrations-Tests vor vollständiger Freigabe</li>
+<li>Automatische Rollback-Mechanismen bei Fehlern</li>
+</ul>
+</li>
+<li>
+<p><strong>Orchestrierung &amp; Infrastruktur</strong> – Wie wird alles verwaltet und skaliert?</p>
+<ul>
+<li>Kubernetes für automatische Skalierung und Ressourcenverwaltung</li>
+<li>Infrastructure-as-Code (IaC) für reproduzierbare Deployments</li>
+<li>docker-compose für lokale development-Setups und schnelle Iteration</li>
+</ul>
+</li>
+</ol>
+<h4 id="beispielhafte-cicd-pipeline">Beispielhafte CI/CD-Pipeline</h4>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart TB
+  A[Developer: Push / PR] --> B[CI: mvn package + Tests]
+  B --> C{Tests OK?}
+  C -- Nein --> D[Fehler melden]
+  C -- Ja --> E[Build Artefakt / Docker Image]
+  E --> F[Push zu Registry]
+  F --> G[CD: Deploy nach Staging]
+  G --> H[Smoke Tests / Healthchecks]
+  H --> I{OK?}
+  I -- Nein --> J[Rollback]
+  I -- Ja --> K[Promote zu Production]
+</div></code></pre>
+<h2 id="branching-und-pull-requests-in-verbindung-mit-cicd">Branching und Pull Requests in Verbindung mit CI/CD</h2>
+<p>Grundlegend Umsetzung mit:</p>
+<ul>
+<li><strong>main-Branch</strong> für stabilen Projektstand</li>
+<li><strong>feature-Branches</strong> für neue Funktionen</li>
+</ul>
+<p>Änderungen werden über Pull Requests in main nach einem 4-Augen-Prinzip gemergt.</p>
+<p>CI/CD-Integration erfolgt mit <strong>GitHub Actions</strong> und GitHub Actions führt bei jedem Push in einem Branch automatisch die Pipeline aus.
+Erst wenn alle Checks erfolgreich sind, kann der Pull Request gemergt werden.
+Zusätzlich wird beim Merge in main automatisch eine (Test-)Website erzeugt und über <strong>GitHub Pages</strong> veröffentlicht.
+Der Status der Pipeline und der Tests ist unter Actions des Repositories sichtbar.</p>
+
+</body>
+</html>
