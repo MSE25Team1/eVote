@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Team1_Uebung3.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .breadcrumb-container {
+        background: white;
+        padding: 1.5rem;
+        margin: 1.5rem 0rem;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #667eea;
+    }
+    .breadcrumb {
+        margin-bottom: 0;
+    }
+    .breadcrumb a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .breadcrumb a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body class="container">
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+
+<nav class="breadcrumb-container">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../">📚 Zur Übersicht</a></li>
+        <li class="breadcrumb-item active">UML & OOD(DDD) – Team-Handout</li>
+    </ol>
+</nav>
+<h1 id="uml--oodddd">UML &amp; OOD(DDD)</h1>
+<h2 id="1-eventstorming">1. Eventstorming</h2>
+<h3 id="erste-eventstorming-session-mit-grober-einteilung--sortierung-in-bounded-contexts">Erste Eventstorming Session mit grober Einteilung / Sortierung in Bounded Contexts:</h3>
+<img width="703" height="629" alt="Eventstorming" src="https://github.com/user-attachments/assets/4f357ab0-2752-4fb7-8207-858bb3223c8a" />
+<p>Die wesentlichen Events:</p>
+<ul>
+<li>Bürger registriert: Ein neuer Bürger wird in das System aufgenommen.</li>
+<li>Abstimmung erstellt: Abstimmung wird aufgesetzt mit Fragen und einem Zeitraum.</li>
+<li>Bürger zur Abstimmung freigeschaltet: Bürger wird verifiziert.</li>
+<li>Bürgerstimme abgegeben: Bürger hat Auswahl getroffen.</li>
+<li>Abstimmungsergebnis berechnet: Abstimmungsergebnis wird berechnet zu einem Zeitpunkt X.</li>
+<li>Abstimmungsergebnis publiziert: Ergebnis wird nach Ablauf des Zeitraums veröffentlicht.</li>
+</ul>
+<h2 id="2-dom%C3%A4nenmodell--bounded-context-erstellen">2. Domänenmodell / Bounded Context erstellen</h2>
+<p><strong>Kern-Entitäten:</strong></p>
+<ul>
+<li>Bürger (id: String, name: String, wahlbezirk: String, geburtsdatum: Date, verifiziert: bool, teilgenommeneAbstimmungen: String[])</li>
+<li>Admin (id: String, name: String, verwaltungsbezirke: String[])</li>
+<li>Abstimmung (id: String, titel: String, beschreibung: String, optionen: String[], wahlbezirke: String[], startDatum: Date, endDatum: Date)</li>
+<li>Stimme (id: String, string gewählte option, abstimmung: fk)</li>
+<li>Abstimmungsergebnis (id: String, stimmenverteilung: Stimmenverteilung, erstelltUm: Date, abstimmung: fk)</li>
+</ul>
+<h3 id="klassendiagramm-nach-ddd">Klassendiagramm nach DDD:</h3>
+<p><img src="https://github.com/user-attachments/assets/2c583649-10bd-45ff-b1c3-69df59f2e455" alt="eVote-Klassendiagramm-Page-2"></p>
+<h2 id="3-bounded-context-identifizieren">3. Bounded-Context identifizieren::</h2>
+<p>Die Domäne des eVotes lässt sich in mehrere Bounded Contexts unterteilen:</p>
+<ul>
+<li>Bürgerverwaltung: Verwaltet Bürgerdaten (Registrierung, Aktualisierung, Löschung ect.)
+Stellt sicher, dass jeder Bürger nur einmal registriert wird und erst nach erfolgreicher Verifikation freigeschaltet ist.</li>
+<li>Abstimmungsverwaltung: Verwaltung von verschiedenen Abstimmungen.
+Validiert Start- und Endzeitraum und erlaubt die Stimmenabgabe nur im aktiven Zeitraum, nimmt Stimmen entgegen.</li>
+<li>Stimmvergabe: Erfasst die Stimmen der verifizierten Bürger.
+Sichert ab, dass jeder Bürger pro Abstimmung nur eine gültige Stimme abgibt.</li>
+<li>Auszählung: Berechnet die Gesamtergebnisse pro Abstimmung.
+Berechnet und unterscheidet zwischen Gesamt-, gültigen und ungültigen Stimmen sowie Enthaltungen.</li>
+</ul>
+<h2 id="4-entit%C3%A4ten-und-aggregates">4. Entitäten und Aggregates</h2>
+<p><strong>Bürgerverwaltung:</strong>
+Entität: Bürger
+Aggregate: Bürger (enthält Daten wie Name, Adresse, Geburtsdatum, teilgenommeneAbstimmungen, Verifizierungsstatus, ID-Nummer)</p>
+<p><strong>Abstimmungsverwaltung:</strong>
+Entität: Auszählung
+Aggregate: Auszählung (Enthält Daten zur Abstimmung wie Art/Titel der Abstimmung, Abstimmungszeitraum, Abstimmungsstatus, ...)</p>
+<p><strong>Stimmvergabe:</strong>
+Entität: Stimme
+Aggregate: Stimme (Enthält alle Daten zur Stimme, wie die ausgewählte Option und die zugehörige Abstimmung)</p>
+<p><strong>Auszählung:</strong>
+Entität: Wahlergebnis
+Aggregate: Wahlergebnis (Enthält die summierte Stimmenanzahl je Option und Anzahl der Enthaltungen zu einem Zeitpunkt X)</p>
+<h2 id="5-domain-services-und-repositories">5. Domain Services und Repositories</h2>
+<p><strong>Domain Services:</strong></p>
+<p>Bürger-Service: Registriert neue Bürger, verifiziert die Identität und prüft die Wahlberechtigung.</p>
+<pre class="hljs"><code><div>registriereBürger(name: String, adresse: String, geburtsdatum: Date): Bürger
+verifiziereBürger(bürgerId: String): void
+prüfeWahlberechtigung(bürgerId: String): bool
+</div></code></pre>
+<p>Abstimmung-Service: Erstellt und verwaltet Abstimmungen, kontrolliert den Abstimmungsstatus und schaltet berechtigte Bürger zu Abstimmung frei.</p>
+<pre class="hljs"><code><div>erstelleAbstimmung(titel: String, beschreibung: String, optionen: String[], wahlbezirke: String[], startDatum: Date, endDatum: Date): Abstimmung
+schalteBürgerFrei(bürgerId: String, abstimmungId: String): void
+prüfeAbstimmungsStatus(abstimmungId: String): AbstimmungsStatus
+</div></code></pre>
+<p>Stimmvergabe-Service: Nimmt Stimmen entgegen, prüft ihre Gültigkeit und speichert sie.</p>
+<pre class="hljs"><code><div>checkVoteValidity(bürgerId: String, abstimmungId: String): bool
+castVote(bürgerId: String, abstimmungId: String, option: String): void
+</div></code></pre>
+<p>Ergebnis-Service: Zählt und aggregiert Stimmen, berechnet das Gesamtergebnis und veröffentlicht das Ergebnis.</p>
+<pre class="hljs"><code><div>zählStimmen(abstimmungId: String): Wahlergebnis
+publiziereErgebnis(abstimmungId: String): void
+</div></code></pre>
+<p><strong>Repositories:</strong></p>
+<p>Bürger Repository: Verwaltet die Persistenz der Bürgerdaten</p>
+<pre class="hljs"><code><div>findeBürgerMitId(String id) 
+findeAlle()
+speicherBürger(Bürger bürger)
+</div></code></pre>
+<p>Abstimmung Repository:</p>
+<pre class="hljs"><code><div>findeMitId(String id), findeAktiveAbstimmungen(), speicher(Abstimmung abstimmung)
+</div></code></pre>
+<p>Stimme Repository:</p>
+<pre class="hljs"><code><div>findeMitAbstimmung(String abstimmungId), speichern(Stimme stimme)
+</div></code></pre>
+<p>Ergebnis Repository: Verwaltet die Persistenz der (Ergebnis-) Daten</p>
+<pre class="hljs"><code><div>findeErgebnisMitId(String id)
+speicherErgebnis(Wahlergebnis wahlergebnis)
+</div></code></pre>
+<h2 id="6-implementierungsstrategie">6. Implementierungsstrategie</h2>
+<h3 id="1-test-first-ansatz-tdd">1. Test-first-Ansatz (TDD):</h3>
+<p>Zuerst werden Unit-Tests für die zentralen Geschäftsregeln und Aggregatzuständen geschrieben. Das Ziel ist es sicherzustellen, dass jede Domänenlogik korrekt funktioniert, bevor Implementierungen erfolgen.</p>
+<p><strong>Beispiel für Testfälle:</strong></p>
+<ul>
+<li>
+<p>Bürger-Aggregat: Bürger darf nur mit gültiger Adresse erstellt werden <code>(adresse != null &amp;&amp; adresse.length &gt; 5)</code>
+Bürger kann erst abstimmen, wenn er verifiziert/freigeschaltet ist.</p>
+</li>
+<li>
+<p>Abstimmung-Aggregat: Eine Abstimmung darf nur erstellt werden, wenn das Startdatum kleiner als das Enddatum ist. Nur berichtigte Stimmen werden gewertet.</p>
+</li>
+<li>
+<p>Stimmenvergabe Service: Ein Bürger kann nur eine oder keine Stimme pro Abstimmung abgeben:</p>
+<ul>
+<li>Ist Stimme gültig</li>
+<li>Doppelte Stimmen führen zu einer Exception</li>
+</ul>
+</li>
+<li>
+<p>Auszählung-Service:</p>
+<ul>
+<li>Stimmen werden gezählt und als gültig / ungültig klassifiziert</li>
+</ul>
+</li>
+</ul>
+<p><strong>Beispiel (JUnit-Test)</strong></p>
+<pre class="hljs"><code><div>@Test
+void  throwsExceptionOnInvalidAddress(){
+    assertThrows(IllegalArgumentException.class, () -&gt; 
+    new Bürger (&quot;1&quot;, &quot;Max Mustermann, &quot;&quot; )
+);
+}
+</div></code></pre>
+<h3 id="2-entit%C3%A4ten-und-aggregates-umsetzen">2. Entitäten und Aggregates umsetzen:</h3>
+<p>Jede Entität (Bürger, Abstimmung, Stimme, Wahlergebnis) wird als eigene Java-Klasse umgesetzt. Aggregate kapseln ihre interne Businesslogik. <strong>Die Implementierung erfolgt schrittweise anhand der bestehenden Tests.</strong></p>
+<h3 id="3-domain-services-umsetzen">3. Domain Services umsetzen</h3>
+<p>Nach stabilen Aggregaten werden dann die Services umgesetzt.
+Sie koordinieren vor allem die Logik über mehrere Aggregate hinweg und greifen auf Repositories zu um die Geschäftsregeln durchzusetzen.</p>
+<h3 id="4-repositories-umsetzen">4. Repositories umsetzen</h3>
+<p>Mittels JPA werden die Repositories mit einer Datenbank verbunden, um Aggregatzustände dauerhaft speichern und abrufen zu können.</p>
+<h3 id="5-refactoring--coding-standards">5. Refactoring / Coding Standards:</h3>
+<p>Ebenso wird der Code refaktoriert und gemäß DDD- und Clean-Code-Prinzip gestaltet. Mit einem Fokus auf Lesbarkeit, Wartbarkeit und klare Verantwortlichkeiten.</p>
+
+</body>
+</html>
