@@ -31,7 +31,7 @@ class VoteTest {
 
     @Test
     void validVote_shouldInitializeCorrectly() {
-        Vote vote = new Vote(
+        Vote vote = Vote.of(
                 "vote-1",
                 "poll-1",
                 "Option-A",
@@ -51,7 +51,7 @@ class VoteTest {
     @ValueSource(strings = {" ", "   "})
     void invalidVoteId_shouldThrowException(String invalidVoteId) {
         assertThrows(IllegalArgumentException.class, () ->
-                new Vote(
+                Vote.of(
                         invalidVoteId,
                         "poll-1",
                         "Option-A",
@@ -66,7 +66,7 @@ class VoteTest {
     @ValueSource(strings = {" ", "   "})
     void invalidPollId_shouldThrowException(String invalidPollId) {
         assertThrows(IllegalArgumentException.class, () ->
-                new Vote(
+                Vote.of(
                         "vote-1",
                         invalidPollId,
                         "Option-A",
@@ -81,7 +81,7 @@ class VoteTest {
     @ValueSource(strings = {" ", "   "})
     void invalidOptionId_shouldThrowException(String invalidOptionId) {
         assertThrows(IllegalArgumentException.class, () ->
-                new Vote(
+                Vote.of(
                         "vote-1",
                         "poll-1",
                         invalidOptionId,
@@ -96,7 +96,7 @@ class VoteTest {
     @ValueSource(strings = {" ", "   "})
     void invalidCorrelationId_shouldThrowException(String invalidCorrelationId) {
         assertThrows(IllegalArgumentException.class, () ->
-                new Vote(
+                Vote.of(
                         "vote-1",
                         "poll-1",
                         "Option-A",
@@ -109,7 +109,7 @@ class VoteTest {
     @Test
     void nullClock_shouldThrowException() {
         assertThrows(IllegalArgumentException.class, () ->
-                new Vote(
+                Vote.of(
                         "vote-1",
                         "poll-1",
                         "Option-A",
