@@ -1,6 +1,6 @@
 package com.mse.eVote.buergerVerwaltung.domain.model;
 
-import com.mse.eVote.buergerVerwaltung.domain.events.VoterRegisteredEvent;
+import com.mse.eVote.buergerVerwaltung.events.VoterRegisteredEvent;
 import com.mse.eVote.buergerVerwaltung.domain.valueobjects.Adresse;
 import com.mse.eVote.buergerVerwaltung.domain.valueobjects.Name;
 

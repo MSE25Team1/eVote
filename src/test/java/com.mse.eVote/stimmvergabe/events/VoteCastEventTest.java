@@ -1,4 +1,4 @@
-package com.mse.eVote.stimmvergabe.domain.event;
+package com.mse.eVote.stimmvergabe.events;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

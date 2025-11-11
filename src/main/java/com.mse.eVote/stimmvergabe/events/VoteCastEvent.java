@@ -1,4 +1,4 @@
-package com.mse.eVote.stimmvergabe.domain.event;
+package com.mse.eVote.stimmvergabe.events;
 
 import java.time.Instant;
 import java.util.Objects;

@@ -32,7 +32,7 @@ class InMemoryVoteRepositoryTest {
 
     // Hilfsmethode: passt genau zu deinem Vote-Konstruktor
     private Vote createVote(String voteId, String pollId, String optionId, String correlationId) {
-        return new Vote(
+        return Vote.of(
                 voteId,
                 pollId,
                 optionId,
