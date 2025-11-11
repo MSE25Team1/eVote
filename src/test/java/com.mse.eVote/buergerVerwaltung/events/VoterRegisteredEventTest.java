@@ -1,4 +1,4 @@
-package com.mse.eVote.buergerVerwaltung.domain.events;
+package com.mse.eVote.buergerVerwaltung.events;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;

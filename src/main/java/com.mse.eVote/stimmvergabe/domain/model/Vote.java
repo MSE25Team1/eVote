@@ -1,6 +1,6 @@
 package com.mse.eVote.stimmvergabe.domain.model;
 
-import com.mse.eVote.stimmvergabe.domain.event.VoteCastEvent;
+import com.mse.eVote.stimmvergabe.events.VoteCastEvent;
 
 import java.time.Clock;
 import java.time.Instant;
