@@ -3,6 +3,7 @@ package com.mse.eVote.buergerVerwaltung.domain.model;
 import com.mse.eVote.buergerVerwaltung.events.VoterRegisteredEvent;
 import com.mse.eVote.buergerVerwaltung.domain.valueobjects.Adresse;
 import com.mse.eVote.buergerVerwaltung.domain.valueobjects.Name;
+import com.mse.eVote.buergerVerwaltung.domain.valueobjects.Email;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,7 +37,7 @@ public class Voter {
     private final String voterId;
     private final Name name;
     private final Adresse adresse;
-    private final String email;
+    private final Email email;
     private final LocalDate geburtsdatum;
     private final String wahlkreis;
     private boolean isVerified;
@@ -51,10 +52,9 @@ public class Voter {
             String voterId,
             Name name,
             Adresse adresse,
-            String email,
+            Email email,
             LocalDate geburtsdatum,
             String wahlkreis) {
-        validateEmail(email);
 
         this.voterId = voterId;
         this.name = name;
@@ -75,7 +75,7 @@ public class Voter {
     public static Voter register(
             Name name,
             Adresse adresse,
-            String email,
+            Email email,
             LocalDate geburtsdatum,
             String wahlkreis) {
         if (name == null)
@@ -95,7 +95,7 @@ public class Voter {
             String voterId,
             Name name,
             Adresse adresse,
-            String email,
+            Email email,
             LocalDate geburtsdatum,
             String wahlkreis,
             boolean isVerified,
@@ -182,18 +182,12 @@ public class Voter {
     public String getVoterId() { return voterId; }
     public Name getName() { return name; }
     public Adresse getAdresse() { return adresse; }
-    public String getEmail() { return email; }
+    public Email getEmail() { return email; }
     public LocalDate getGeburtsdatum() { return geburtsdatum; }
     public String getWahlkreis() { return wahlkreis; }
     public boolean isVerified() { return isVerified; }
     public LocalDateTime getRegisteredAt() { return registeredAt; }
     public Set<String> getVotedPollIds() { return new HashSet<>(votedPollIds); }
-
-    private void validateEmail(String email) {
-        if (email == null || !email.matches("^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$")) {
-            throw new IllegalArgumentException("Ungültige E-Mail-Adresse: " + email);
-        }
-    }
 
     @Override
     public boolean equals(Object o) {

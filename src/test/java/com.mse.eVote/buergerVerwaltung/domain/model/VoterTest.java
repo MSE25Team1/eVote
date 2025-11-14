@@ -2,6 +2,7 @@ package com.mse.eVote.buergerVerwaltung.domain.model;
 
 import com.mse.eVote.buergerVerwaltung.domain.valueobjects.Adresse;
 import com.mse.eVote.buergerVerwaltung.domain.valueobjects.Name;
+import com.mse.eVote.buergerVerwaltung.domain.valueobjects.Email;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,7 +14,7 @@ class VoterTest {
 
     private static final Name VALID_NAME = new Name("Max", "Mustermann");
     private static final Adresse VALID_ADRESSE = new Adresse("Musterstraße", "12a", "", "12345", "Musterstadt");
-    private static final String VALID_EMAIL = "max@mustermann.de";
+    private static final Email VALID_EMAIL = new Email("max@mustermann.de");
     private static final String VALID_WAHLKREIS = "Kreis-12345";
 
     // ============ Factory Method & Creation Tests ============
@@ -154,14 +155,14 @@ class VoterTest {
     @DisplayName("Invalid email formats should throw exception")
     void invalidEmail_shouldThrowException(String invalidEmail) {
         assertThrows(IllegalArgumentException.class,
-            () -> Voter.register(VALID_NAME, VALID_ADRESSE, invalidEmail, java.time.LocalDate.of(1990, 1, 1), VALID_WAHLKREIS));
+            () -> Voter.register(VALID_NAME, VALID_ADRESSE, new Email(invalidEmail), java.time.LocalDate.of(1990, 1, 1), VALID_WAHLKREIS));
     }
 
     @Test
     @DisplayName("Null email should throw exception")
     void nullEmail_shouldThrowException() {
         assertThrows(IllegalArgumentException.class,
-            () -> Voter.register(VALID_NAME, VALID_ADRESSE, null, java.time.LocalDate.of(1990, 1, 1), VALID_WAHLKREIS));
+            () -> Voter.register(VALID_NAME, VALID_ADRESSE, new Email(null), java.time.LocalDate.of(1990, 1, 1), VALID_WAHLKREIS));
     }
 
     // ============ Aggregate Identity Tests ============
@@ -224,7 +225,7 @@ class VoterTest {
     @DisplayName("Two voters with different voteIds should not be equal")
     void differentVoterIds_shouldNotBeEqual() {
         Voter voter1 = Voter.register(VALID_NAME, VALID_ADRESSE, VALID_EMAIL, java.time.LocalDate.of(1990, 1, 1), VALID_WAHLKREIS);
-        Voter voter2 = Voter.register(VALID_NAME, VALID_ADRESSE, "other@mail.de", java.time.LocalDate.of(1990, 1, 1), VALID_WAHLKREIS);
+        Voter voter2 = Voter.register(VALID_NAME, VALID_ADRESSE, new Email("other@mail.de"), java.time.LocalDate.of(1990, 1, 1), VALID_WAHLKREIS);
 
         assertNotEquals(voter1, voter2);
     }

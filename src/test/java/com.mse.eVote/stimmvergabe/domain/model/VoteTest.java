@@ -1,3 +1,5 @@
+package com.mse.eVote.stimmvergabe.domain.model;
+
 import com.mse.eVote.stimmvergabe.domain.model.Vote;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -31,12 +33,12 @@ class VoteTest {
 
     @Test
     void validVote_shouldInitializeCorrectly() {
-        Vote vote = Vote.of(
+        Vote vote = new Vote(
                 "vote-1",
                 "poll-1",
                 "Option-A",
                 "corr-123",
-                fixedClock
+                nowInstant
         );
 
         assertEquals("vote-1", vote.getVoteId());
@@ -51,12 +53,12 @@ class VoteTest {
     @ValueSource(strings = {" ", "   "})
     void invalidVoteId_shouldThrowException(String invalidVoteId) {
         assertThrows(IllegalArgumentException.class, () ->
-                Vote.of(
+                new Vote(
                         invalidVoteId,
                         "poll-1",
                         "Option-A",
                         "corr-123",
-                        fixedClock
+                        nowInstant
                 )
         );
     }
@@ -66,12 +68,12 @@ class VoteTest {
     @ValueSource(strings = {" ", "   "})
     void invalidPollId_shouldThrowException(String invalidPollId) {
         assertThrows(IllegalArgumentException.class, () ->
-                Vote.of(
+                new Vote(
                         "vote-1",
                         invalidPollId,
                         "Option-A",
                         "corr-123",
-                        fixedClock
+                        nowInstant
                 )
         );
     }
@@ -81,12 +83,12 @@ class VoteTest {
     @ValueSource(strings = {" ", "   "})
     void invalidOptionId_shouldThrowException(String invalidOptionId) {
         assertThrows(IllegalArgumentException.class, () ->
-                Vote.of(
+                new Vote(
                         "vote-1",
                         "poll-1",
                         invalidOptionId,
                         "corr-123",
-                        fixedClock
+                        nowInstant
                 )
         );
     }
@@ -96,12 +98,12 @@ class VoteTest {
     @ValueSource(strings = {" ", "   "})
     void invalidCorrelationId_shouldThrowException(String invalidCorrelationId) {
         assertThrows(IllegalArgumentException.class, () ->
-                Vote.of(
+                new Vote(
                         "vote-1",
                         "poll-1",
                         "Option-A",
                         invalidCorrelationId,
-                        fixedClock
+                        nowInstant
                 )
         );
     }
@@ -109,7 +111,7 @@ class VoteTest {
     @Test
     void nullClock_shouldThrowException() {
         assertThrows(IllegalArgumentException.class, () ->
-                Vote.of(
+                new Vote(
                         "vote-1",
                         "poll-1",
                         "Option-A",
