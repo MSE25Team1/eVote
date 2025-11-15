@@ -5,6 +5,8 @@ Das Frontend stellt genau diese Backend-Funktionalitäten zur Verfügung.
 
 Zusätzlich gibt es eine UI mit Mock-Login, also ohne Funktionalitäten. Dieser Login gehört nicht zur Bürgerverwaltungsdomäne und bildet keine Authentifizierung ab – er dient ausschließlich der Navigation in die UI.
 
+Das Frontend wird über einen kleinen Express-Webserver ausgeliefert und nutzt Bootstrap für ein einfaches, schlankes Layout.
+
 ## Dateistruktur (DDD-orientiert)
 
 ```
@@ -24,10 +26,27 @@ frontend/
 │ └── dom.js            # DOM-/Render-Helfer (Fehler, Erfolg, Text)
 │
 ├── styles/
-│ └── styles.css        # Styling
+  ├── bootstrap.min.css # Bootstrap
+│ └── styles.css        # eigenes Styling
 │
 └── assets/
+  └── bootstrap.bundle.min.js  # Bootstrap JS
+
 ```
+**Der Express-Server liegt in** `frontend/server/`
+
+
+**Start:**
+
+```
+cd frontend/server
+npm install
+npm start
+```
+_Voraussetzung: Node.js ist installiert._
+
+**UI erreichbar unter:** `http://localhost:3000`
+
 
 ## Einordnung ins Gesamtsystem
 
