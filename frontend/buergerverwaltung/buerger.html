@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head><meta charset="UTF-8"><title>Bürgerverwaltung</title></head>
+<body>
+<h1>Bürgerverwaltung</h1>
+<button id="logoutBtn">Logout</button>
+
+<h2>Bürger anlegen</h2>
+<input id="vorname" placeholder="Vorname">
+<input id="nachname" placeholder="Nachname">
+<input id="email" placeholder="Email">
+<input id="strasse" placeholder="Straße">
+<input id="plz" placeholder="PLZ">
+<input id="ort" placeholder="Ort">
+<input id="wahlkreis" placeholder="Wahlkreis">
+<button id="createBtn">Anlegen</button>
+<div id="createOutput"></div>
+
+<h2>Bürger anzeigen</h2>
+<input id="voterId" placeholder="ID">
+<button id="viewBtn">Laden</button>
+<div id="viewOutput"></div>
+
+<script src="api/voterApi.js"></script>
+<script src="ui/dom.js"></script>
+<script src="ui/buerger-create.js"></script>
+<script src="ui/buerger-view.js"></script>
+</body>
+</html>
