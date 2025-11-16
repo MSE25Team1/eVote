@@ -14,3 +14,6 @@ Das Plugin linted CodeSmells, nicht eingehaltene NamingConventions und potenziel
 - In regex wurde 0-9 durch \d ersetzt, umso expliziter zu sein
 - SonarQube: Method has 9 parameters, which is greater than 7 authorized. <- wurde ignoriert, da es in diesem Fall auf einen Konstruktor beschränkt ist und hier bereits so weite es geht ValueObjects wie Adresse, email, Name verwendet wurden um die Parameteranzahl soweit wie möglich zu reduzieren.
 - VoterRegisteredEvent could be a record. Wurde umgesetzt. So wurde auch der Hinweis behoben bei den Gettern, die nicht vom Standard abweichten.
+- SonarQube: Remove this useless assignment to local variable "saved".
+- Refactor the code of the lambda to have only one invocation possibly throwing a runtime exception. Wurde für tests empfohlen die noch nicht die Arrange-Act-Assert Struktur hatten, stattdessen oft ein Konstruktor als Lambda direkt in einer Assertion verwendet wurde.
+- SonarQube hat zudem zusätzlich für einige ähnliche Test empfohlen Parameterized Tests zu verwenden, um so Redundanzen zu vermeiden.

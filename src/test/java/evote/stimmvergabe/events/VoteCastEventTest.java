@@ -24,10 +24,10 @@ class VoteCastEventTest {
         );
 
         assertNotNull(event);
-        assertEquals("vote-1", event.getVoteId());
-        assertEquals("poll-1", event.getPollId());
-        assertEquals("option-A", event.getOptionId());
-        assertEquals(FIXED_INSTANT, event.getCastAt());
+        assertEquals("vote-1", event.voteId());
+        assertEquals("poll-1", event.pollId());
+        assertEquals("option-A", event.optionId());
+        assertEquals(FIXED_INSTANT, event.castAt());
     }
 
     @Test
@@ -89,7 +89,7 @@ class VoteCastEventTest {
     void equals_sameInstance_shouldReturnTrue() {
         VoteCastEvent event = new VoteCastEvent("vote-1", "poll-1", "option-A", FIXED_INSTANT);
 
-        assertTrue(event.equals(event));
+        assertEquals(event, event);
     }
 
     @Test
@@ -98,8 +98,7 @@ class VoteCastEventTest {
         VoteCastEvent e1 = new VoteCastEvent("vote-1", "poll-1", "option-A", FIXED_INSTANT);
         VoteCastEvent e2 = new VoteCastEvent("vote-1", "poll-1", "option-A", FIXED_INSTANT);
 
-        assertTrue(e1.equals(e2));
-        assertTrue(e2.equals(e1));
+        assertEquals(e1, e2);
         assertEquals(e1.hashCode(), e2.hashCode());
     }
 
@@ -108,7 +107,7 @@ class VoteCastEventTest {
     void equals_null_shouldReturnFalse() {
         VoteCastEvent e1 = new VoteCastEvent("vote-1", "poll-1", "option-A", FIXED_INSTANT);
 
-        assertFalse(e1.equals(null));
+        assertNotEquals(null, e1);
     }
 
     @Test
@@ -116,7 +115,7 @@ class VoteCastEventTest {
     void equals_differentType_shouldReturnFalse() {
         VoteCastEvent e1 = new VoteCastEvent("vote-1", "poll-1", "option-A", FIXED_INSTANT);
 
-        assertFalse(e1.equals("not-an-event"));
+        assertNotEquals("not-an-event", e1);
     }
 
     @Test
@@ -125,7 +124,7 @@ class VoteCastEventTest {
         VoteCastEvent e1 = new VoteCastEvent("vote-1", "poll-1", "option-A", FIXED_INSTANT);
         VoteCastEvent e2 = new VoteCastEvent("vote-2", "poll-1", "option-A", FIXED_INSTANT);
 
-        assertFalse(e1.equals(e2));
+        assertNotEquals(e1, e2);
     }
 
     @Test
@@ -134,7 +133,7 @@ class VoteCastEventTest {
         VoteCastEvent e1 = new VoteCastEvent("vote-1", "poll-1", "option-A", FIXED_INSTANT);
         VoteCastEvent e2 = new VoteCastEvent("vote-1", "poll-2", "option-A", FIXED_INSTANT);
 
-        assertFalse(e1.equals(e2));
+        assertNotEquals(e1, e2);
     }
 
     @Test
@@ -143,7 +142,7 @@ class VoteCastEventTest {
         VoteCastEvent e1 = new VoteCastEvent("vote-1", "poll-1", "option-A", FIXED_INSTANT);
         VoteCastEvent e2 = new VoteCastEvent("vote-1", "poll-1", "option-B", FIXED_INSTANT);
 
-        assertFalse(e1.equals(e2));
+        assertNotEquals(e1, e2);
     }
 
     @Test
@@ -152,6 +151,6 @@ class VoteCastEventTest {
         VoteCastEvent e1 = new VoteCastEvent("vote-1", "poll-1", "option-A", FIXED_INSTANT);
         VoteCastEvent e2 = new VoteCastEvent("vote-1", "poll-1", "option-A", FIXED_INSTANT.plusSeconds(60));
 
-        assertFalse(e1.equals(e2));
+        assertNotEquals(e1, e2);
     }
 }

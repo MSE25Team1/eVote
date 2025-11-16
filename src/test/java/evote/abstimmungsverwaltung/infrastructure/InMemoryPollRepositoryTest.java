@@ -59,7 +59,7 @@ class InMemoryPollRepositoryTest {
                 .atZone(ZoneId.systemDefault())
                 .toInstant();
 
-        /* Start vor t0, Ende nach t0 */;
+        // Start vor t0, Ende nach t0
         Poll openPoll = new Poll (
                 "poll-1",
                 "Testwahl",
@@ -69,7 +69,8 @@ class InMemoryPollRepositoryTest {
                 100,
                 fixedClock
         );
-                /* Start und Ende vor t0 */;
+
+        // Start und Ende vor t0
         Poll closedPoll = new Poll (
                 "poll-50",
                 "Testwahl",

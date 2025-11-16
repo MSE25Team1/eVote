@@ -193,11 +193,9 @@ class NameTest {
     @Test
     @DisplayName("Common German names with hyphens and umlauts should work")
     void realWorldNames_shouldCreateSuccessfully() {
-        assertDoesNotThrow(() -> {
-            new Name("Jose-Maria", "Garcia-Lopez");
-            new Name("Marie-Therese", "Beaumont");
-            new Name("Jean-Paul", "Schmidt");
-            new Name("Ulrich", "Müller-Schmid");
-        });
+        assertDoesNotThrow(() -> new Name("Jose-Maria", "Garcia-Lopez"));
+        assertDoesNotThrow(() -> new Name("Marie-Therese", "Beaumont"));
+        assertDoesNotThrow(() -> new Name("Jean-Paul", "Schmidt"));
+        assertDoesNotThrow(() -> new Name("Ulrich", "Müller-Schmid"));
     }
 }

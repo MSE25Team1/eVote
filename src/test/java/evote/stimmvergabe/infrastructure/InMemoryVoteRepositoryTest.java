@@ -160,18 +160,16 @@ class InMemoryVoteRepositoryTest {
     void save_sameVoteId_shouldUpdateExistingVote() {
         // ursprüngliche Stimme
         Vote original = createVote("vote-1", "poll-1", "Option-A", "corr-1");
-        repo.save(original);
-
         // gleiche ID, andere Option (Update)
         Vote updated = createVote("vote-1", "poll-1", "Option-B", "corr-2");
 
-        Vote saved = repo.save(updated);
+        repo.save(original);
+        repo.save(updated);
 
         // Es existiert genau eine Stimme mit dieser ID
         Optional<Vote> loaded = repo.findById("vote-1");
         assertTrue(loaded.isPresent());
         assertEquals("Option-B", loaded.get().getOptionId());
-
         // count darf NICHT steigen
         assertEquals(1, repo.count());
     }
