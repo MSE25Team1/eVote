@@ -22,7 +22,7 @@ public class VoterService {
 
     public VoterResponse create(VoterCreateRequest req) {
         // API -> Domain
-        Name name = new Name(req.vorname, req.nachname);
+        Name name = new Name(req.name.vorname, req.name.nachname);
         Adresse adresse = mapAdresse(req);
         Email email = new Email(req.email);
 
@@ -50,40 +50,49 @@ public class VoterService {
     // ----------------- Mapping-Helfer -----------------
 
     private Adresse mapAdresse(VoterCreateRequest req) {
-        if (req.strasse == null || req.strasse.isBlank()) {
+        if (req.adresse.strasse == null || req.adresse.strasse.isBlank()) {
             throw new IllegalArgumentException("Straße darf nicht leer sein");
         }
 
-        String trimmed = req.strasse.trim();
+        String trimmed = req.adresse.strasse.trim();
         String[] parts = trimmed.split("\\s+");
 
         if (parts.length < 2) {
             // Fallback: alles als Straße, Hausnummer "1"
-            return new Adresse(trimmed, "1", "", req.plz, req.ort);
+            return new Adresse(trimmed, "1", "", req.adresse.plz, req.adresse.ort);
         }
 
         String houseNumber = parts[parts.length - 1];
         String street = String.join(" ", java.util.Arrays.copyOf(parts, parts.length - 1));
 
-        return new Adresse(street, houseNumber, "", req.plz, req.ort);
+        return new Adresse(street, houseNumber, "", req.adresse.plz, req.adresse.ort);
     }
 
     private VoterResponse mapResponse(Voter voter) {
         VoterResponse res = new VoterResponse();
         res.id = voter.getVoterId();
-        res.vorname = voter.getName().firstName();
-        res.nachname = voter.getName().lastName();
+
+        VoterResponse.NameDTO name = new VoterResponse.NameDTO();
+        name.firstName = voter.getName().firstName();
+        name.lastName = voter.getName().lastName();
+        name.fullName = name.firstName + " " + name.lastName;
+        res.name = name;
+
         res.email = voter.getEmail().toString();
 
-        res.strasse = voter.getAdresse().getStreet() + " " + voter.getAdresse().getHouseNumber();
-        res.plz = voter.getAdresse().getPostalCode();
-        res.ort = voter.getAdresse().getCity();
+        VoterResponse.AddressDTO addr = new VoterResponse.AddressDTO();
+        addr.street = voter.getAdresse().getStreet();
+        addr.houseNumber = voter.getAdresse().getHouseNumber();
+        addr.postalCode = voter.getAdresse().getPostalCode();
+        addr.city = voter.getAdresse().getCity();
+        addr.formatted = addr.street + " " + addr.houseNumber + ", " + addr.postalCode + " " + addr.city;
+        res.address = addr;
 
-        res.wahlkreis = voter.getWahlkreis();
+        res.district = voter.getWahlkreis();
         res.registeredAt = voter.getRegisteredAt() != null
                 ? voter.getRegisteredAt().toString()
                 : null;
-        res.isVerified = voter.isVerified();
+        res.verified = voter.isVerified();
         return res;
     }
 }

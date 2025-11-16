@@ -21,12 +21,20 @@ class VoterServiceTest {
 
     private VoterCreateRequest sampleRequest() {
         VoterCreateRequest r = new VoterCreateRequest();
-        r.vorname = "Max";
-        r.nachname = "Mustermann";
+
+        VoterCreateRequest.NameRequest name = new VoterCreateRequest.NameRequest();
+        name.vorname = "Max";
+        name.nachname = "Mustermann";
+        r.name = name;
+
         r.email = "max@test.de";
-        r.strasse = "Musterstraße 12";
-        r.plz = "12345";
-        r.ort = "Berlin";
+
+        VoterCreateRequest.AdresseRequest adresse = new VoterCreateRequest.AdresseRequest();
+        adresse.strasse = "Musterstraße 12";
+        adresse.plz = "12345";
+        adresse.ort = "Berlin";
+        r.adresse = adresse;
+
         r.wahlkreis = "WK1";
         return r;
     }
@@ -38,13 +46,19 @@ class VoterServiceTest {
         var res = service.create(req);
 
         assertNotNull(res.id);
-        assertEquals("Max", res.vorname);
-        assertEquals("Mustermann", res.nachname);
+        assertEquals("Max", res.name.firstName);
+        assertEquals("Mustermann", res.name.lastName);
+        assertEquals("Max Mustermann", res.name.fullName);
         assertEquals("max@test.de", res.email);
-        assertEquals("Musterstraße 12", res.strasse);
-        assertEquals("12345", res.plz);
-        assertEquals("Berlin", res.ort);
-        assertEquals("WK1", res.wahlkreis);
+
+        assertEquals("Musterstraße", res.address.street);
+        assertEquals("12", res.address.houseNumber);
+        assertEquals("12345", res.address.postalCode);
+        assertEquals("Berlin", res.address.city);
+        assertEquals("Musterstraße 12, 12345 Berlin", res.address.formatted);
+
+        assertEquals("WK1", res.district);
+        assertTrue(res.verified);
 
         assertTrue(repo.findById(res.id).isPresent());
     }

@@ -20,7 +20,7 @@ public class VoterController {
     }
 
     @GetMapping("/{id}")
-    public VoterResponse getById(@PathVariable String id) {
+    public VoterResponse getById(@PathVariable("id") String id) {
         return service.getById(id);
     }
 }
