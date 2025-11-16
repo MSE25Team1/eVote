@@ -1,4 +1,4 @@
-package evote.abstimmungsverwaltung.infrastructure;
+package evote.abstimmungsverwaltung.infrastructure.persistence;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-
 
 import evote.abstimmungsverwaltung.domain.model.Poll;
 import evote.abstimmungsverwaltung.domain.repository.PollRepository;
@@ -42,3 +41,4 @@ public class InMemoryPollRepository implements PollRepository {
         store.clear();
     }
 }
+

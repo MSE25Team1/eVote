@@ -1,4 +1,4 @@
-package evote.stimmvergabe.infrastructure;
+package evote.stimmvergabe.infrastructure.persistence;
 
 import evote.stimmvergabe.domain.model.Vote;
 import evote.stimmvergabe.domain.repository.VoteRepository;
@@ -20,28 +20,17 @@ public class InMemoryVoteRepository implements VoteRepository {
             throw new IllegalArgumentException("vote must not be null");
         }
 
-        // Check for already existing vote with samevote id or CorrelationId first
-
+        // Check for already existing vote with same correlationId first
         Vote existing = votesByCorrelationId.get(vote.getCorrelationId());
         if (existing != null) {
             return existing; // gleiche Stimme zurück geben
         }
 
-        // Neue Stimme speichern
+        // Neue Stimme speichern (update by id is allowed)
         votesById.put(vote.getVoteId(), vote);
-
-        // Kollisionen bei correlationId würden hier die letzte Überschreiben
-        // In einer echten Datenbank-Implementierung (nicht im In-Memory-Mock)
-        // würde man prüfen, ob eine Stimme mit derselben correlationId bereits existiert,
-        // um doppelte Stimmabgaben zu verhindern, selbst wenn z. B. der Request zweimal gesendet wurde.
         votesByCorrelationId.put(vote.getCorrelationId(), vote);
-
         return vote;
     }
-
-
-
-
 
     /** Anzahl der aktuell gespeicherten Votes – nur für Tests verwendet. */
     public int count() {
@@ -79,11 +68,10 @@ public class InMemoryVoteRepository implements VoteRepository {
         return Optional.ofNullable(votesByCorrelationId.get(correlationId));
     }
 
-    /**
-     * Nur für Tests praktisch, um den Zustand zurückzusetzen.
-     */
+    /** Nur für Tests praktisch, um den Zustand zurückzusetzen. */
     public void clear() {
         votesById.clear();
         votesByCorrelationId.clear();
     }
 }
+

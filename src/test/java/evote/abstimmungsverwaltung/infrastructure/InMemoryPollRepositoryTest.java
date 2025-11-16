@@ -1,6 +1,6 @@
-package evote.stimmvergabe.infrastructure.repository.InMemoryPollRepository;
+package evote.abstimmungsverwaltung.infrastructure;
 
-import evote.abstimmungsverwaltung.infrastructure.InMemoryPollRepository;
+import evote.abstimmungsverwaltung.infrastructure.persistence.InMemoryPollRepository;
 import evote.abstimmungsverwaltung.domain.model.Poll;
 
 import org.junit.jupiter.api.Test;

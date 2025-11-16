@@ -1,5 +1,6 @@
 package evote.stimmvergabe.infrastructure;
 
+import evote.stimmvergabe.infrastructure.persistence.InMemoryVoteRepository;
 import evote.stimmvergabe.domain.model.Vote;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
