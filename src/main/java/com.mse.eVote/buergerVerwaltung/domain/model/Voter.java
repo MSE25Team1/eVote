@@ -70,7 +70,7 @@ public class Voter {
 
     /**
      * Factory Method: Neue Voter-Registrierung
-     * Setzt alle unveränderlichen Felder und initialisiert den Voter als unverifikziert.
+     * Setzt alle unveränderlichen Felder und initialisiert den Voter als unverifiziert.
      */
     public static Voter register(
             Name name,
@@ -114,11 +114,11 @@ public class Voter {
      *
      * Erzeugt einen VoterRegisteredEvent (Domain Event).
      *
-     * @throws IllegalStateException wenn bereits verifikziert
+     * @throws IllegalStateException wenn bereits verifiziert
      */
     public void verify() {
         if (isVerified) {
-            throw new IllegalStateException("Voter ist bereits verifikziert");
+            throw new IllegalStateException("Voter ist bereits verifiziert");
         }
 
         this.isVerified = true;
