@@ -1,3 +1,3 @@
-document.getElementById("loginBtn").addEventListener("click",()=>{
+document.getElementById("profilBtn").addEventListener("click",()=>{
   window.location.href="buerger.html";
 });
