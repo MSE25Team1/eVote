@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InMemoryPollRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.abstimmungsverwaltung.infrastructure.persistence</a> &gt; <span class="el_source">InMemoryPollRepository.java</span></div><h1>InMemoryPollRepository.java</h1><pre class="source lang-java linenums">package evote.abstimmungsverwaltung.infrastructure.persistence;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+import evote.abstimmungsverwaltung.domain.model.Poll;
+import evote.abstimmungsverwaltung.domain.repository.PollRepository;
+
+<span class="fc" id="L13">public class InMemoryPollRepository implements PollRepository {</span>
+
+<span class="fc" id="L15">    private final Map&lt;String, Poll&gt; store = new ConcurrentHashMap&lt;&gt;();</span>
+
+    @Override
+    public Poll save(Poll poll) {
+<span class="fc" id="L19">        store.put(poll.getPollId(), poll);</span>
+<span class="fc" id="L20">        return poll;</span>
+    }
+
+    @Override
+    public Optional&lt;Poll&gt; findById(String pollId) {
+<span class="fc" id="L25">        return Optional.ofNullable(store.get(pollId));</span>
+    }
+
+    @Override
+    public List&lt;Poll&gt; findAllOpenAt(Instant instant) {
+<span class="fc" id="L30">        List&lt;Poll&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        for (Poll poll : store.values()) {</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            if (poll.isOpenAt(instant)) {</span>
+<span class="fc" id="L33">                result.add(poll);</span>
+            }
+<span class="fc" id="L35">        }</span>
+<span class="fc" id="L36">        return result;</span>
+    }
+
+    // optional für Tests
+    public void clear() {
+<span class="nc" id="L41">        store.clear();</span>
+<span class="nc" id="L42">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VoterAssembler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.buergerverwaltung.application</a> &gt; <span class="el_source">VoterAssembler.java</span></div><h1>VoterAssembler.java</h1><pre class="source lang-java linenums">package evote.buergerverwaltung.application;
+
+import evote.buergerverwaltung.application.dto.VoterCreateRequest;
+import evote.buergerverwaltung.application.dto.VoterResponse;
+import evote.buergerverwaltung.domain.model.Voter;
+import evote.buergerverwaltung.domain.valueobjects.Adresse;
+import evote.buergerverwaltung.domain.valueobjects.Email;
+import evote.buergerverwaltung.domain.valueobjects.Name;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+
+/**
+ * VoterAssembler - Mapper between Domain and Application DTOs
+ * 
+ * Responsibility: Translate between the domain model (Voter) and DTOs used by the API.
+ * This keeps the domain model pure and free from presentation concerns.
+ */
+@Component
+<span class="fc" id="L20">public class VoterAssembler {</span>
+
+    /**
+     * Maps a VoterCreateRequest DTO to a domain Voter entity.
+     */
+    public Voter toDomain(VoterCreateRequest request) {
+<span class="fc" id="L26">        Name name = new Name(request.name().vorname(), request.name().nachname());</span>
+<span class="fc" id="L27">        Adresse adresse = parseAdresse(request.adresse());</span>
+<span class="fc" id="L28">        Email email = new Email(request.email());</span>
+        
+        // Hinweis: Geburtsdatum wird derzeit nicht vom Frontend geliefert.
+        // Für die Demo setzen wir &quot;mindestens 18 Jahre&quot;.
+<span class="fc" id="L32">        LocalDate geburtsdatum = LocalDate.now().minusYears(18);</span>
+        
+<span class="fc" id="L34">        return Voter.register(name, adresse, email, geburtsdatum, request.wahlkreis());</span>
+    }
+
+    /**
+     * Maps a domain Voter entity to a VoterResponse DTO.
+     */
+    public VoterResponse toResponse(Voter voter) {
+<span class="fc" id="L41">        var name = new VoterResponse.NameDTO(</span>
+<span class="fc" id="L42">                voter.getName().firstName(),</span>
+<span class="fc" id="L43">                voter.getName().lastName(),</span>
+<span class="fc" id="L44">                voter.getName().firstName() + &quot; &quot; + voter.getName().lastName()</span>
+        );
+
+<span class="fc" id="L47">        var address = new VoterResponse.AddressDTO(</span>
+<span class="fc" id="L48">                voter.getAdresse().getStreet(),</span>
+<span class="fc" id="L49">                voter.getAdresse().getHouseNumber(),</span>
+<span class="fc" id="L50">                voter.getAdresse().getPostalCode(),</span>
+<span class="fc" id="L51">                voter.getAdresse().getCity(),</span>
+<span class="fc" id="L52">                formatAddress(voter.getAdresse())</span>
+        );
+
+<span class="fc" id="L55">        return new VoterResponse(</span>
+<span class="fc" id="L56">                voter.getVoterId(),</span>
+                name,
+<span class="fc" id="L58">                voter.getEmail().toString(),</span>
+                address,
+<span class="fc" id="L60">                voter.getWahlkreis(),</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">                voter.getRegisteredAt() != null ? voter.getRegisteredAt().toString() : null,</span>
+<span class="fc" id="L62">                voter.isVerified()</span>
+        );
+    }
+
+    /**
+     * Parses address from DTO and handles street/house number extraction.
+     * This is presentation-layer logic, not domain logic.
+     */
+    private Adresse parseAdresse(VoterCreateRequest.AdresseRequest req) {
+<span class="fc bfc" id="L71" title="All 4 branches covered.">        if (req.strasse() == null || req.strasse().isBlank()) {</span>
+<span class="fc" id="L72">            throw new IllegalArgumentException(&quot;Straße darf nicht leer sein&quot;);</span>
+        }
+
+<span class="fc" id="L75">        String trimmed = req.strasse().trim();</span>
+<span class="fc" id="L76">        String[] parts = trimmed.split(&quot;\\s+&quot;);</span>
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (parts.length &lt; 2) {</span>
+            // Fallback: alles als Straße, Hausnummer &quot;1&quot;
+<span class="fc" id="L80">            return new Adresse(trimmed, &quot;1&quot;, &quot;&quot;, req.plz(), req.ort());</span>
+        }
+
+<span class="fc" id="L83">        String houseNumber = parts[parts.length - 1];</span>
+<span class="fc" id="L84">        String street = String.join(&quot; &quot;, java.util.Arrays.copyOf(parts, parts.length - 1));</span>
+
+<span class="fc" id="L86">        return new Adresse(street, houseNumber, &quot;&quot;, req.plz(), req.ort());</span>
+    }
+
+    /**
+     * Formats address for display purposes.
+     */
+    private String formatAddress(Adresse adresse) {
+<span class="fc" id="L93">        return String.format(&quot;%s %s, %s %s&quot;,</span>
+<span class="fc" id="L94">                adresse.getStreet(),</span>
+<span class="fc" id="L95">                adresse.getHouseNumber(),</span>
+<span class="fc" id="L96">                adresse.getPostalCode(),</span>
+<span class="fc" id="L97">                adresse.getCity()</span>
+        );
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
