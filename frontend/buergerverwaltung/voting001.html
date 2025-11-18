@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Vote – Campus-Kantinenkonzept 2026</title>
+
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+
+<body class="container py-4">
+
+<header class="d-flex flex-column gap-2 mb-4">
+    <h1 class="mb-0">E-Vote – Campus-Kantinenkonzept 2026</h1>
+    <div class="d-flex gap-2">
+        <button id="logoutBtn" class="btn btn-outline-secondary">Logout</button>
+        <button id="backBtn" class="btn btn-outline-secondary">Zurück zum Profil</button>
+    </div>
+</header>
+
+<main>
+
+    <!-- Read-Modell: Abstimmungsdetails -->
+    <section class="card p-4 mb-4" aria-labelledby="poll-details-heading">
+        <h2 id="poll-details-heading" class="h4 mb-3">Abstimmungsdetails</h2>
+
+        <dl class="row mb-0" data-poll-id="POLL-CK-2026">
+            <dt class="col-sm-3">Abstimmungs-ID</dt>
+            <dd class="col-sm-9" id="poll-id">POLL-CK-2026</dd>
+
+            <dt class="col-sm-3">Titel</dt>
+            <dd class="col-sm-9" id="poll-title">
+                Campus-Kantinenkonzept 2026
+            </dd>
+
+            <dt class="col-sm-3">Frage</dt>
+            <dd class="col-sm-9" id="poll-question">
+                Welches Kantinenkonzept soll ab dem Wintersemester 2026 eingeführt werden?
+            </dd>
+
+            <dt class="col-sm-3">Beschreibung</dt>
+            <dd class="col-sm-9" id="poll-description">
+                Die Hochschulleitung möchte das Angebot der Campus-Kantine neu ausrichten.
+                Studierende und Mitarbeitende können über drei vorab abgestimmte Konzepte entscheiden.
+                Das Ergebnis dieser Abstimmung dient als Entscheidungsgrundlage für die weitere Planung.
+            </dd>
+
+            <dt class="col-sm-3">Abstimmungszeitraum</dt>
+            <dd class="col-sm-9" id="poll-period">
+                18.11.2025, 08:00 Uhr – 25.11.2025, 23:59 Uhr
+            </dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9" id="poll-status">
+                <span class="badge bg-success">AKTIV</span>
+            </dd>
+        </dl>
+    </section>
+
+    <!-- Command-Modell: Stimme abgeben -->
+    <section class="card p-4 mb-4" aria-labelledby="vote-section-heading">
+        <h2 id="vote-section-heading" class="h4 mb-3">Deine Stimme</h2>
+
+        <form id="voteForm" novalidate>
+
+            <div class="mb-3">
+                <p class="mb-0">
+                    Angemeldet als:
+                    <strong id="voter-display">Wähler-ID</strong>
+                </p>
+                <small class="text-muted">
+                    Deine Identität Wähler-ID wird serverseitig gegen das Identitäts-/Berechtigungsmodell geprüft. Pro Person ist nur eine Stimme zulässig.
+                </small>
+            </div>
+
+            <fieldset class="mb-3">
+                <legend class="form-label">Wähle genau eine Option</legend>
+
+                <div id="options-group">
+                    <div class="form-check mb-2">
+                        <input class="form-check-input"
+                               type="radio"
+                               name="option"
+                               id="option1"
+                               value="OPTION-REGIONAL">
+                        <label class="form-check-label" for="option1">
+                            Regional &amp; vegetarisch fokussiert
+                            <small class="d-block text-muted">
+                                Schwerpunkt auf regionalen Lieferanten, saisonalen Gerichten und einem überwiegend
+                                vegetarischen Angebot mit einigen veganen Optionen.
+                            </small>
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input"
+                               type="radio"
+                               name="option"
+                               id="option2"
+                               value="OPTION-MIX">
+                        <label class="form-check-label" for="option2">
+                            Classic Mix – Fleisch, Veggie &amp; Vegan
+                            <small class="d-block text-muted">
+                                Klassisches Kantinenkonzept mit täglich wechselnden Fleisch-, vegetarischen
+                                und veganen Gerichten.
+                            </small>
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input"
+                               type="radio"
+                               name="option"
+                               id="option3"
+                               value="OPTION-FOODTRUCK">
+                        <label class="form-check-label" for="option3">
+                            To-Go &amp; Food-Truck-Konzept
+                            <small class="d-block text-muted">
+                                Reduzierte stationäre Kantine, dafür mehr To-Go-Angebote, Food Trucks und
+                                wechselnde Streetfood-Stände.
+                            </small>
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="alert alert-info small">
+                Für diese Abstimmung ist genau eine Stimme pro Person zulässig.
+                Die Zuordnung von Wähler-ID und abgegebener Stimme wird serverseitig nach den
+                E-Voting-Domänenregeln behandelt (z. B. Trennung Identität / Stimmgeheimnis).
+            </div>
+
+            <div class="d-flex gap-2">
+                <button id="submitVoteBtn" type="submit" class="btn btn-primary">
+                    Stimme abgeben
+                </button>
+                <button id="revokeVoteBtn" type="button" class="btn btn-outline-warning ms-auto">
+                    Stimme zurückziehen
+                </button>
+            </div>
+        </form>
+
+        <div id="voteOutput" class="mt-3" aria-live="polite"></div>
+    </section>
+
+    <!-- Read-Modell: (Demo) Live-Ergebnis -->
+    <section class="card p-4">
+        <h2 class="h4 mb-3">Aktueller Zwischenstand (nur Demo)</h2>
+        <p class="text-muted mb-3">
+            In einem echten E-Vote-System würde hier ein speziell gesichertes Read-Modell angezeigt werden.
+            Die endgültige Anzeige kann z. B. bis zum Abstimmungsende deaktiviert sein.
+        </p>
+
+        <div id="resultsOutput" class="border p-3 bg-light">
+            <ul class="mb-0">
+                <li>Regional &amp; vegetarisch fokussiert:
+                    <span id="result-regional">42&nbsp;%</span>
+                </li>
+                <li>Classic Mix – Fleisch, Veggie &amp; Vegan:
+                    <span id="result-mix">38&nbsp;%</span>
+                </li>
+                <li>To-Go &amp; Food-Truck-Konzept:
+                    <span id="result-foodtruck">20&nbsp;%</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+</main>
+
+<script src="assets/bootstrap.bundle.min.js"></script>
+
+<!-- Read-API -->
+<script type="module" src="api/pollQueryApi.js"></script>
+
+<!-- Command-API -->
+<script type="module" src="api/voteCommandApi.js"></script>
+
+<!-- Shared DOM-Utilities -->
+<script type="module" src="ui/dom.js"></script>
+
+<!-- UI-Logik für diese Abstimmung -->
+<script type="module" src="ui/abstimmung-vote.js"></script>
+
+</body>
+</html>
