@@ -13,8 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,7 +40,7 @@ class VoteControllerTest {
                 "voter-123"
         );
 
-        when(voteService.create(any(VoteCreateRequest.class))).thenReturn();   // Wenn der Controller den Service aufruft, geben wir das fertige Response-Objekt zurück.
+        doNothing().when(voteService).create(any(VoteCreateRequest.class));   // Wenn der Controller den Service aufruft, geben wir das fertige Response-Objekt zurück.
 
         String jsonBody = objectMapper.writeValueAsString(requestDto);  // Umwandlung in json für den Post Handler (wie es das Frontend tun würde)
 

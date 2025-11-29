@@ -33,8 +33,8 @@ public class VoteService {
         this.publisher = publisher;
     }
 
-    public VoteService(VoteRepository repo, Clock fixedClock, evote.stimmvergabe.application.VoteServiceTest.FakeEventPublisher publisher) {
-    }
+    // public VoteService(VoteRepository repo, Clock fixedClock, evote.stimmvergabe.application.VoteServiceTest.FakeEventPublisher publisher) {
+    //}
 
     /**
      * Führt den Geschäftsprozess "Stimme abgeben" aus.

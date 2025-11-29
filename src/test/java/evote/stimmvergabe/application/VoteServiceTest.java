@@ -4,7 +4,7 @@ import evote.stimmvergabe.application.dto.VoteCreateRequest;
 import evote.stimmvergabe.domain.model.Vote;
 import evote.stimmvergabe.domain.repository.VoteRepository;
 import evote.stimmvergabe.events.VoteCastEvent;
-import evote.stimmvergabe.infrastructure.InMemoryVoteRepository;
+import evote.stimmvergabe.infrastructure.persistence.InMemoryVoteRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class VoteServiceTest {
 
     // Fake Event Publisher zum Testen
-    static class FakeEventPublisher implements DomainEventPublisher {
+    static class FakeEventPublisher extends DomainEventPublisher {
         Object published;
         @Override
         public void publish(Object event) {
@@ -54,7 +54,7 @@ class VoteServiceTest {
         // 1) Repository enthält einen Vote
         assertEquals(1, repo.count(), "Es sollte genau 1 Vote gespeichert werden");
 
-        Vote stored = repo.findAll().get(0);
+        Vote stored = (Vote) repo.findAll().get(0);
 
         assertEquals("poll-1", stored.getPollId());
         assertEquals("option-5", stored.getOptionId());
