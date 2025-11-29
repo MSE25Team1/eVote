@@ -1,3 +1,3 @@
 document.getElementById("voteNowBtn").addEventListener("click",()=>{
-    window.location.href="voting001.html";
+    window.location.href="pages/voting001.html";
 });
