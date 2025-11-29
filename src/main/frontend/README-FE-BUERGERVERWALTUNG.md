@@ -39,7 +39,7 @@ frontend/
 **Start:**
 
 ```
-cd src/main/frontend/server
+cd .\src\main\frontend\server\
 npm install
 npm start
 ```
