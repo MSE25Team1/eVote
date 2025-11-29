@@ -74,61 +74,100 @@
     </div>
 </div>
 
+
 <main class="py-5">
     <div class="container">
 
+        <!-- Einleitung -->
         <div class="mb-4">
             <h1 class="h2 mb-1">Dein Profil</h1>
             <p class="text-muted mb-0">
-                Prüfe deine persönlichen Daten und passe sie bei Bedarf an.
+                Hier kannst du deine gespeicherten Daten prüfen. Aktuell kannst du nur deine Kontakt-E-Mail online ändern. Wenn du andere Daten ändern möchtest, kontaktiere bitte unseren Support über das unten stehende Formular.
             </p>
         </div>
 
-        <!-- Bürgerdaten-Formular -->
+        <!-- Bürgerdaten -->
         <div class="card p-4 mb-4">
-            <h2 class="h4 mb-3">Deine Daten</h2>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label" for="vorname">Vorname</label>
-                    <input id="vorname" class="form-control">
+                    <label class="form-label" for="vorname">Vorname:</label>
+                    <input id="vorname" class="form-control" type="text" value="Max" disabled>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label" for="nachname">Nachname</label>
-                    <input id="nachname" class="form-control">
+                    <label class="form-label" for="nachname">Nachname:</label>
+                    <input id="nachname" class="form-control" type="text" value="Mustermann" disabled>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="email">E-Mail</label>
-                <input id="email" class="form-control">
+                <label class="form-label" for="email">E-Mail:</label>
+                <div class="input-group">
+                    <input id="email"
+                           class="form-control"
+                           type="email"
+                           value="max.mustermann@example.org">
+                    <span class="input-group-text" aria-hidden="true">
+                        <i class="bi bi-pencil"></i>
+                    </span>
+                </div>
+                <div class="form-text">
+                    Passe bei Bedarf deine Kontakt-E-Mail an und speichere anschließend die Änderung.
+                </div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="strasse">Straße</label>
-                <input id="strasse" class="form-control">
+                <label class="form-label" for="strasse">Straße und Hausnummer:</label>
+                <input id="strasse" class="form-control" type="text" value="Musterstraße 12" disabled>
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label class="form-label" for="plz">PLZ</label>
-                    <input id="plz" class="form-control">
+                    <label class="form-label" for="plz">PLZ:</label>
+                    <input id="plz" class="form-control" type="text" value="12345" disabled>
                 </div>
                 <div class="col-md-8 mb-3">
-                    <label class="form-label" for="ort">Ort</label>
-                    <input id="ort" class="form-control">
+                    <label class="form-label" for="ort">Ort:</label>
+                    <input id="ort" class="form-control" type="text" value="Musterstadt" disabled>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="wahlkreis">Wahlkreis</label>
-                <input id="wahlkreis" class="form-control">
+                <label class="form-label" for="wahlkreis">Wahlkreis:</label>
+                <input id="wahlkreis" class="form-control" type="text" value="101" disabled>
             </div>
 
-            <button id="createBtn" class="btn btn-success">
-                Änderung speichern
-            </button>
-            <div id="createOutput" class="mt-3"></div>
+            <!-- Speichern -->
+            <div class="d-flex justify-content-end mt-3">
+                <button id="createBtn" class="btn btn-primary btn-sm">
+                    Änderungen speichern
+                </button>
+            </div>
+
+            <div id="createOutput" class="mt-2"></div>
+        </div>
+
+        <!-- Fehler melden -->
+        <h2 class="h3 mb-2">Fehler in deinen Daten entdeckt?</h2>
+        <p class="text-muted small mb-2">
+            Wenn dir Unstimmigkeiten in deinen Stammdaten auffallen, kannst du uns hier eine Rückmeldung senden. (DEMO)
+        </p>
+        <div class="card p-3">
+            <form>
+                <div class="mb-3">
+                    <textarea id="feedbackMessage"
+                              class="form-control form-control-sm"
+                              rows="2"
+                              placeholder="Beschreibe kurz, welche Angabe nicht stimmt"></textarea>
+                </div>
+
+                <!-- Kontakt-Button-->
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary btn-sm">
+                        Rückmeldung senden
+                    </button>
+                </div>
+            </form>
         </div>
 
     </div>
