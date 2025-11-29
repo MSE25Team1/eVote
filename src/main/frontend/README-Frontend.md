@@ -1,86 +1,85 @@
-# Frontend für die Domäne Bürgerverwaltung
+# eVote Frontend (Update 29.11.25)
 
-Die Bürgerverwaltung ist ein eigener Bounded Context im Backend und verwaltet ausschließlich Bürgerstammdaten wie Name, Email, Adresse und Wahlkreis.
-Das Frontend stellt genau diese Backend-Funktionalitäten zur Verfügung.
+Dieses Frontend bildet den prototypischen Einstieg für Bürger:innen in das eVote-System.  
+Es deckt aktuell zwei fachliche Bereiche ab:
 
-Zusätzlich gibt es eine UI mit Mock-Login, also ohne Funktionalitäten. Dieser Login gehört nicht zur Bürgerverwaltungsdomäne und bildet keine Authentifizierung ab – er dient ausschließlich der Navigation in die UI.
+- **Bürgerverwaltung** – die vorherige "große" Anzeige wurde reduziert, sodass die meisten Felder nur angezeigt werden können
+- **Beispielabstimmung** – *„Campus-Kantinenkonzept 2026“* als Voting-Demo
 
-Das Frontend wird über einen kleinen Express-Webserver ausgeliefert und nutzt Bootstrap für ein einfaches, schlankes Layout.
+Das Frontend wird über einen kleinen **Express-Webserver** ausgeliefert und nutzt **Bootstrap** für ein schlankes Layout.  
+Die Authentifizierung ist zurzeit ein **Mock-Login** und bildet keine echte Auth-Domäne ab.
 
-## Dateistruktur (DDD-orientiert)
+---
+
+## Technologien
+
+- **HTML/CSS/JavaScript**
+- **Bootstrap 5**  
+- **Node.js / Express**
+---
+
+## Dateistruktur
+
+```text
+src/
+└── main/
+    └── frontend/
+        ├── assets/
+        │   └── bootstrap.bundle.min.js     # Bootstrap JS (Bundle inkl. Popper)
+        │
+        ├── api/
+        │   └── voterApi.js                 # REST-Calls zur Bürgerverwaltung
+        │   # (weitere APIs wie pollQueryApi.js / voteCommandApi.js folgen)
+        │
+        ├── pages/
+        │   ├── index.html                  # Startseite / Dashboard
+        │   ├── buerger.html                # Profilseite
+        │   └── voting001.html              # Beispielabstimmung „Campus-Kantinenkonzept 2026“
+        │
+        ├── server/
+        │   ├── package.json                # Express-Konfiguration
+        │   ├── package-lock.json
+        │   ├── server.js                   # Node/Express-Server
+        │   └── node_modules/
+        │
+        ├── styles/
+        │   ├── bootstrap.min.css           # Bootstrap CSS
+        │   └── styles.css                  # Projektspezifisches Styling
+        │
+        └── ui/
+            ├── dom.js                      # DOM-/Render-Helfer
+            ├── login.js                    # Mock-Login / Navigation
+            ├── indexfunction.js            # Logik für Startseite
+            ├── buerger-create.js           # Bürger anlegen (spätere Erweiterung)
+            ├── buerger-view.js             # Bürger anzeigen / E-Mail aktualisieren
+            └── abstimmung-vote.js          # UI-Logik für die Beispielabstimmung
+```
+
+## Seiten und Use Cases
+
+`pages/index.html` Startseite / Dashboard: Begrüßung und Erklärung von eVote
+- Profil-Teaser (Link zur Profilseite)
+- Übersicht über Abstimmungen:
+- Navbar mit Mock-Login („Max Mustermann“) und Logout-Link
+
+`pages/buerger.html` Profil / Bürgerverwaltung 
+- Anzeige der Bürgerstammdaten 
+- Änderbar ist aktuell nur die Kontakt-E-Mail
+- Speichern löst später REST-Call über voterApi.js aus 
+- Zusätzlich: kleines Feedback-Formular („Fehler in deinen Daten entdeckt?“) – Demo ohne Backend-Logik
+
+`pages/voting001.html` Beispielabstimmung „Campus-Kantinenkonzept 2026“
+
+## Start des Frontends
+
+**Voraussetzung:** Node.js installiert.
 
 ```
-frontend/
-└── buergerverwaltung/
-├── index.html          # Mock-Login (nicht Teil der Domäne)
-├── buerger.html        # Haupt-UI der Bürgerverwaltung
-│
-├── api/
-│ └── voterApi.js       # Infrastruktur: REST-Calls an Voter-Endpunkte
-│
-├── ui/
-│ ├── login.js          # Mock-Login Navigation
-│ ├── buerger-create.js # Use Case: Bürger anlegen
-│ ├── buerger-view.js   # Use Case: Bürger anzeigen
-│ ├── buerger-utils.js  # (optional) UI-Helfer, z. B. Formatierungen
-│ └── dom.js            # DOM-/Render-Helfer (Fehler, Erfolg, Text)
-│
-├── styles/
-  ├── bootstrap.min.css # Bootstrap
-│ └── styles.css        # eigenes Styling
-│
-└── assets/
-  └── bootstrap.bundle.min.js  # Bootstrap JS
-
-```
-**Der Express-Server liegt in** `frontend/server/`
-
-
-**Start:**
-
-```
-cd .\src\main\frontend\server\
-npm install
+cd src/main/frontend/server  
+npm install  
 npm start
 ```
-_Voraussetzung: Node.js ist installiert._
 
-**UI erreichbar unter:** `http://localhost:3000`
+Der Express-Server läuft unter:
 
-
-## Einordnung ins Gesamtsystem
-
-Dieses Frontend adressiert ausschließlich die Domäne Bürgerverwaltung.
-Daher enthält es nur die Funktionen:
-
-- Bürger anlegen (POST /api/voter)
-- Bürger anzeigen (GET /api/voter/{id})
-
-Die Felder basieren direkt auf dem Domainmodell Voter.java:
-
-- Name (Vorname, Nachname)
-- Email
-- Adresse (Straße, PLZ, Ort)
-- Wahlkreis
-
-Backend-generierte Felder wie 
-- id
-- registeredAt 
-- isVerified
-
-werden nur angezeigt
-
-Der Login-Screen (index.html) ist ein Mock und dient nur als „Einstiegspunkt“ in das Frontend.
-Er bildet keine Auth-Domain ab und ist technisch, nicht fachlich.
-
-## Einordnung in DDD
-
-Die Struktur ist so DDD-orientiert, also:
-- jede Domäne erhält ihr eigenes Frontend-Modul
-- keine Vermischung von Bürgerverwaltung und anderen Domänen
-
-Außerdem gibt es eine klare Schichtentrennung:
-
-- **ui/** = Application Layer (Use Cases der Domäne)
-- **api/** = Infrastruktur (Kommunikation per REST)
-- **.html + styles/** = Presentation Layer
+ **http://localhost:3000**
