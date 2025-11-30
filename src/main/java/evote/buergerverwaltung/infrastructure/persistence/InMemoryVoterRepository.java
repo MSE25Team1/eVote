@@ -2,7 +2,6 @@ package evote.buergerverwaltung.infrastructure.persistence;
 
 import evote.buergerverwaltung.domain.model.Voter;
 import evote.buergerverwaltung.domain.repository.VoterRepository;
-import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -12,7 +11,6 @@ import java.util.*;
  * Responsibility: Implements VoterRepository interface using in-memory storage.
  * This is an infrastructure concern - the domain only knows about the interface.
  */
-@Component
 public class InMemoryVoterRepository implements VoterRepository {
 
     private final Map<String, Voter> store = new HashMap<>();
