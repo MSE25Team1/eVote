@@ -38,6 +38,11 @@ public class InMemoryVoteRepository implements VoteRepository {
     }
 
     @Override
+    public List<Object> findAll() {
+        return new ArrayList<>(votesById.values());
+    }
+
+    @Override
     public Optional<Vote> findById(String voteId) {
         if (voteId == null) {
             return Optional.empty();
