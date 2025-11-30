@@ -49,7 +49,6 @@ src/
         └── ui/
             ├── dom.js                      # DOM-/Render-Helfer
             ├── login.js                    # Mock-Login / Navigation
-            ├── indexfunction.js            # Logik für Startseite
             ├── buerger-create.js           # Bürger anlegen (spätere Erweiterung)
             ├── buerger-view.js             # Bürger anzeigen / E-Mail aktualisieren
             └── abstimmung-vote.js          # UI-Logik für die Beispielabstimmung
