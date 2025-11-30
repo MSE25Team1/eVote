@@ -19,11 +19,14 @@ public class InMemoryVoterRepository implements VoterRepository {
 
     @Override
     public void save(Voter voter) {
+        // Speichere die Referenz direkt - der Voter ist das Single Source of Truth
         store.put(voter.getVoterId(), voter);
     }
 
     @Override
     public Optional<Voter> findById(String voterId) {
+        // Gib die gespeicherte Referenz zurück
+        // Achtung: Das ist die gleiche Referenz, Änderungen am Voter werden sofort sichtbar
         return Optional.ofNullable(store.get(voterId));
     }
 

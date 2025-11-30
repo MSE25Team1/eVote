@@ -39,7 +39,7 @@ public class InMemoryVoteRepository implements VoteRepository {
 
     @Override
     public List<Object> findAll() {
-        return List.of();
+        return new ArrayList<>(votesById.values());
     }
 
     @Override

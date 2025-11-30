@@ -9,11 +9,17 @@ import jakarta.validation.constraints.NotNull;
  * Request-DTO für die Stimmabgabe.
  * Entspricht dem Stil und der Struktur von VoterCreateRequest.
  *
+ * Die correlationId wird vom Server vorgegeben und dient der Idempotenz:
+ * - Server generiert bei Abstimmungsstart eine eindeutige correlationId
+ * - Frontend sendet diese mit dem Vote Request zurück
+ * - Mehrfache Requests mit gleicher correlationId werden erkannt (Double-Voting-Prevention)
+ *
  * {
  *   "vote": {
  *      "pollId": "...",
  *      "optionId": "...",
- *      "voterId": "..."
+ *      "voterId": "...",
+ *      "correlationId": "..."
  *   }
  * }
  */
@@ -26,6 +32,9 @@ public record VoteCreateRequest(
         @JsonProperty("optionId") String optionId,
 
         @NotBlank
-        @JsonProperty("voterId") String voterId
+        @JsonProperty("voterId") String voterId,
+
+        @NotBlank
+        @JsonProperty("correlationId") String correlationId
 
 ) {}

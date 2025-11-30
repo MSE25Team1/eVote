@@ -1,8 +1,5 @@
 package evote.stimmvergabe.infrastructure.web;
 
-//import evote.buergerverwaltung.application.VoterService;
-//import evote.buergerverwaltung.application.dto.VoterCreateRequest;
-//import evote.buergerverwaltung.application.dto.VoterResponse;
 import evote.stimmvergabe.application.VoteService;
 import evote.stimmvergabe.application.dto.VoteCreateRequest;
 import jakarta.validation.Valid;
@@ -38,6 +35,6 @@ public class VoteController {
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid VoteCreateRequest req) {
         service.create(req);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(null).build();
     }
 }
