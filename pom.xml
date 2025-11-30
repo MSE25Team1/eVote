@@ -10,7 +10,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <jacoco.version>0.8.10</jacoco.version>
+    <jacoco.version>0.8.11</jacoco.version>
     <spring.boot.version>3.2.4</spring.boot.version>
   </properties>
 
@@ -80,12 +80,31 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco.version}</version>
+        <configuration>
+          <excludes>
+            <exclude>org/jcp/xml/dsig/internal/dom/**</exclude>
+            <exclude>sun/security/**</exclude>
+            <exclude>jdk/**</exclude>
+            <exclude>sun/util/**</exclude>
+            <exclude>com/sun/security/**</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <id>prepare-agent</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco.exec</destFile>
+              <excludes>
+                <exclude>org/jcp/xml/dsig/internal/dom/**</exclude>
+                <exclude>sun/security/**</exclude>
+                <exclude>jdk/**</exclude>
+                <exclude>sun/util/**</exclude>
+                <exclude>com/sun/security/**</exclude>
+              </excludes>
+            </configuration>
           </execution>
           <execution>
             <id>report</id>
@@ -93,6 +112,16 @@
             <goals>
               <goal>report</goal>
             </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+              <excludes>
+                <exclude>org/jcp/xml/dsig/internal/dom/**</exclude>
+                <exclude>sun/security/**</exclude>
+                <exclude>jdk/**</exclude>
+                <exclude>sun/util/**</exclude>
+                <exclude>com/sun/security/**</exclude>
+              </excludes>
+            </configuration>
           </execution>
           <execution>
             <id>jacoco-check</id>
@@ -101,9 +130,24 @@
             </goals>
             <phase>verify</phase>
             <configuration>
+              <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+              <excludes>
+                <exclude>org/jcp/xml/dsig/internal/dom/**</exclude>
+                <exclude>sun/security/**</exclude>
+                <exclude>jdk/**</exclude>
+                <exclude>sun/util/**</exclude>
+                <exclude>com/sun/security/**</exclude>
+              </excludes>
               <rules>
                 <rule>
                   <element>BUNDLE</element>
+                  <excludes>
+                    <exclude>org/jcp/xml/dsig/internal/dom/**</exclude>
+                    <exclude>sun/security/**</exclude>
+                    <exclude>jdk/**</exclude>
+                    <exclude>sun/util/**</exclude>
+                    <exclude>com/sun/security/**</exclude>
+                  </excludes>
                   <limits>
                     <limit>
                       <counter>LINE</counter>
