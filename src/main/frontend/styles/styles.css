@@ -3,3 +3,50 @@
 html {
     background-color: #f9f9f9;
 }
+
+/* Burger Icon – Basislinie */
+.custom-toggler .toggler-icon {
+    width: 24px;
+    height: 2px;
+    background-color: black;
+    position: relative;
+    display: inline-block;
+    transition: all 0.25s ease-in-out;
+}
+
+/* Ober- & Unterlinie */
+.custom-toggler .toggler-icon::before,
+.custom-toggler .toggler-icon::after {
+    content: "";
+    width: 24px;
+    height: 2px;
+    background-color: black;
+    position: absolute;
+    left: 0;
+    transition: all 0.25s ease-in-out;
+}
+
+.custom-toggler .toggler-icon::before {
+    top: -7px;
+}
+
+.custom-toggler .toggler-icon::after {
+    top: 7px;
+}
+
+/* --- ANIMATION WENN MENÜ OFFEN IST (X-Zustand) --- */
+/* Bootstrap entfernt .collapsed automatisch – das nutzen wir. */
+
+.navbar-toggler:not(.collapsed) .toggler-icon {
+    background-color: transparent;
+}
+
+.navbar-toggler:not(.collapsed) .toggler-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+}
+
+.navbar-toggler:not(.collapsed) .toggler-icon::after {
+    transform: rotate(-45deg);
+    top: 0;
+}
