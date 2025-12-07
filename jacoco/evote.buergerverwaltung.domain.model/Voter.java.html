@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Voter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.buergerverwaltung.domain.model</a> &gt; <span class="el_source">Voter.java</span></div><h1>Voter.java</h1><pre class="source lang-java linenums">package evote.buergerverwaltung.domain.model;
+
+import evote.buergerverwaltung.events.VoterRegisteredEvent;
+import evote.buergerverwaltung.domain.valueobjects.Adresse;
+import evote.buergerverwaltung.domain.valueobjects.Name;
+import evote.buergerverwaltung.domain.valueobjects.Email;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+
+/**
+ * Voter - Aggregate Root der Bürgerverwaltung
+ *
+ * Repräsentiert einen berechtigten Wähler im eVote-System.
+ *
+ * Aggregate Invarianten:
+ * 1. Voter kann nur abstimmen, wenn isVerified == true
+ * 2. Voter kann pro Abstimmung (Poll) nur einmal abstimmen
+ * 3. Email muss gültig sein
+ * 4. Name, Adresse und Geburtsdatum sind unveränderbar nach Erstellung
+ *
+ * Verantwortlichkeiten:
+ * - Verwaltung von Wahlberechtigung und Verifikationsstatus
+ * - Tracking, an welchen Abstimmungen dieser Voter bereits teilgenommen hat
+ * - Publishing von Domain Events (VoterRegisteredEvent)
+ *
+ * Als Aggregate Root hat diese Klasse:
+ * - Eindeutige Identität (voterId)
+ * - Alle Zugriffe von außen gehen durch diese Klasse
+ * - Repository sollte nur dieses Objekt persistent speichern
+ */
+public class Voter {
+    private final String voterId;
+    private final Name name;
+    private final Adresse adresse;
+    private final Email email;
+    private final LocalDate geburtsdatum;
+    private final String wahlkreis;
+    private boolean isVerified;
+    private LocalDateTime registeredAt;
+    private final Set&lt;String&gt; votedPollIds; // pollId -&gt; bereits abgestimmt
+    private VoterRegisteredEvent pendingEvent;
+
+    /**
+     * Private Konstruktor - Voter wird nur über factory methods erstellt
+     */
+    private Voter(
+            String voterId,
+            Name name,
+            Adresse adresse,
+            Email email,
+            LocalDate geburtsdatum,
+<span class="fc" id="L57">            String wahlkreis) {</span>
+
+<span class="fc" id="L59">        this.voterId = voterId;</span>
+<span class="fc" id="L60">        this.name = name;</span>
+<span class="fc" id="L61">        this.adresse = adresse;</span>
+<span class="fc" id="L62">        this.email = email;</span>
+<span class="fc" id="L63">        this.geburtsdatum = geburtsdatum;</span>
+<span class="fc" id="L64">        this.wahlkreis = wahlkreis;</span>
+<span class="fc" id="L65">        this.isVerified = false;</span>
+<span class="fc" id="L66">        this.registeredAt = null;</span>
+<span class="fc" id="L67">        this.votedPollIds = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L68">        this.pendingEvent = null;</span>
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Factory Method: Neue Voter-Registrierung
+     * Setzt alle unveränderlichen Felder und initialisiert den Voter als unverifiziert.
+     */
+    public static Voter register(
+            Name name,
+            Adresse adresse,
+            Email email,
+            LocalDate geburtsdatum,
+            String wahlkreis) {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (name == null)</span>
+<span class="fc" id="L82">            throw new IllegalArgumentException(&quot;Name darf nicht null sein.&quot;);</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (adresse == null)</span>
+<span class="fc" id="L84">            throw new IllegalArgumentException(&quot;Adresse darf nicht null sein.&quot;);</span>
+
+<span class="fc" id="L86">        String voterId = UUID.randomUUID().toString();</span>
+<span class="fc" id="L87">        return new Voter(voterId, name, adresse, email, geburtsdatum, wahlkreis);</span>
+    }
+
+    /**
+     * Reconstruct from Persistence
+     * (wird von Repository verwendet)
+     */
+    public static Voter reconstruct(
+            String voterId,
+            Name name,
+            Adresse adresse,
+            Email email,
+            LocalDate geburtsdatum,
+            String wahlkreis,
+            boolean isVerified,
+            LocalDateTime registeredAt,
+            Set&lt;String&gt; votedPollIds) {
+<span class="fc" id="L104">        Voter voter = new Voter(voterId, name, adresse, email, geburtsdatum, wahlkreis);</span>
+<span class="fc" id="L105">        voter.isVerified = isVerified;</span>
+<span class="fc" id="L106">        voter.registeredAt = registeredAt;</span>
+<span class="fc" id="L107">        voter.votedPollIds.addAll(votedPollIds);</span>
+<span class="fc" id="L108">        return voter;</span>
+    }
+
+    /**
+     * Verifikation des Voters durchführen
+     * Nach erfolgreicher Verifikation ist der Voter berechtigt zu wählen.
+     *
+     * Erzeugt einen VoterRegisteredEvent (Domain Event).
+     *
+     * @throws IllegalStateException wenn bereits verifiziert
+     */
+    public void verify() {
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (isVerified) {</span>
+<span class="fc" id="L121">            throw new IllegalStateException(&quot;Voter ist bereits verifiziert&quot;);</span>
+        }
+
+<span class="fc" id="L124">        this.isVerified = true;</span>
+<span class="fc" id="L125">        this.registeredAt = LocalDateTime.now();</span>
+
+        // Domain Event erstellen (wird später vom Repository publiziert)
+<span class="fc" id="L128">        this.pendingEvent = new VoterRegisteredEvent(</span>
+            voterId,
+<span class="fc" id="L130">            name.getFirstName(),</span>
+<span class="fc" id="L131">            name.getLastName(),</span>
+            wahlkreis,
+            registeredAt,
+<span class="fc" id="L134">            UUID.randomUUID().toString() // correlationId</span>
+        );
+<span class="fc" id="L136">    }</span>
+
+    /**
+     * Markiert, dass dieser Voter an einer bestimmten Abstimmung teilgenommen hat.
+     * Verhindert Double-Voting pro Poll.
+     *
+     * Invariante-Prüfung: Voter muss verifikziert sein.
+     *
+     * @param pollId Die ID der Abstimmung
+     * @throws IllegalStateException wenn Voter nicht verifikziert oder bereits abgestimmt
+     */
+    public void markVoted(String pollId) {
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (!isVerified) {</span>
+<span class="fc" id="L149">            throw new IllegalStateException(&quot;Voter muss verifikziert sein um abzustimmen&quot;);</span>
+        }
+
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        if (hasVoted(pollId)) {</span>
+<span class="fc" id="L153">            throw new IllegalStateException(&quot;Voter hat bereits für diese Abstimmung abgestimmt: &quot; + pollId);</span>
+        }
+
+<span class="fc" id="L156">        votedPollIds.add(pollId);</span>
+<span class="fc" id="L157">    }</span>
+
+    /**
+     * Prüft, ob dieser Voter bereits für eine Abstimmung abgestimmt hat.
+     *
+     * @param pollId Die ID der Abstimmung
+     * @return true wenn Voter bereits abgestimmt hat
+     */
+    public boolean hasVoted(String pollId) {
+<span class="fc" id="L166">        return votedPollIds.contains(pollId);</span>
+    }
+
+    /**
+     * Holt das gepufferte Domain Event, falls vorhanden.
+     * (wird vom Repository nach dem Speichern aufgerufen und geleert)
+     */
+    public VoterRegisteredEvent getPendingEvent() {
+<span class="fc" id="L174">        return pendingEvent;</span>
+    }
+
+    public void clearPendingEvent() {
+<span class="fc" id="L178">        this.pendingEvent = null;</span>
+<span class="fc" id="L179">    }</span>
+
+    // Getters
+<span class="fc" id="L182">    public String getVoterId() { return voterId; }</span>
+<span class="fc" id="L183">    public Name getName() { return name; }</span>
+<span class="fc" id="L184">    public Adresse getAdresse() { return adresse; }</span>
+<span class="fc" id="L185">    public Email getEmail() { return email; }</span>
+<span class="fc" id="L186">    public LocalDate getGeburtsdatum() { return geburtsdatum; }</span>
+<span class="fc" id="L187">    public String getWahlkreis() { return wahlkreis; }</span>
+<span class="fc" id="L188">    public boolean isVerified() { return isVerified; }</span>
+<span class="fc" id="L189">    public LocalDateTime getRegisteredAt() { return registeredAt; }</span>
+<span class="fc" id="L190">    public Set&lt;String&gt; getVotedPollIds() { return new HashSet&lt;&gt;(votedPollIds); }</span>
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L194" title="All 2 branches covered.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        if (!(o instanceof Voter)) return false;</span>
+<span class="fc" id="L196">        Voter voter = (Voter) o;</span>
+<span class="fc" id="L197">        return voterId.equals(voter.voterId); // Identität basiert auf voterId</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L202">        return Objects.hash(voterId);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L207">        return &quot;Voter{&quot; +</span>
+                &quot;voterId='&quot; + voterId + '\'' +
+                &quot;, name=&quot; + name +
+                &quot;, wahlkreis='&quot; + wahlkreis + '\'' +
+                &quot;, isVerified=&quot; + isVerified +
+<span class="nc" id="L212">                &quot;, votedPolls=&quot; + votedPollIds.size() +</span>
+                '}';
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

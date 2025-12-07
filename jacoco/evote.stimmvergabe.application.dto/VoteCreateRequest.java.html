@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VoteCreateRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.stimmvergabe.application.dto</a> &gt; <span class="el_source">VoteCreateRequest.java</span></div><h1>VoteCreateRequest.java</h1><pre class="source lang-java linenums">package evote.stimmvergabe.application.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+/**
+ * Request-DTO für die Stimmabgabe.
+ * Entspricht dem Stil und der Struktur von VoterCreateRequest.
+ *
+ * Die correlationId wird vom Server vorgegeben und dient der Idempotenz:
+ * - Server generiert bei Abstimmungsstart eine eindeutige correlationId
+ * - Frontend sendet diese mit dem Vote Request zurück
+ * - Mehrfache Requests mit gleicher correlationId werden erkannt (Double-Voting-Prevention)
+ *
+ * {
+ *   &quot;vote&quot;: {
+ *      &quot;pollId&quot;: &quot;...&quot;,
+ *      &quot;optionId&quot;: &quot;...&quot;,
+ *      &quot;voterId&quot;: &quot;...&quot;,
+ *      &quot;correlationId&quot;: &quot;...&quot;
+ *   }
+ * }
+ */
+<span class="fc" id="L26">public record VoteCreateRequest(</span>
+
+        @NotBlank
+        @JsonProperty(&quot;pollId&quot;) String pollId,
+
+        @NotBlank
+        @JsonProperty(&quot;optionId&quot;) String optionId,
+
+        @NotBlank
+        @JsonProperty(&quot;voterId&quot;) String voterId,
+
+        @NotBlank
+        @JsonProperty(&quot;correlationId&quot;) String correlationId
+
+) {}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

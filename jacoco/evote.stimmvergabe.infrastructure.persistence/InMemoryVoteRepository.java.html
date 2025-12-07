@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InMemoryVoteRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.stimmvergabe.infrastructure.persistence</a> &gt; <span class="el_source">InMemoryVoteRepository.java</span></div><h1>InMemoryVoteRepository.java</h1><pre class="source lang-java linenums">package evote.stimmvergabe.infrastructure.persistence;
+
+import evote.stimmvergabe.domain.model.Vote;
+import evote.stimmvergabe.domain.repository.VoteRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+<span class="fc" id="L12">public class InMemoryVoteRepository implements VoteRepository {</span>
+
+<span class="fc" id="L14">    private final Map&lt;String, Vote&gt; votesById = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L15">    private final Map&lt;String, Vote&gt; votesByCorrelationId = new ConcurrentHashMap&lt;&gt;();</span>
+
+    @Override
+    public Vote save(Vote vote) {
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if (vote == null) {</span>
+<span class="nc" id="L20">            throw new IllegalArgumentException(&quot;vote must not be null&quot;);</span>
+        }
+
+        // Check for already existing vote with same correlationId first
+<span class="fc" id="L24">        Vote existing = votesByCorrelationId.get(vote.getCorrelationId());</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (existing != null) {</span>
+<span class="fc" id="L26">            return existing; // gleiche Stimme zurück geben</span>
+        }
+
+        // Neue Stimme speichern (update by id is allowed)
+<span class="fc" id="L30">        votesById.put(vote.getVoteId(), vote);</span>
+<span class="fc" id="L31">        votesByCorrelationId.put(vote.getCorrelationId(), vote);</span>
+<span class="fc" id="L32">        return vote;</span>
+    }
+
+    /** Anzahl der aktuell gespeicherten Votes – nur für Tests verwendet. */
+    public int count() {
+<span class="fc" id="L37">        return votesById.size();</span>
+    }
+
+    @Override
+    public List&lt;Object&gt; findAll() {
+<span class="fc" id="L42">        return new ArrayList&lt;&gt;(votesById.values());</span>
+    }
+
+    @Override
+    public Optional&lt;Vote&gt; findById(String voteId) {
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (voteId == null) {</span>
+<span class="fc" id="L48">            return Optional.empty();</span>
+        }
+<span class="fc" id="L50">        return Optional.ofNullable(votesById.get(voteId));</span>
+    }
+
+    @Override
+    public List&lt;Vote&gt; findAllByPollId(String pollId) {
+<span class="fc" id="L55">        List&lt;Vote&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (pollId == null) {</span>
+<span class="nc" id="L57">            return result;</span>
+        }
+
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (Vote vote : votesById.values()) {</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            if (pollId.equals(vote.getPollId())) {</span>
+<span class="fc" id="L62">                result.add(vote);</span>
+            }
+<span class="fc" id="L64">        }</span>
+<span class="fc" id="L65">        return result;</span>
+    }
+
+    @Override
+    public Optional&lt;Vote&gt; findByCorrelationId(String correlationId) {
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (correlationId == null) {</span>
+<span class="fc" id="L71">            return Optional.empty();</span>
+        }
+<span class="fc" id="L73">        return Optional.ofNullable(votesByCorrelationId.get(correlationId));</span>
+    }
+
+    /** Nur für Tests praktisch, um den Zustand zurückzusetzen. */
+    public void clear() {
+<span class="fc" id="L78">        votesById.clear();</span>
+<span class="fc" id="L79">        votesByCorrelationId.clear();</span>
+<span class="fc" id="L80">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

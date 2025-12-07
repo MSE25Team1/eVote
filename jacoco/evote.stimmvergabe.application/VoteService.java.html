@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VoteService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.stimmvergabe.application</a> &gt; <span class="el_source">VoteService.java</span></div><h1>VoteService.java</h1><pre class="source lang-java linenums">package evote.stimmvergabe.application;
+
+import evote.stimmvergabe.application.dto.VoteCreateRequest;
+import evote.stimmvergabe.domain.model.Vote;
+import evote.stimmvergabe.domain.repository.VoteRepository;
+import evote.buergerverwaltung.domain.model.Voter;
+import evote.buergerverwaltung.domain.repository.VoterRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.Clock;
+import java.util.Optional;
+import java.util.UUID;
+
+/**
+ * VoteService – Application Layer
+ *
+ * Geschäftsprozess: Stimme abgeben.
+ * - prüft, ob der Voter bereits für diese Poll abgestimmt hat (Double-Voting-Prevention)
+ * - erzeugt ein Vote-Domainobjekt
+ * - speichert es im Repository
+ * - markiert den Voter als abgestimmt für diese Poll
+ * - publiziert das zugehörige Domain-Event
+ *
+ * DDD-Prinzipien:
+ * - Voter und Vote sind separate Aggregates
+ * - VoteService koordiniert die Transaktionen zwischen den Aggregates
+ * - Business-Regeln (z.B. Double-Voting-Prevention) werden in den Domain-Objekten enforced
+ */
+
+@Service
+public class VoteService {
+
+    private final VoteRepository voteRepository;
+    private final Optional&lt;VoterRepository&gt; voterRepository;
+    private final Clock clock;
+    private final DomainEventPublisher publisher;
+
+    /**
+     * Konstruktor für Dependency Injection
+     * VoterRepository ist optional - wenn nicht vorhanden, funktioniert der Service auch ohne Double-Voting-Prevention
+     */
+    @Autowired
+    public VoteService(VoteRepository voteRepository,
+                       Optional&lt;VoterRepository&gt; voterRepository,
+                       Clock clock,
+<span class="fc" id="L47">                       DomainEventPublisher publisher) {</span>
+<span class="fc" id="L48">        this.voteRepository = voteRepository;</span>
+<span class="fc" id="L49">        this.voterRepository = voterRepository;</span>
+<span class="fc" id="L50">        this.clock = clock;</span>
+<span class="fc" id="L51">        this.publisher = publisher;</span>
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * Konstruktor für Tests ohne VoterRepository
+     */
+    public VoteService(VoteRepository voteRepository,
+                       Clock clock,
+                       DomainEventPublisher publisher) {
+<span class="fc" id="L60">        this(voteRepository, Optional.empty(), clock, publisher);</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Konstruktor für Tests mit VoterRepository
+     */
+    public VoteService(VoteRepository voteRepository,
+                       VoterRepository voterRepository,
+                       Clock clock,
+                       DomainEventPublisher publisher) {
+<span class="fc" id="L70">        this(voteRepository, Optional.ofNullable(voterRepository), clock, publisher);</span>
+<span class="fc" id="L71">    }</span>
+
+    /**
+     * Führt den Geschäftsprozess &quot;Stimme abgeben&quot; aus.
+     *
+     * Idempotenz &amp; Double-Voting-Prevention:
+     * 1. Prüfe auf Basis von correlationId, ob Vote bereits vorhanden ist
+     *    (Mehrfache HTTP-Requests werden erkannt und ignoriert)
+     * 2. Voter-Aggregate laden und validieren (falls VoterRepository verfügbar)
+     * 3. Prüfen: Ist Voter verifiziert?
+     * 4. Prüfen: Hat Voter bereits für diese Poll abgestimmt?
+     * 5. Vote erstellen und speichern (mit der vom Frontend gesendeten correlationId)
+     * 6. Voter.markVoted(pollId) aufrufen
+     * 7. Voter speichern (aktualisiert)
+     * 8. Domain-Event publizieren
+     *
+     * @param req VoteCreateRequest mit pollId, optionId, voterId, correlationId
+     * @throws IllegalArgumentException wenn Voter nicht existiert
+     * @throws IllegalStateException wenn Voter nicht verifiziert oder bereits abgestimmt
+     */
+    public void create(VoteCreateRequest req) {
+
+        // Idempotenz-Prüfung: Wurde bereits ein Vote mit dieser correlationId abgegeben?
+        // Falls ja, ist dies ein Duplicate-Request und wird ignoriert
+<span class="fc" id="L95">        Optional&lt;Vote&gt; existingVote = voteRepository.findByCorrelationId(req.correlationId());</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (existingVote.isPresent()) {</span>
+            // Vote bereits vorhanden - idempotent erfolgreich abschließen
+<span class="fc" id="L98">            return;</span>
+        }
+
+        // Voter-Lookup und Validierung, falls VoterRepository verfügbar
+<span class="fc" id="L102">        Voter voter = null;</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (voterRepository.isPresent()) {</span>
+<span class="fc" id="L104">            VoterRepository repo = voterRepository.get();</span>
+<span class="fc" id="L105">            voter = repo.findById(req.voterId())</span>
+<span class="fc" id="L106">                    .orElseThrow(() -&gt; new IllegalArgumentException(</span>
+<span class="fc" id="L107">                            &quot;Voter not found: &quot; + req.voterId()</span>
+                    ));
+
+            // Double-Voting-Prevention: Prüfen ob bereits abgestimmt
+            // Werft IllegalStateException wenn:
+            // - Voter nicht verifiziert
+            // - Voter bereits für diese Poll abgestimmt
+<span class="fc" id="L114">            voter.markVoted(req.pollId());</span>
+
+            // Speichere den aktualizierten Voter SOFORT
+            // Damit sind die Änderungen persistent und sichtbar für nachfolgende Aufrufe
+<span class="fc" id="L118">            repo.save(voter);</span>
+        }
+
+        // Domain-Objekt erzeugen mit eindeutiger voteId und correlationId vom Frontend
+<span class="fc" id="L122">        Vote vote = Vote.of(</span>
+<span class="fc" id="L123">                UUID.randomUUID().toString(),  // voteId wird generiert</span>
+<span class="fc" id="L124">                req.pollId(),</span>
+<span class="fc" id="L125">                req.optionId(),</span>
+<span class="fc" id="L126">                req.correlationId(),           // correlationId vom Frontend (eindeutig pro Abstimmungsvorgang)</span>
+                clock
+        );
+
+        // Persistieren
+<span class="fc" id="L131">        voteRepository.save(vote);</span>
+
+        // Domain-Event publizieren
+<span class="fc" id="L134">        publisher.publish(vote.getDomainEvent());</span>
+<span class="fc" id="L135">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

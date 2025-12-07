@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Name.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.buergerverwaltung.domain.valueobjects</a> &gt; <span class="el_source">Name.java</span></div><h1>Name.java</h1><pre class="source lang-java linenums">package evote.buergerverwaltung.domain.valueobjects;
+
+/**
+ * Name - Value Object für Namen
+ *
+ * Unveränderbare Darstellung eines Namens mit internationaler Unterstützung.
+ * Validiert Namensteile nach europäischen Standards:
+ * - Vorname/Nachname muss mit Großbuchstabe beginnen
+ * - Unterstützt Buchstaben (inkl. Umlaute), Leerzeichen und Bindestriche
+ * - Ermöglicht Zusammensetzungen: &quot;Jean-Pierre&quot;, &quot;van der Berg&quot;, &quot;Maria-Luise&quot;
+ * - Unterstützt internationale Namen: Deutsch, Englisch, Französisch, etc.
+ *
+ * Als Value Object implementiert dieses Record Wert-Semantik:
+ * - Zwei Namen mit gleichen Werten sind äquivalent
+ * - Unveränderbar nach Erstellung
+ * - Keine Geschäftslogik, nur Validierung
+ * - Records signalisieren automatisch die Immutabilität und Value-Semantik
+ */
+public record Name(
+        String firstName,  // Vorname (English: firstName, German: Vorname)
+        String lastName    // Nachname (English: lastName, German: Nachname)
+) {
+    /**
+     * Compact constructor for validation.
+     * Supports multiple name formats:
+     * - Single character: &quot;A&quot;, &quot;B&quot;
+     * - Compound names: &quot;Jean-Pierre&quot;, &quot;Maria-Luise&quot;
+     * - Multi-part names: &quot;van der Berg&quot;, &quot;De La Cruz&quot;
+     * - International names with diacritics: &quot;José&quot;, &quot;François&quot;, &quot;Müller&quot;, &quot;Björn&quot;
+     *
+     * Validation rules:
+     * - Must start with uppercase letter (A-Z, Ä, Ö, Ü)
+     * - Can contain lowercase letters, digits are NOT allowed
+     * - Supports hyphens and spaces for compound names
+     * - Supports German umlauts (ä, ö, ü, ß) and accented characters
+     *
+     * @throws IllegalArgumentException if firstName or lastName is null, empty, or invalid format
+     */
+<span class="fc" id="L39">    public Name {</span>
+<span class="fc bfc" id="L40" title="All 4 branches covered.">        if (firstName == null || firstName.trim().isEmpty())</span>
+<span class="fc" id="L41">            throw new IllegalArgumentException(&quot;First name must not be null or empty&quot;);</span>
+<span class="fc bfc" id="L42" title="All 4 branches covered.">        if (lastName == null || lastName.trim().isEmpty())</span>
+<span class="fc" id="L43">            throw new IllegalArgumentException(&quot;Last name must not be null or empty&quot;);</span>
+
+        // Trim first to normalize input
+<span class="fc" id="L46">        firstName = firstName.trim();</span>
+<span class="fc" id="L47">        lastName = lastName.trim();</span>
+
+        // Regex allows:
+        // - Uppercase start: [A-ZÄÖÜ]
+        // - Followed by 0+ of: lowercase letters, umlauts, hyphens, spaces
+        // - Pattern: ^[A-ZÄÖÜ][a-zA-ZäöüßÄÖÜ\- ]*$
+<span class="fc" id="L53">        String nameRegex = &quot;^[A-ZÄÖÜ][a-zA-ZäöüßÄÖÜ\\- ]*$&quot;;</span>
+
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (!firstName.matches(nameRegex))</span>
+<span class="fc" id="L56">            throw new IllegalArgumentException(&quot;Invalid first name format: '&quot; + firstName +</span>
+                    &quot;'. Must start with uppercase letter and contain only letters, hyphens, or spaces.&quot;);
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (!lastName.matches(nameRegex))</span>
+<span class="fc" id="L59">            throw new IllegalArgumentException(&quot;Invalid last name format: '&quot; + lastName +</span>
+                    &quot;'. Must start with uppercase letter and contain only letters, hyphens, or spaces.&quot;);
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Explicit getFirstName() for backward compatibility with code using getXxx() naming.
+     */
+    public String getFirstName() {
+<span class="fc" id="L67">        return firstName;</span>
+    }
+
+    /**
+     * Explicit getLastName() for backward compatibility with code using getXxx() naming.
+     */
+    public String getLastName() {
+<span class="fc" id="L74">        return lastName;</span>
+    }
+
+    /**
+     * String representation of the Name.
+     */
+    @Override
+    public String toString() {
+<span class="fc" id="L82">        return firstName + &quot; &quot; + lastName;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
