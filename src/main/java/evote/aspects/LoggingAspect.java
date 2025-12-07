@@ -18,14 +18,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggingAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger("evote.errors");
+    private static final Logger errorLogger = LoggerFactory.getLogger("evote.errors");
+    private static final Logger defaultLogger = LoggerFactory.getLogger("evote");
 
     /**
      * Loggt vor dem Aufruf einer Service-Methode
      */
     @Before("execution(* evote.*.application.*Service.*(..))")
     public void logBeforeServiceMethod(JoinPoint joinPoint) {
-        logger.info("Aufruf von Service-Methode: {}.{}",
+        defaultLogger.info("Aufruf von Service-Methode: {}.{}",
                 joinPoint.getTarget().getClass().getSimpleName(),
                 joinPoint.getSignature().getName());
     }
@@ -38,7 +39,7 @@ public class LoggingAspect {
             throwing = "error"
     )
     public void logServiceErrors(JoinPoint joinPoint, Throwable error) {
-        logger.error("Fehler in {}.{}: {}",
+        errorLogger.error("Fehler in {}.{}: {}",
                 joinPoint.getTarget().getClass().getSimpleName(),
                 joinPoint.getSignature().getName(),
                 error.getMessage(),

@@ -72,7 +72,7 @@
     </logger>
 
     <!-- Logger für evote-Paket -->
-    <logger name="evote" level="DEBUG"/>
+    <logger name="evote" level="INFO"/>
 
     <!-- Root Logger -->
     <root level="INFO">
