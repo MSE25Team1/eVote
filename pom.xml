@@ -10,29 +10,73 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <jacoco.version>0.8.10</jacoco.version>
+    <jacoco.version>0.8.11</jacoco.version>
     <spring.boot.version>3.2.4</spring.boot.version>
   </properties>
 
   <dependencies>
-
+      <!-- Web (REST-API) -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
       <version>${spring.boot.version}</version>
     </dependency>
 
+      <!-- Validation (@Valid, Bean Validation) -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
       <version>${spring.boot.version}</version>
     </dependency>
 
+      <!-- Test-Starter: JUnit 5, Mockito, MockMvc usw. -->
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-test</artifactId>
+          <version>${spring.boot.version}</version>
+          <scope>test</scope>
+      </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>5.10.0</version>
       <scope>test</scope>
+    </dependency>
+
+
+      <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>2.22.0</version>
+          <scope>test</scope>
+      </dependency>
+
+    <!-- Spring AOP -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+      <version>${spring.boot.version}</version>
+    </dependency>
+
+    <!-- AspectJ -->
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>1.9.22</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.9.22</version>
+    </dependency>
+
+    <!-- SLF4J (Logging) -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-logging</artifactId>
+      <version>${spring.boot.version}</version>
     </dependency>
   </dependencies>
 
@@ -63,12 +107,31 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco.version}</version>
+        <configuration>
+          <excludes>
+            <exclude>org/jcp/xml/dsig/internal/dom/**</exclude>
+            <exclude>sun/security/**</exclude>
+            <exclude>jdk/**</exclude>
+            <exclude>sun/util/**</exclude>
+            <exclude>com/sun/security/**</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <id>prepare-agent</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco.exec</destFile>
+              <excludes>
+                <exclude>org/jcp/xml/dsig/internal/dom/**</exclude>
+                <exclude>sun/security/**</exclude>
+                <exclude>jdk/**</exclude>
+                <exclude>sun/util/**</exclude>
+                <exclude>com/sun/security/**</exclude>
+              </excludes>
+            </configuration>
           </execution>
           <execution>
             <id>report</id>
@@ -76,6 +139,16 @@
             <goals>
               <goal>report</goal>
             </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+              <excludes>
+                <exclude>org/jcp/xml/dsig/internal/dom/**</exclude>
+                <exclude>sun/security/**</exclude>
+                <exclude>jdk/**</exclude>
+                <exclude>sun/util/**</exclude>
+                <exclude>com/sun/security/**</exclude>
+              </excludes>
+            </configuration>
           </execution>
           <execution>
             <id>jacoco-check</id>
@@ -84,9 +157,24 @@
             </goals>
             <phase>verify</phase>
             <configuration>
+              <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+              <excludes>
+                <exclude>org/jcp/xml/dsig/internal/dom/**</exclude>
+                <exclude>sun/security/**</exclude>
+                <exclude>jdk/**</exclude>
+                <exclude>sun/util/**</exclude>
+                <exclude>com/sun/security/**</exclude>
+              </excludes>
               <rules>
                 <rule>
                   <element>BUNDLE</element>
+                  <excludes>
+                    <exclude>org/jcp/xml/dsig/internal/dom/**</exclude>
+                    <exclude>sun/security/**</exclude>
+                    <exclude>jdk/**</exclude>
+                    <exclude>sun/util/**</exclude>
+                    <exclude>com/sun/security/**</exclude>
+                  </excludes>
                   <limits>
                     <limit>
                       <counter>LINE</counter>

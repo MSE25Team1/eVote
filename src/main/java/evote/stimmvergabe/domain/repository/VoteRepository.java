@@ -1,6 +1,7 @@
 package evote.stimmvergabe.domain.repository;
 
 import evote.stimmvergabe.domain.model.Vote;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,4 +30,6 @@ public interface VoteRepository {
 
     /** Anzahl der aktuell gespeicherten Votes – nur für Tests verwendet. */
     int count();
+
+    List<Object> findAll();
 }
