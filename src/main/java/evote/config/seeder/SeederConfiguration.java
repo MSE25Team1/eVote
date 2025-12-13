@@ -40,7 +40,7 @@ public class SeederConfiguration {
             logger.info("================================================");
             logger.info("");
             logger.info("Demo-Daten sind nun verfügbar:");
-            logger.info("  - Wähler: max.mustermann@example.org (Voter ID wird beim Seed geloggt)");
+            logger.info("  - Wähler: VOTER-001 (Max Mustermann)");
             logger.info("  - Abstimmung: POLL-CK-2026 (Campus-Kantinenkonzept)");
             logger.info("");
         };

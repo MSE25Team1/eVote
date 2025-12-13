@@ -8,6 +8,7 @@ import evote.buergerverwaltung.domain.valueobjects.Name;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -34,74 +35,93 @@ public class VoterSeeder {
     }
 
     /**
-     * Erstellt und speichert Sample-Wähler
-     * 
+     * Erstellt und speichert Sample-Wähler mit festen Demo-IDs
+     *
+     * HINWEIS: Da dies nur Demo-Daten sind, verwenden wir feste IDs.
+     * Sobald Register- und Login-Funktionalität implementiert sind,
+     * können diese Demo-Daten entfernt werden.
+     *
      * @return Liste der erstellten Wähler
      */
     public List<Voter> seedVoters() {
         List<Voter> voters = new ArrayList<>();
 
         // Wähler 1: Max Mustermann
-        Voter voter1 = Voter.register(
+        Voter voter1 = Voter.reconstruct(
+                "VOTER-001",
                 new Name("Max", "Mustermann"),
                 new Adresse("Musterstraße", "12", null, "12345", "Musterstadt"),
                 new Email("max.mustermann@example.org"),
                 LocalDate.of(1990, 5, 15),
-                "101"
+                "101",
+                true,
+                LocalDateTime.now(),
+                new java.util.HashSet<>()
         );
-        voter1.verify();
         voterRepository.save(voter1);
         voters.add(voter1);
         logger.info("✓ Wähler erstellt: Max Mustermann (ID: " + voter1.getVoterId() + ")");
 
         // Wähler 2: Anna Schmidt
-        Voter voter2 = Voter.register(
+        Voter voter2 = Voter.reconstruct(
+                "VOTER-002",
                 new Name("Anna", "Schmidt"),
                 new Adresse("Hauptstraße", "45", "Wohnung 3", "10115", "Berlin"),
                 new Email("anna.schmidt@example.de"),
                 LocalDate.of(1985, 3, 22),
-                "101"
+                "101",
+                true,
+                LocalDateTime.now(),
+                new java.util.HashSet<>()
         );
-        voter2.verify();
         voterRepository.save(voter2);
         voters.add(voter2);
         logger.info("✓ Wähler erstellt: Anna Schmidt (ID: " + voter2.getVoterId() + ")");
 
         // Wähler 3: Peter Müller
-        Voter voter3 = Voter.register(
+        Voter voter3 = Voter.reconstruct(
+                "VOTER-003",
                 new Name("Peter", "Müller"),
                 new Adresse("Königstraße", "78", null, "50667", "Köln"),
                 new Email("peter.mueller@example.com"),
                 LocalDate.of(1992, 7, 8),
-                "102"
+                "102",
+                true,
+                LocalDateTime.now(),
+                new java.util.HashSet<>()
         );
-        voter3.verify();
         voterRepository.save(voter3);
         voters.add(voter3);
         logger.info("✓ Wähler erstellt: Peter Müller (ID: " + voter3.getVoterId() + ")");
 
         // Wähler 4: Lisa Wagner
-        Voter voter4 = Voter.register(
+        Voter voter4 = Voter.reconstruct(
+                "VOTER-004",
                 new Name("Lisa", "Wagner"),
                 new Adresse("Parkstraße", "23", "Penthouse", "80331", "München"),
                 new Email("lisa.wagner@example.org"),
                 LocalDate.of(1988, 11, 30),
-                "102"
+                "102",
+                true,
+                LocalDateTime.now(),
+                new java.util.HashSet<>()
         );
-        voter4.verify();
         voterRepository.save(voter4);
         voters.add(voter4);
         logger.info("✓ Wähler erstellt: Lisa Wagner (ID: " + voter4.getVoterId() + ")");
 
         // Wähler 5: Thomas Becker
-        Voter voter5 = Voter.register(
+        Voter voter5 = Voter.reconstruct(
+                "VOTER-005",
                 new Name("Thomas", "Becker"),
                 new Adresse("Waldweg", "5", null, "69115", "Heidelberg"),
                 new Email("thomas.becker@example.de"),
                 LocalDate.of(1980, 2, 14),
-                "103"
+                "103",
+                true,
+                LocalDateTime.now(),
+                new java.util.HashSet<>()
         );
-        voter5.verify();
         voterRepository.save(voter5);
         voters.add(voter5);
         logger.info("✓ Wähler erstellt: Thomas Becker (ID: " + voter5.getVoterId() + ")");
