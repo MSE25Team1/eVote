@@ -3,8 +3,11 @@ package evote.stimmvergabe.application;
 import evote.stimmvergabe.application.dto.VoteCreateRequest;
 import evote.stimmvergabe.domain.model.Vote;
 import evote.stimmvergabe.domain.repository.VoteRepository;
+import evote.stimmvergabe.domain.validator.CompositeVoteValidator;
 import evote.buergerverwaltung.domain.model.Voter;
 import evote.buergerverwaltung.domain.repository.VoterRepository;
+import evote.abstimmungsverwaltung.domain.model.Poll;
+import evote.abstimmungsverwaltung.domain.repository.PollRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,102 +35,102 @@ import java.util.UUID;
 public class VoteService {
 
     private final VoteRepository voteRepository;
-    private final Optional<VoterRepository> voterRepository;
+    private final VoterRepository voterRepository;
+    private final PollRepository pollRepository;
     private final Clock clock;
     private final DomainEventPublisher publisher;
+    private final CompositeVoteValidator compositeVoteValidator;
 
     /**
      * Konstruktor für Dependency Injection
-     * VoterRepository ist optional - wenn nicht vorhanden, funktioniert der Service auch ohne Double-Voting-Prevention
+     * VoterRepository und PollRepository sind REQUIRED
+     * CompositeVoteValidator wird aus verschiedenen Bounded Contexts komponiert
      */
     @Autowired
     public VoteService(VoteRepository voteRepository,
-                       Optional<VoterRepository> voterRepository,
+                       VoterRepository voterRepository,
+                       PollRepository pollRepository,
                        Clock clock,
-                       DomainEventPublisher publisher) {
+                       DomainEventPublisher publisher,
+                       CompositeVoteValidator compositeVoteValidator) {
         this.voteRepository = voteRepository;
         this.voterRepository = voterRepository;
+        this.pollRepository = pollRepository;
         this.clock = clock;
         this.publisher = publisher;
-    }
-
-    /**
-     * Konstruktor für Tests ohne VoterRepository
-     */
-    public VoteService(VoteRepository voteRepository,
-                       Clock clock,
-                       DomainEventPublisher publisher) {
-        this(voteRepository, Optional.empty(), clock, publisher);
-    }
-
-    /**
-     * Konstruktor für Tests mit VoterRepository
-     */
-    public VoteService(VoteRepository voteRepository,
-                       VoterRepository voterRepository,
-                       Clock clock,
-                       DomainEventPublisher publisher) {
-        this(voteRepository, Optional.ofNullable(voterRepository), clock, publisher);
+        this.compositeVoteValidator = compositeVoteValidator;
     }
 
     /**
      * Führt den Geschäftsprozess "Stimme abgeben" aus.
      *
-     * Idempotenz & Double-Voting-Prevention:
-     * 1. Prüfe auf Basis von correlationId, ob Vote bereits vorhanden ist
-     *    (Mehrfache HTTP-Requests werden erkannt und ignoriert)
-     * 2. Voter-Aggregate laden und validieren (falls VoterRepository verfügbar)
-     * 3. Prüfen: Ist Voter verifiziert?
-     * 4. Prüfen: Hat Voter bereits für diese Poll abgestimmt?
-     * 5. Vote erstellen und speichern (mit der vom Frontend gesendeten correlationId)
-     * 6. Voter.markVoted(pollId) aufrufen
-     * 7. Voter speichern (aktualisiert)
-     * 8. Domain-Event publizieren
+     * Ablauf (DDD-konform):
+     * 1. Idempotenz-Prüfung: Wurde bereits ein Vote mit dieser correlationId abgegeben?
+     * 2. Poll laden (muss existieren)
+     * 3. Voter laden (muss existieren)
+     * 4. Vote Domain Model erstellen aus VoteCreateRequest
+     * 5. CompositeVoteValidator auf Vote, Poll, Voter ausführen:
+     *    - PollValidator (Abstimmungsverwaltung): Poll muss zeitlich offen sein
+     *    - VoterValidator (Bürgerverwaltung): Voter muss verifiziert sein, darf nicht doppelt abstimmen
+     *    - VoteOptionValidator (Stimmvergabe): Option muss in Poll existieren
+     * 6. Nur bei erfolgreicher Validierung:
+     *    - Voter markieren und speichern
+     *    - Vote persistieren
+     *    - Domain-Event publizieren
+     *
+     * DDD-Prinzipien:
+     * - Validiere Domain Models, nicht DTOs
+     * - Validierung kann für Create, Update und andere Operationen wiederverwendet werden
+     * - Jeder Bounded Context validiert seine eigenen Invarianten
+     * - Anti-Corruption Layer (Adapters) respektiert Kontext-Grenzen
      *
      * @param req VoteCreateRequest mit pollId, optionId, voterId, correlationId
-     * @throws IllegalArgumentException wenn Voter nicht existiert
-     * @throws IllegalStateException wenn Voter nicht verifiziert oder bereits abgestimmt
+     * @throws IllegalArgumentException wenn Poll oder Voter nicht existiert, oder Option ungültig ist
+     * @throws IllegalStateException wenn Validierungsbedingung verletzt wird
      */
     public void create(VoteCreateRequest req) {
 
-        // Idempotenz-Prüfung: Wurde bereits ein Vote mit dieser correlationId abgegeben?
-        // Falls ja, ist dies ein Duplicate-Request und wird ignoriert
+        // 1. Idempotenz-Prüfung: Wurde bereits ein Vote mit dieser correlationId abgegeben?
         Optional<Vote> existingVote = voteRepository.findByCorrelationId(req.correlationId());
         if (existingVote.isPresent()) {
-            // Vote bereits vorhanden - idempotent erfolgreich abschließen
             return;
         }
 
-        // Voter-Lookup und Validierung, falls VoterRepository verfügbar
-        Voter voter = null;
-        if (voterRepository.isPresent()) {
-            VoterRepository repo = voterRepository.get();
-            voter = repo.findById(req.voterId())
-                    .orElseThrow(() -> new IllegalArgumentException(
-                            "Voter not found: " + req.voterId()
-                    ));
+        // 2. Poll laden (REQUIRED)
+        Poll poll = pollRepository.findById(req.pollId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Poll not found: " + req.pollId()
+                ));
 
-            // Double-Voting-Prevention: Prüfen ob bereits abgestimmt
-            // Werft IllegalStateException wenn:
-            // - Voter nicht verifiziert
-            // - Voter bereits für diese Poll abgestimmt
-            voter.markVoted(req.pollId());
+        // 3. Voter laden (REQUIRED - Voter muss immer existieren)
+        Voter voter = voterRepository.findById(req.voterId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Voter not found: " + req.voterId()
+                ));
 
-            // Speichere den aktualizierten Voter SOFORT
-            // Damit sind die Änderungen persistent und sichtbar für nachfolgende Aufrufe
-            repo.save(voter);
-        }
-
-        // Domain-Objekt erzeugen mit eindeutiger voteId und correlationId vom Frontend
+        // 4. Vote Domain Model erstellen
+        // Die compact constructor des Vote Records validiert bereits grundlegende Invarianten
         Vote vote = Vote.of(
-                UUID.randomUUID().toString(),  // voteId wird generiert
+                UUID.randomUUID().toString(),
                 req.pollId(),
                 req.optionId(),
-                req.correlationId(),           // correlationId vom Frontend (eindeutig pro Abstimmungsvorgang)
+                req.correlationId(),
                 clock
         );
 
-        // Persistieren
+        // 5. Cross-Context Validierung auf dem Vote Domain Model
+        // CompositeVoteValidator kombiniert Validatoren aus verschiedenen Bounded Contexts
+        // durch Anti-Corruption Layer Adapter
+        // Diese Validierung kann für Create, Update und andere Operationen wiederverwendet werden
+        compositeVoteValidator.validate(vote, poll, voter);
+
+        // 6. Bei erfolgreicher Validierung: Persistieren
+
+        // Voter markieren und speichern
+        voter.markVoted(req.pollId());
+        voterRepository.save(voter);
+
+        // Vote persistieren
         voteRepository.save(vote);
 
         // Domain-Event publizieren
