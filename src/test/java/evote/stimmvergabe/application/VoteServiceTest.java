@@ -3,14 +3,22 @@ package evote.stimmvergabe.application;
 import evote.stimmvergabe.application.dto.VoteCreateRequest;
 import evote.stimmvergabe.domain.model.Vote;
 import evote.stimmvergabe.domain.repository.VoteRepository;
+import evote.stimmvergabe.domain.validator.*;
+import evote.stimmvergabe.domain.validator.adapter.PollValidatorAdapter;
+import evote.stimmvergabe.domain.validator.adapter.VoterValidatorAdapter;
 import evote.stimmvergabe.events.VoteCastEvent;
 import evote.stimmvergabe.infrastructure.persistence.InMemoryVoteRepository;
 import evote.buergerverwaltung.domain.model.Voter;
 import evote.buergerverwaltung.domain.repository.VoterRepository;
+import evote.buergerverwaltung.domain.validator.VoterValidator;
 import evote.buergerverwaltung.infrastructure.persistence.InMemoryVoterRepository;
 import evote.buergerverwaltung.domain.valueobjects.Name;
 import evote.buergerverwaltung.domain.valueobjects.Adresse;
 import evote.buergerverwaltung.domain.valueobjects.Email;
+import evote.abstimmungsverwaltung.domain.model.Poll;
+import evote.abstimmungsverwaltung.domain.repository.PollRepository;
+import evote.abstimmungsverwaltung.domain.validator.PollValidator;
+import evote.abstimmungsverwaltung.infrastructure.persistence.InMemoryPollRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +26,8 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,21 +63,62 @@ class VoteServiceTest {
         return voter;
     }
 
+    /**
+     * Helper-Methode: Erstellt eine offene Poll für Tests
+     */
+    private Poll createOpenPoll(PollRepository pollRepo, String pollId, String... options) {
+        Poll poll = new Poll(
+                pollId,
+                "Test Poll",
+                Arrays.asList(options),
+                LocalDateTime.parse("2029-12-31T00:00:00"),
+                LocalDateTime.parse("2030-12-31T00:00:00"),
+                10,
+                fixedClock
+        );
+        pollRepo.save(poll);
+        return poll;
+    }
+
+    /**
+     * Helper-Methode: Erstellt einen CompositeVoteValidator für Tests
+     * Demonstriert die Anti-Corruption Layer Adapters zwischen Bounded Contexts
+     */
+    private CompositeVoteValidator createCompositeValidator() {
+        PollValidator pollValidator = new PollValidator();
+        VoterValidator voterValidator = new VoterValidator();
+
+        return new PollValidatorAdapter(pollValidator, fixedClock)
+                .and(new VoterValidatorAdapter(voterValidator))
+                .and(new VoteOptionValidator());
+    }
+
     @Test
-    @DisplayName("create(): Vote wird erstellt, gespeichert und Event wird publiziert (ohne VoterRepository)")
+    @DisplayName("create(): Vote wird erstellt, gespeichert und Event wird publiziert (Cross-Context Validation)")
     void create_shouldCreateStoreAndPublishEvent() {
 
         // ---------- Arrange ----------
         VoteRepository voteRepo = new InMemoryVoteRepository();
+        VoterRepository voterRepo = new InMemoryVoterRepository();
+        PollRepository pollRepo = new InMemoryPollRepository();
         FakeEventPublisher publisher = new FakeEventPublisher();
 
-        VoteService service = new VoteService(voteRepo, fixedClock, publisher);
+        // Create composite validator with cross-context adapters
+        PollValidator pollValidator = new PollValidator();
+        VoterValidator voterValidator = new VoterValidator();
+        CompositeVoteValidator validator = new PollValidatorAdapter(pollValidator, fixedClock)
+                .and(new VoterValidatorAdapter(voterValidator))
+                .and(new VoteOptionValidator());
+
+        Voter voter = createVerifiedVoter(voterRepo, "Max", "Mustermann");
+        createOpenPoll(pollRepo, "poll-1", "option-5");
+        VoteService service = new VoteService(voteRepo, voterRepo, pollRepo, fixedClock, publisher, validator);
 
         VoteCreateRequest req = new VoteCreateRequest(
                 "poll-1",
                 "option-5",
-                "voter-123",
-                "correlation-uuid-001"  // correlationId vom Frontend
+                voter.getVoterId(),
+                "correlation-uuid-001"
         );
 
         // ---------- Act ----------
@@ -87,7 +138,7 @@ class VoteServiceTest {
 
         // 2) Event wurde publiziert
         assertNotNull(publisher.published, "Es sollte ein Event publiziert werden");
-        assertTrue(publisher.published instanceof VoteCastEvent);
+        assertInstanceOf(VoteCastEvent.class, publisher.published);
 
         VoteCastEvent evt = (VoteCastEvent) publisher.published;
 
@@ -104,17 +155,20 @@ class VoteServiceTest {
         // ---------- Arrange ----------
         VoteRepository voteRepo = new InMemoryVoteRepository();
         VoterRepository voterRepo = new InMemoryVoterRepository();
+        PollRepository pollRepo = new InMemoryPollRepository();
         FakeEventPublisher publisher = new FakeEventPublisher();
+        CompositeVoteValidator validator = createCompositeValidator();
 
         Voter voter = createVerifiedVoter(voterRepo, "Max", "Mustermann");
+        createOpenPoll(pollRepo, "poll-1", "option-5");
 
-        VoteService service = new VoteService(voteRepo, voterRepo, fixedClock, publisher);
+        VoteService service = new VoteService(voteRepo, voterRepo, pollRepo, fixedClock, publisher, validator);
 
         VoteCreateRequest req = new VoteCreateRequest(
                 "poll-1",
                 "option-5",
                 voter.getVoterId(),
-                "correlation-uuid-002"  // correlationId vom Frontend
+                "correlation-uuid-002"
         );
 
         // ---------- Act ----------
@@ -136,9 +190,11 @@ class VoteServiceTest {
         // ---------- Arrange ----------
         VoteRepository voteRepo = new InMemoryVoteRepository();
         VoterRepository voterRepo = new InMemoryVoterRepository();
+        PollRepository pollRepo = new InMemoryPollRepository();
         FakeEventPublisher publisher = new FakeEventPublisher();
+        CompositeVoteValidator validator = createCompositeValidator();
 
-        // Voter erstellen, verifizieren und als "bereits abgestimmt" markieren
+        // ...existing test setup...
         Voter voter = Voter.register(
                 new Name("Max", "Mustermann"),
                 new Adresse("Musterstraße", "1", "", "12345", "Berlin"),
@@ -147,16 +203,17 @@ class VoteServiceTest {
                 "Mitte"
         );
         voter.verify();
-        voter.markVoted("poll-1");  // Voter hat bereits abgestimmt
+        voter.markVoted("poll-1");
         voterRepo.save(voter);
 
-        VoteService service = new VoteService(voteRepo, voterRepo, fixedClock, publisher);
+        createOpenPoll(pollRepo, "poll-1", "option-5");
+        VoteService service = new VoteService(voteRepo, voterRepo, pollRepo, fixedClock, publisher, validator);
 
         VoteCreateRequest req = new VoteCreateRequest(
                 "poll-1",
                 "option-5",
                 voter.getVoterId(),
-                "correlation-uuid-003"  // correlationId vom Frontend
+                "correlation-uuid-003"
         );
 
         // ---------- Act & Assert ----------
@@ -176,11 +233,15 @@ class VoteServiceTest {
         // ---------- Arrange ----------
         VoteRepository voteRepo = new InMemoryVoteRepository();
         VoterRepository voterRepo = new InMemoryVoterRepository();
+        PollRepository pollRepo = new InMemoryPollRepository();
         FakeEventPublisher publisher = new FakeEventPublisher();
+        CompositeVoteValidator validator = createCompositeValidator();
 
         Voter voter = createVerifiedVoter(voterRepo, "Max", "Mustermann");
+        createOpenPoll(pollRepo, "poll-1", "option-A", "option-B");
+        createOpenPoll(pollRepo, "poll-2", "option-A", "option-B");
 
-        VoteService service = new VoteService(voteRepo, voterRepo, fixedClock, publisher);
+        VoteService service = new VoteService(voteRepo, voterRepo, pollRepo, fixedClock, publisher, validator);
 
         // ---------- Act ----------
         // Voter stimmt für poll-1 ab
@@ -188,7 +249,7 @@ class VoteServiceTest {
                 "poll-1",
                 "option-A",
                 voter.getVoterId(),
-                "correlation-uuid-004"  // unterschiedliche correlationId
+                "correlation-uuid-004"
         );
         service.create(req1);
 
@@ -197,7 +258,7 @@ class VoteServiceTest {
                 "poll-2",
                 "option-B",
                 voter.getVoterId(),
-                "correlation-uuid-005"  // unterschiedliche correlationId
+                "correlation-uuid-005"
         );
         service.create(req2);
 
@@ -218,7 +279,9 @@ class VoteServiceTest {
         // ---------- Arrange ----------
         VoteRepository voteRepo = new InMemoryVoteRepository();
         VoterRepository voterRepo = new InMemoryVoterRepository();
+        PollRepository pollRepo = new InMemoryPollRepository();
         FakeEventPublisher publisher = new FakeEventPublisher();
+        CompositeVoteValidator validator = createCompositeValidator();
 
         // Voter erstellen OHNE zu verifizieren
         Voter voter = Voter.register(
@@ -228,16 +291,16 @@ class VoteServiceTest {
                 LocalDate.of(1990, 1, 1),
                 "Mitte"
         );
-        // voter.verify() wird NICHT aufgerufen
         voterRepo.save(voter);
 
-        VoteService service = new VoteService(voteRepo, voterRepo, fixedClock, publisher);
+        createOpenPoll(pollRepo, "poll-1", "option-5");
+        VoteService service = new VoteService(voteRepo, voterRepo, pollRepo, fixedClock, publisher, validator);
 
         VoteCreateRequest req = new VoteCreateRequest(
                 "poll-1",
                 "option-5",
                 voter.getVoterId(),
-                "correlation-uuid-006"  // correlationId vom Frontend
+                "correlation-uuid-006"
         );
 
         // ---------- Act & Assert ----------
@@ -257,15 +320,18 @@ class VoteServiceTest {
         // ---------- Arrange ----------
         VoteRepository voteRepo = new InMemoryVoteRepository();
         VoterRepository voterRepo = new InMemoryVoterRepository();
+        PollRepository pollRepo = new InMemoryPollRepository();
         FakeEventPublisher publisher = new FakeEventPublisher();
+        CompositeVoteValidator validator = createCompositeValidator();
 
-        VoteService service = new VoteService(voteRepo, voterRepo, fixedClock, publisher);
+        createOpenPoll(pollRepo, "poll-1", "option-5");
+        VoteService service = new VoteService(voteRepo, voterRepo, pollRepo, fixedClock, publisher, validator);
 
         VoteCreateRequest req = new VoteCreateRequest(
                 "poll-1",
                 "option-5",
-                "unknown-voter-id",  // Voter existiert nicht
-                "correlation-uuid-007"  // correlationId vom Frontend
+                "unknown-voter-id",
+                "correlation-uuid-007"
         );
 
         // ---------- Act & Assert ----------
@@ -285,11 +351,14 @@ class VoteServiceTest {
         // ---------- Arrange ----------
         VoteRepository voteRepo = new InMemoryVoteRepository();
         VoterRepository voterRepo = new InMemoryVoterRepository();
+        PollRepository pollRepo = new InMemoryPollRepository();
         FakeEventPublisher publisher = new FakeEventPublisher();
+        CompositeVoteValidator validator = createCompositeValidator();
 
         Voter voter = createVerifiedVoter(voterRepo, "Max", "Mustermann");
+        createOpenPoll(pollRepo, "poll-1", "option-A");
 
-        VoteService service = new VoteService(voteRepo, voterRepo, fixedClock, publisher);
+        VoteService service = new VoteService(voteRepo, voterRepo, pollRepo, fixedClock, publisher, validator);
 
         String sameCorrelationId = "correlation-uuid-idempotent";
 
@@ -299,18 +368,18 @@ class VoteServiceTest {
                 "poll-1",
                 "option-A",
                 voter.getVoterId(),
-                sameCorrelationId  // gleiche correlationId
+                sameCorrelationId
         );
         service.create(req1);
 
         int countAfterFirstCall = voteRepo.count();
 
-        // Zweiter Request mit GLEICHER correlationId (z.B. User klickt "Senden" Knopf doppelt)
+        // Zweiter Request mit GLEICHER correlationId
         VoteCreateRequest req2 = new VoteCreateRequest(
                 "poll-1",
                 "option-A",
                 voter.getVoterId(),
-                sameCorrelationId  // GLEICHE correlationId!
+                sameCorrelationId
         );
         service.create(req2);
 
@@ -321,7 +390,7 @@ class VoteServiceTest {
                 "poll-1",
                 "option-A",
                 voter.getVoterId(),
-                sameCorrelationId  // GLEICHE correlationId!
+                sameCorrelationId
         );
         service.create(req3);
 
