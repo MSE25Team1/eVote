@@ -3,7 +3,7 @@ evote,evote.stimmvergabe.domain.validator.adapter,PollValidatorAdapter,0,16,0,0,
 evote,evote.stimmvergabe.domain.validator.adapter,VoterValidatorAdapter,0,12,0,0,0,5,0,2,0,2
 evote,evote.buergerverwaltung.infrastructure.web,VoterController,16,0,0,0,5,0,3,0,3,0
 evote,evote.stimmvergabe.application.dto,VoteCreateRequest,0,15,0,0,0,1,0,1,0,1
-evote,evote.stimmvergabe.infrastructure.persistence,InMemoryVoteRepository,7,112,2,12,2,28,2,13,0,8
+evote,evote.stimmvergabe.infrastructure.persistence,InMemoryVoteRepository,7,98,2,8,2,25,2,12,0,9
 evote,evote,EvoteApplication,5,3,0,0,2,1,1,1,1,1
 evote,evote.abstimmungsverwaltung.domain.model,Poll,0,300,0,50,0,70,0,39,0,14
 evote,evote.stimmvergabe.config,VoteValidationConfiguration,18,0,0,0,4,0,2,0,2,0

@@ -52,32 +52,28 @@ import java.util.concurrent.ConcurrentHashMap;
 
     @Override
     public List&lt;Vote&gt; findAllByPollId(String pollId) {
-<span class="fc" id="L55">        List&lt;Vote&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (pollId == null) {</span>
-<span class="nc" id="L57">            return result;</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if (pollId == null) {</span>
+<span class="nc" id="L56">            return List.of(); // unveränderliche leere Liste</span>
         }
 
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (Vote vote : votesById.values()) {</span>
-<span class="fc bfc" id="L61" title="All 2 branches covered.">            if (pollId.equals(vote.getPollId())) {</span>
-<span class="fc" id="L62">                result.add(vote);</span>
-            }
-<span class="fc" id="L64">        }</span>
-<span class="fc" id="L65">        return result;</span>
+<span class="fc" id="L59">        return votesById.values().stream()</span>
+<span class="fc" id="L60">                .filter(vote -&gt; pollId.equals(vote.getPollId()))</span>
+<span class="fc" id="L61">                .toList();</span>
     }
 
     @Override
     public Optional&lt;Vote&gt; findByCorrelationId(String correlationId) {
-<span class="fc bfc" id="L70" title="All 2 branches covered.">        if (correlationId == null) {</span>
-<span class="fc" id="L71">            return Optional.empty();</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (correlationId == null) {</span>
+<span class="fc" id="L67">            return Optional.empty();</span>
         }
-<span class="fc" id="L73">        return Optional.ofNullable(votesByCorrelationId.get(correlationId));</span>
+<span class="fc" id="L69">        return Optional.ofNullable(votesByCorrelationId.get(correlationId));</span>
     }
 
     /** Nur für Tests praktisch, um den Zustand zurückzusetzen. */
     public void clear() {
-<span class="fc" id="L78">        votesById.clear();</span>
-<span class="fc" id="L79">        votesByCorrelationId.clear();</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L74">        votesById.clear();</span>
+<span class="fc" id="L75">        votesByCorrelationId.clear();</span>
+<span class="fc" id="L76">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
