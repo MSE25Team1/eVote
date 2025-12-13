@@ -99,24 +99,22 @@ public class VoteService {
         }
 
         // Voter-Lookup und Validierung, falls VoterRepository verfügbar
-        Voter voter = null;
-        if (voterRepository.isPresent()) {
-            VoterRepository repo = voterRepository.get();
-            voter = repo.findById(req.voterId())
-                    .orElseThrow(() -> new IllegalArgumentException(
-                            "Voter not found: " + req.voterId()
-                    ));
+        voterRepository
+                // flatMap: Optional<VoterRepository> -> Optional<Voter>
+                // Wenn ein VoterRepository vorhanden ist, versuche den Voter anhand der voterId zu laden.
+                .flatMap(repo -> repo.findById(req.voterId()))
 
-            // Double-Voting-Prevention: Prüfen ob bereits abgestimmt
-            // Werft IllegalStateException wenn:
-            // - Voter nicht verifiziert
-            // - Voter bereits für diese Poll abgestimmt
-            voter.markVoted(req.pollId());
+                // map: Optional<Voter> -> Optional<Voter>
+                // Wenn der Voter existiert, markiere ihn als abgestimmt für die gegebene Poll.
+                // Speichere den aktualisierten Voter nur, wenn ein Repository vorhanden ist.
+                .map(voter -> {
+                    voter.markVoted(req.pollId());                           // Business-Regel: Voter als abgestimmt markieren
+                    voterRepository.ifPresent(repo -> repo.save(voter));     // Persistiere Änderungen optional
+                    return voter;                                           // Rückgabe für Optional-Pipeline
+                })
 
-            // Speichere den aktualizierten Voter SOFORT
-            // Damit sind die Änderungen persistent und sichtbar für nachfolgende Aufrufe
-            repo.save(voter);
-        }
+                // orElseThrow: Wenn kein Voter gefunden wurde (Optional.empty), werfe eine Exception.
+                .orElseThrow(() -> new IllegalArgumentException("Voter not found: " + req.voterId()));
 
         // Domain-Objekt erzeugen mit eindeutiger voteId und correlationId vom Frontend
         Vote vote = Vote.of(

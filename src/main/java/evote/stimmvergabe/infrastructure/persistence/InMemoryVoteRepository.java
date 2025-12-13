@@ -52,17 +52,13 @@ public class InMemoryVoteRepository implements VoteRepository {
 
     @Override
     public List<Vote> findAllByPollId(String pollId) {
-        List<Vote> result = new ArrayList<>();
         if (pollId == null) {
-            return result;
+            return List.of(); // unveränderliche leere Liste
         }
 
-        for (Vote vote : votesById.values()) {
-            if (pollId.equals(vote.getPollId())) {
-                result.add(vote);
-            }
-        }
-        return result;
+        return votesById.values().stream()
+                .filter(vote -> pollId.equals(vote.getPollId()))
+                .toList();
     }
 
     @Override
