@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CompositeVoteValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.stimmvergabe.domain.validator</a> &gt; <span class="el_source">CompositeVoteValidator.java</span></div><h1>CompositeVoteValidator.java</h1><pre class="source lang-java linenums">package evote.stimmvergabe.domain.validator;
+
+import evote.stimmvergabe.domain.model.Vote;
+import evote.abstimmungsverwaltung.domain.model.Poll;
+import evote.buergerverwaltung.domain.model.Voter;
+
+/**
+ * CompositeVoteValidator - FunctionalInterface für Cross-Context Validierung
+ *
+ * Validiert Vote Domain Model mit Poll und Voter aus verschiedenen Bounded Contexts:
+ * - Abstimmungsverwaltung (Poll validation)
+ * - Bürgerverwaltung (Voter validation)
+ * - Stimmvergabe (Vote validation)
+ *
+ * Dies ist eine &quot;Anti-Corruption Layer&quot; die Validatoren aus verschiedenen
+ * Kontexten zusammenfasst ohne enge Kopplung zu erzeugen.
+ *
+ * Designprinzip: Validiere Domain Models, nicht DTOs
+ * Dies ermöglicht die Wiederverwendung von Validatoren für verschiedene Operationen:
+ * - Create
+ * - Update
+ * - Other future operations
+ *
+ * Beispiel:
+ * CompositeVoteValidator chain = new PollValidatorAdapter(pollValidator, clock)
+ *     .and(new VoterValidatorAdapter(voterValidator))
+ *     .and(new VoteOptionValidator());
+ * chain.validate(vote, poll, voter);
+ */
+@FunctionalInterface
+public interface CompositeVoteValidator {
+
+    /**
+     * Validiert ein Vote Aggregate mit Poll und Voter aus anderen Kontexten
+     *
+     * @param vote Das zu validierende Vote Domain Model
+     * @param poll Die Poll aus dem Abstimmungsverwaltung-Kontext
+     * @param voter Der Voter aus dem Bürgerverwaltung-Kontext
+     * @throws IllegalStateException wenn eine Zustandsbedingung verletzt wird
+     * @throws IllegalArgumentException wenn ein Argument ungültig ist
+     */
+    void validate(Vote vote, Poll poll, Voter voter);
+
+    /**
+     * Kombiniert diesen Validator mit einem anderen Validator
+     * Beide Validatoren werden sequenziell ausgeführt
+     *
+     * @param other Ein weiterer CompositeVoteValidator
+     * @return Ein neuer Validator, der beide Validatoren kombiniert
+     */
+    default CompositeVoteValidator and(CompositeVoteValidator other) {
+<span class="fc" id="L52">        return (vote, poll, voter) -&gt; {</span>
+<span class="fc" id="L53">            this.validate(vote, poll, voter);</span>
+<span class="fc" id="L54">            other.validate(vote, poll, voter);</span>
+<span class="fc" id="L55">        };</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

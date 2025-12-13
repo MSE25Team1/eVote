@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VoteValidationConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.stimmvergabe.config</a> &gt; <span class="el_source">VoteValidationConfiguration.java</span></div><h1>VoteValidationConfiguration.java</h1><pre class="source lang-java linenums">package evote.stimmvergabe.config;
+
+import evote.stimmvergabe.domain.validator.CompositeVoteValidator;
+import evote.stimmvergabe.domain.validator.VoteOptionValidator;
+import evote.stimmvergabe.domain.validator.adapter.PollValidatorAdapter;
+import evote.stimmvergabe.domain.validator.adapter.VoterValidatorAdapter;
+import evote.abstimmungsverwaltung.domain.validator.PollValidator;
+import evote.buergerverwaltung.domain.validator.VoterValidator;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.time.Clock;
+
+/**
+ * VoteValidationConfiguration - Cross-Context Validierungs-Orchestrierung
+ *
+ * Diese Konfiguration demonstriert das Anti-Corruption Layer Muster in DDD.
+ * Sie kombiniert Validatoren aus verschiedenen Bounded Contexts:
+ *
+ * 1. Abstimmungsverwaltung-Kontext: PollValidator
+ *    - Validiert Poll-spezifische Invarianten
+ *    - Prüft ob Poll zeitlich offen ist
+ *
+ * 2. Bürgerverwaltung-Kontext: VoterValidator
+ *    - Validiert Voter-spezifische Invarianten
+ *    - Prüft Verifikation und Double-Voting-Prevention
+ *
+ * 3. Stimmvergabe-Kontext: VoteOptionValidator
+ *    - Validiert Vote-spezifische Invarianten
+ *    - Prüft ob Option in Poll existiert
+ *
+ * Die Komposition erfolgt durch Adapter, die die Grenze zwischen Kontexten respektieren.
+ * Dies verhindert enge Kopplung und ermöglicht Independent Deployment der Kontexte.
+ */
+@Configuration
+<span class="nc" id="L36">public class VoteValidationConfiguration {</span>
+
+    /**
+     * Spring Bean: Composite Validator für die Vote-Erstellung
+     *
+     * Die Validator-Chain wird in dieser Reihenfolge ausgeführt:
+     * 1. PollValidator - Prüft Poll-Status
+     * 2. VoterValidator - Prüft Voter-Berechtigung
+     * 3. VoteOptionValidator - Prüft Option-Gültigkeit
+     *
+     * @param pollValidator Validator aus Abstimmungsverwaltung-Kontext
+     * @param voterValidator Validator aus Bürgerverwaltung-Kontext
+     * @param clock Clock für Zeitprüfungen
+     * @return CompositeVoteValidator mit allen Validierungen
+     */
+    @Bean
+    public CompositeVoteValidator compositeVoteValidator(
+            PollValidator pollValidator,
+            VoterValidator voterValidator,
+            Clock clock) {
+
+<span class="nc" id="L57">        return new PollValidatorAdapter(pollValidator, clock)</span>
+<span class="nc" id="L58">                .and(new VoterValidatorAdapter(voterValidator))</span>
+<span class="nc" id="L59">                .and(new VoteOptionValidator());</span>
+    }
+}
+
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
