@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VoterSeeder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.config.seeder</a> &gt; <span class="el_source">VoterSeeder.java</span></div><h1>VoterSeeder.java</h1><pre class="source lang-java linenums">package evote.config.seeder;
+
+import evote.buergerverwaltung.domain.model.Voter;
+import evote.buergerverwaltung.domain.repository.VoterRepository;
+import evote.buergerverwaltung.domain.valueobjects.Adresse;
+import evote.buergerverwaltung.domain.valueobjects.Email;
+import evote.buergerverwaltung.domain.valueobjects.Name;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+/**
+ * VoterSeeder - Erstellt Sample-Wähler beim Start der Anwendung
+ * 
+ * Responsibility:
+ * - Erstellt Demo-Wähler mit validen Daten
+ * - Speichert sie im VoterRepository
+ * - Verifiziert die Wähler, um sie abstimmungsberechtigt zu machen
+ * 
+ * Diese Klasse wird vom DatabaseInitializer aufgerufen und sollte nur
+ * während der Entwicklung/Demo-Phase verwendet werden.
+ */
+@Component
+public class VoterSeeder {
+
+<span class="fc" id="L30">    private static final Logger logger = Logger.getLogger(VoterSeeder.class.getName());</span>
+    private final VoterRepository voterRepository;
+
+<span class="fc" id="L33">    public VoterSeeder(VoterRepository voterRepository) {</span>
+<span class="fc" id="L34">        this.voterRepository = voterRepository;</span>
+<span class="fc" id="L35">    }</span>
+
+    /**
+     * Erstellt und speichert Sample-Wähler mit festen Demo-IDs
+     *
+     * HINWEIS: Da dies nur Demo-Daten sind, verwenden wir feste IDs.
+     * Sobald Register- und Login-Funktionalität implementiert sind,
+     * können diese Demo-Daten entfernt werden.
+     *
+     * @return Liste der erstellten Wähler
+     */
+    public List&lt;Voter&gt; seedVoters() {
+<span class="fc" id="L47">        List&lt;Voter&gt; voters = new ArrayList&lt;&gt;();</span>
+
+        // Wähler 1: Max Mustermann
+<span class="fc" id="L50">        Voter voter1 = Voter.reconstruct(</span>
+                &quot;VOTER-001&quot;,
+                new Name(&quot;Max&quot;, &quot;Mustermann&quot;),
+                new Adresse(&quot;Musterstraße&quot;, &quot;12&quot;, null, &quot;12345&quot;, &quot;Musterstadt&quot;),
+                new Email(&quot;max.mustermann@example.org&quot;),
+<span class="fc" id="L55">                LocalDate.of(1990, 5, 15),</span>
+                &quot;101&quot;,
+                true,
+<span class="fc" id="L58">                LocalDateTime.now(),</span>
+                new java.util.HashSet&lt;&gt;()
+        );
+<span class="fc" id="L61">        voterRepository.save(voter1);</span>
+<span class="fc" id="L62">        voters.add(voter1);</span>
+<span class="fc" id="L63">        logger.info(&quot;✓ Wähler erstellt: Max Mustermann (ID: &quot; + voter1.getVoterId() + &quot;)&quot;);</span>
+
+        // Wähler 2: Anna Schmidt
+<span class="fc" id="L66">        Voter voter2 = Voter.reconstruct(</span>
+                &quot;VOTER-002&quot;,
+                new Name(&quot;Anna&quot;, &quot;Schmidt&quot;),
+                new Adresse(&quot;Hauptstraße&quot;, &quot;45&quot;, &quot;Wohnung 3&quot;, &quot;10115&quot;, &quot;Berlin&quot;),
+                new Email(&quot;anna.schmidt@example.de&quot;),
+<span class="fc" id="L71">                LocalDate.of(1985, 3, 22),</span>
+                &quot;101&quot;,
+                true,
+<span class="fc" id="L74">                LocalDateTime.now(),</span>
+                new java.util.HashSet&lt;&gt;()
+        );
+<span class="fc" id="L77">        voterRepository.save(voter2);</span>
+<span class="fc" id="L78">        voters.add(voter2);</span>
+<span class="fc" id="L79">        logger.info(&quot;✓ Wähler erstellt: Anna Schmidt (ID: &quot; + voter2.getVoterId() + &quot;)&quot;);</span>
+
+        // Wähler 3: Peter Müller
+<span class="fc" id="L82">        Voter voter3 = Voter.reconstruct(</span>
+                &quot;VOTER-003&quot;,
+                new Name(&quot;Peter&quot;, &quot;Müller&quot;),
+                new Adresse(&quot;Königstraße&quot;, &quot;78&quot;, null, &quot;50667&quot;, &quot;Köln&quot;),
+                new Email(&quot;peter.mueller@example.com&quot;),
+<span class="fc" id="L87">                LocalDate.of(1992, 7, 8),</span>
+                &quot;102&quot;,
+                true,
+<span class="fc" id="L90">                LocalDateTime.now(),</span>
+                new java.util.HashSet&lt;&gt;()
+        );
+<span class="fc" id="L93">        voterRepository.save(voter3);</span>
+<span class="fc" id="L94">        voters.add(voter3);</span>
+<span class="fc" id="L95">        logger.info(&quot;✓ Wähler erstellt: Peter Müller (ID: &quot; + voter3.getVoterId() + &quot;)&quot;);</span>
+
+        // Wähler 4: Lisa Wagner
+<span class="fc" id="L98">        Voter voter4 = Voter.reconstruct(</span>
+                &quot;VOTER-004&quot;,
+                new Name(&quot;Lisa&quot;, &quot;Wagner&quot;),
+                new Adresse(&quot;Parkstraße&quot;, &quot;23&quot;, &quot;Penthouse&quot;, &quot;80331&quot;, &quot;München&quot;),
+                new Email(&quot;lisa.wagner@example.org&quot;),
+<span class="fc" id="L103">                LocalDate.of(1988, 11, 30),</span>
+                &quot;102&quot;,
+                true,
+<span class="fc" id="L106">                LocalDateTime.now(),</span>
+                new java.util.HashSet&lt;&gt;()
+        );
+<span class="fc" id="L109">        voterRepository.save(voter4);</span>
+<span class="fc" id="L110">        voters.add(voter4);</span>
+<span class="fc" id="L111">        logger.info(&quot;✓ Wähler erstellt: Lisa Wagner (ID: &quot; + voter4.getVoterId() + &quot;)&quot;);</span>
+
+        // Wähler 5: Thomas Becker
+<span class="fc" id="L114">        Voter voter5 = Voter.reconstruct(</span>
+                &quot;VOTER-005&quot;,
+                new Name(&quot;Thomas&quot;, &quot;Becker&quot;),
+                new Adresse(&quot;Waldweg&quot;, &quot;5&quot;, null, &quot;69115&quot;, &quot;Heidelberg&quot;),
+                new Email(&quot;thomas.becker@example.de&quot;),
+<span class="fc" id="L119">                LocalDate.of(1980, 2, 14),</span>
+                &quot;103&quot;,
+                true,
+<span class="fc" id="L122">                LocalDateTime.now(),</span>
+                new java.util.HashSet&lt;&gt;()
+        );
+<span class="fc" id="L125">        voterRepository.save(voter5);</span>
+<span class="fc" id="L126">        voters.add(voter5);</span>
+<span class="fc" id="L127">        logger.info(&quot;✓ Wähler erstellt: Thomas Becker (ID: &quot; + voter5.getVoterId() + &quot;)&quot;);</span>
+
+<span class="fc" id="L129">        logger.info(&quot;✓ VoterSeeder abgeschlossen: &quot; + voters.size() + &quot; Wähler erstellt&quot;);</span>
+<span class="fc" id="L130">        return voters;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

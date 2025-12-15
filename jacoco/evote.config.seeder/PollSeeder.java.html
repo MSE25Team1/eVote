@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PollSeeder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.config.seeder</a> &gt; <span class="el_source">PollSeeder.java</span></div><h1>PollSeeder.java</h1><pre class="source lang-java linenums">package evote.config.seeder;
+
+import evote.abstimmungsverwaltung.domain.model.Poll;
+import evote.abstimmungsverwaltung.domain.repository.PollRepository;
+import org.springframework.stereotype.Component;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+/**
+ * PollSeeder - Erstellt Sample-Abstimmungen beim Start der Anwendung
+ * 
+ * Responsibility:
+ * - Erstellt Demo-Abstimmungen mit realistischen Daten
+ * - Speichert sie im PollRepository
+ * - Erstellt Abstimmungen mit verschiedenen Status (aktiv, beendet, etc.)
+ * 
+ * Diese Klasse wird vom DatabaseInitializer aufgerufen und sollte nur
+ * während der Entwicklung/Demo-Phase verwendet werden.
+ */
+@Component
+public class PollSeeder {
+
+<span class="fc" id="L27">    private static final Logger logger = Logger.getLogger(PollSeeder.class.getName());</span>
+    private final PollRepository pollRepository;
+    private final Clock clock;
+
+<span class="fc" id="L31">    public PollSeeder(PollRepository pollRepository, Clock clock) {</span>
+<span class="fc" id="L32">        this.pollRepository = pollRepository;</span>
+<span class="fc" id="L33">        this.clock = clock;</span>
+<span class="fc" id="L34">    }</span>
+
+    /**
+     * Erstellt und speichert Sample-Abstimmungen
+     * 
+     * @return Liste der erstellten Abstimmungen
+     */
+    public List&lt;Poll&gt; seedPolls() {
+<span class="fc" id="L42">        List&lt;Poll&gt; polls = new ArrayList&lt;&gt;();</span>
+
+        // Abstimmung 1: Campus-Kantinenkonzept 2026 (AKTIV)
+<span class="fc" id="L45">        LocalDateTime startTime1 = LocalDateTime.now(clock).minusDays(5);</span>
+<span class="fc" id="L46">        LocalDateTime endTime1 = LocalDateTime.now(clock).plusDays(10);</span>
+        
+<span class="fc" id="L48">        Poll poll1 = new Poll(</span>
+                &quot;POLL-CK-2026&quot;,
+                &quot;Campus-Kantinenkonzept 2026&quot;,
+<span class="fc" id="L51">                List.of(</span>
+                        &quot;OPTION-REGIONAL&quot;,
+                        &quot;OPTION-MIX&quot;,
+                        &quot;OPTION-FOODTRUCK&quot;
+                ),
+                startTime1,
+                endTime1,
+                1000,
+                clock
+        );
+<span class="fc" id="L61">        pollRepository.save(poll1);</span>
+<span class="fc" id="L62">        polls.add(poll1);</span>
+<span class="fc" id="L63">        logger.info(&quot;✓ Abstimmung erstellt: Campus-Kantinenkonzept 2026 (POLL-CK-2026) [AKTIV]&quot;);</span>
+
+        // Abstimmung 2: Parkplatzkonzept (AKTIV)
+<span class="fc" id="L66">        LocalDateTime startTime2 = LocalDateTime.now(clock).minusDays(2);</span>
+<span class="fc" id="L67">        LocalDateTime endTime2 = LocalDateTime.now(clock).plusDays(14);</span>
+        
+<span class="fc" id="L69">        Poll poll2 = new Poll(</span>
+                &quot;POLL-PK-2026&quot;,
+                &quot;Neues Parkplatzkonzept auf dem Campus&quot;,
+<span class="fc" id="L72">                List.of(</span>
+                        &quot;OPTION-EXPANSION&quot;,
+                        &quot;OPTION-CARSHARING&quot;,
+                        &quot;OPTION-NAHVERKEHR&quot;
+                ),
+                startTime2,
+                endTime2,
+                1000,
+                clock
+        );
+<span class="fc" id="L82">        pollRepository.save(poll2);</span>
+<span class="fc" id="L83">        polls.add(poll2);</span>
+<span class="fc" id="L84">        logger.info(&quot;✓ Abstimmung erstellt: Parkplatzkonzept (POLL-PK-2026) [AKTIV]&quot;);</span>
+
+        // Abstimmung 3: Bibliotheksöffnungszeiten (BEENDET - für Test-Zwecke)
+<span class="fc" id="L87">        LocalDateTime startTime3 = LocalDateTime.now(clock).minusDays(30);</span>
+<span class="fc" id="L88">        LocalDateTime endTime3 = LocalDateTime.now(clock).minusDays(5);</span>
+        
+<span class="fc" id="L90">        Poll poll3 = new Poll(</span>
+                &quot;POLL-BZ-2025&quot;,
+                &quot;Bibliotheksöffnungszeiten im WS 2025/26&quot;,
+<span class="fc" id="L93">                List.of(</span>
+                        &quot;OPTION-EXTENDED&quot;,
+                        &quot;OPTION-CURRENT&quot;,
+                        &quot;OPTION-REDUCED&quot;
+                ),
+                startTime3,
+                endTime3,
+                1000,
+                clock
+        );
+<span class="fc" id="L103">        poll3.close(); // Manuell geschlossen</span>
+<span class="fc" id="L104">        pollRepository.save(poll3);</span>
+<span class="fc" id="L105">        polls.add(poll3);</span>
+<span class="fc" id="L106">        logger.info(&quot;✓ Abstimmung erstellt: Bibliotheksöffnungszeiten (POLL-BZ-2025) [BEENDET]&quot;);</span>
+
+        // Abstimmung 4: Semesterticket (AKTIV - kommende Abstimmung)
+<span class="fc" id="L109">        LocalDateTime startTime4 = LocalDateTime.now(clock).plusDays(7);</span>
+<span class="fc" id="L110">        LocalDateTime endTime4 = LocalDateTime.now(clock).plusDays(21);</span>
+        
+<span class="fc" id="L112">        Poll poll4 = new Poll(</span>
+                &quot;POLL-ST-2026&quot;,
+                &quot;Höhe des Semesterticketpreises 2026&quot;,
+<span class="fc" id="L115">                List.of(</span>
+                        &quot;OPTION-CURRENT&quot;,
+                        &quot;OPTION-PLUS10&quot;,
+                        &quot;OPTION-PLUS20&quot;
+                ),
+                startTime4,
+                endTime4,
+                1000,
+                clock
+        );
+<span class="fc" id="L125">        pollRepository.save(poll4);</span>
+<span class="fc" id="L126">        polls.add(poll4);</span>
+<span class="fc" id="L127">        logger.info(&quot;✓ Abstimmung erstellt: Semesterticket (POLL-ST-2026) [KOMMEND]&quot;);</span>
+
+<span class="fc" id="L129">        logger.info(&quot;✓ PollSeeder abgeschlossen: &quot; + polls.size() + &quot; Abstimmungen erstellt&quot;);</span>
+<span class="fc" id="L130">        return polls;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

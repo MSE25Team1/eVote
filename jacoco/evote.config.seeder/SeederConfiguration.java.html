@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SeederConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">evote</a> &gt; <a href="index.source.html" class="el_package">evote.config.seeder</a> &gt; <span class="el_source">SeederConfiguration.java</span></div><h1>SeederConfiguration.java</h1><pre class="source lang-java linenums">package evote.config.seeder;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import java.util.logging.Logger;
+
+/**
+ * SeederConfiguration - Orchestriert die Ausführung der Seeder beim Start
+ * 
+ * Responsibility:
+ * - Definiert einen CommandLineRunner Bean, der nach dem Start aufgerufen wird
+ * - Orchestriert die Ausführung von VoterSeeder und PollSeeder
+ * - Logged die Seed-Aktivitäten
+ * 
+ * Diese Configuration wird automatisch von Spring erkannt und ausgeführt,
+ * wenn die Anwendung startet. Die Seeder füllen die In-Memory-Repositories
+ * mit Demo-Daten, damit die Frontend-Anwendung gegen realistische Daten arbeiten kann.
+ */
+@Configuration
+<span class="fc" id="L21">public class SeederConfiguration {</span>
+
+<span class="fc" id="L23">    private static final Logger logger = Logger.getLogger(SeederConfiguration.class.getName());</span>
+
+    @Bean
+    public CommandLineRunner seedDatabase(VoterSeeder voterSeeder, PollSeeder pollSeeder) {
+<span class="fc" id="L27">        return args -&gt; {</span>
+<span class="fc" id="L28">            logger.info(&quot;================================================&quot;);</span>
+<span class="fc" id="L29">            logger.info(&quot;🌱 Starte Database Seeding...&quot;);</span>
+<span class="fc" id="L30">            logger.info(&quot;================================================&quot;);</span>
+            
+            // Wähler erstellen
+<span class="fc" id="L33">            voterSeeder.seedVoters();</span>
+            
+            // Abstimmungen erstellen
+<span class="fc" id="L36">            pollSeeder.seedPolls();</span>
+            
+<span class="fc" id="L38">            logger.info(&quot;================================================&quot;);</span>
+<span class="fc" id="L39">            logger.info(&quot;✅ Database Seeding abgeschlossen!&quot;);</span>
+<span class="fc" id="L40">            logger.info(&quot;================================================&quot;);</span>
+<span class="fc" id="L41">            logger.info(&quot;&quot;);</span>
+<span class="fc" id="L42">            logger.info(&quot;Demo-Daten sind nun verfügbar:&quot;);</span>
+<span class="fc" id="L43">            logger.info(&quot;  - Wähler: VOTER-001 (Max Mustermann)&quot;);</span>
+<span class="fc" id="L44">            logger.info(&quot;  - Abstimmung: POLL-CK-2026 (Campus-Kantinenkonzept)&quot;);</span>
+<span class="fc" id="L45">            logger.info(&quot;&quot;);</span>
+<span class="fc" id="L46">        };</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

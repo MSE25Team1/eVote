@@ -17,32 +17,32 @@ import java.time.Clock;
  * Registriert die In-Memory Repository-Implementierungen als Spring Beans.
  */
 @Configuration
-<span class="nc" id="L20">public class PersistenceConfiguration {</span>
+<span class="fc" id="L20">public class PersistenceConfiguration {</span>
 
     @Bean
     public VoteRepository voteRepository() {
-<span class="nc" id="L24">        return new InMemoryVoteRepository();</span>
+<span class="fc" id="L24">        return new InMemoryVoteRepository();</span>
     }
 
     @Bean
     public VoterRepository voterRepository() {
-<span class="nc" id="L29">        return new InMemoryVoterRepository();</span>
+<span class="fc" id="L29">        return new InMemoryVoterRepository();</span>
     }
 
     @Bean
     public PollRepository pollRepository() {
-<span class="nc" id="L34">        return new InMemoryPollRepository();</span>
+<span class="fc" id="L34">        return new InMemoryPollRepository();</span>
     }
 
     @Bean
     public Clock clock() {
-<span class="nc" id="L39">        return Clock.systemUTC();</span>
+<span class="fc" id="L39">        return Clock.systemUTC();</span>
     }
 
     @Bean
     public DomainEventPublisher domainEventPublisher() {
-<span class="nc" id="L44">        return new DomainEventPublisher();</span>
+<span class="fc" id="L44">        return new DomainEventPublisher();</span>
     }
 }
 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

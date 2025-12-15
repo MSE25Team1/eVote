@@ -33,7 +33,7 @@ import java.time.Clock;
  * Dies verhindert enge Kopplung und ermöglicht Independent Deployment der Kontexte.
  */
 @Configuration
-<span class="nc" id="L36">public class VoteValidationConfiguration {</span>
+<span class="fc" id="L36">public class VoteValidationConfiguration {</span>
 
     /**
      * Spring Bean: Composite Validator für die Vote-Erstellung
@@ -54,13 +54,13 @@ import java.time.Clock;
             VoterValidator voterValidator,
             Clock clock) {
 
-<span class="nc" id="L57">        return new PollValidatorAdapter(pollValidator, clock)</span>
-<span class="nc" id="L58">                .and(new VoterValidatorAdapter(voterValidator))</span>
-<span class="nc" id="L59">                .and(new VoteOptionValidator());</span>
+<span class="fc" id="L57">        return new PollValidatorAdapter(pollValidator, clock)</span>
+<span class="fc" id="L58">                .and(new VoterValidatorAdapter(voterValidator))</span>
+<span class="fc" id="L59">                .and(new VoteOptionValidator());</span>
     }
 }
 
 
 
 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
