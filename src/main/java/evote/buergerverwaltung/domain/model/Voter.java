@@ -37,7 +37,7 @@ public class Voter {
     private final String voterId;
     private final Name name;
     private final Adresse adresse;
-    private final Email email;
+    private Email email;
     private final LocalDate geburtsdatum;
     private final String wahlkreis;
     private boolean isVerified;
@@ -188,6 +188,15 @@ public class Voter {
     public boolean isVerified() { return isVerified; }
     public LocalDateTime getRegisteredAt() { return registeredAt; }
     public Set<String> getVotedPollIds() { return new HashSet<>(votedPollIds); }
+
+    // Setters
+
+    public void setEmail(Email email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Email darf nicht null sein");
+        }
+        this.email = email;
+    }
 
     @Override
     public boolean equals(Object o) {
