@@ -3,13 +3,14 @@
 public record Email(String value) {
 
 <span class="fc" id="L5">    public Email {</span>
-<span class="fc bfc" id="L6" title="All 4 branches covered.">        if (value == null || !value.matches(&quot;^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$&quot;)) {</span>
-<span class="fc" id="L7">            throw new IllegalArgumentException(&quot;Ungültige E-Mail-Adresse: &quot; + value);</span>
+
+<span class="fc bfc" id="L7" title="All 4 branches covered.">        if (value == null || !value.matches(&quot;^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$&quot;)) {</span>
+<span class="fc" id="L8">            throw new IllegalArgumentException(&quot;Ungültige E-Mail-Adresse: &quot; + value);</span>
         }
-<span class="fc" id="L9">    }</span>
+<span class="fc" id="L10">    }</span>
     @Override
     public String toString() {
-<span class="fc" id="L12">        return value;</span>
+<span class="fc" id="L13">        return value;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

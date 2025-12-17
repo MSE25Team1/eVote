@@ -37,7 +37,7 @@ public class Voter {
     private final String voterId;
     private final Name name;
     private final Adresse adresse;
-    private final Email email;
+    private Email email;
     private final LocalDate geburtsdatum;
     private final String wahlkreis;
     private boolean isVerified;
@@ -189,27 +189,36 @@ public class Voter {
 <span class="fc" id="L189">    public LocalDateTime getRegisteredAt() { return registeredAt; }</span>
 <span class="fc" id="L190">    public Set&lt;String&gt; getVotedPollIds() { return new HashSet&lt;&gt;(votedPollIds); }</span>
 
+    // Setters
+
+    public void setEmail(Email email) {
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (email == null) {</span>
+<span class="nc" id="L196">            throw new IllegalArgumentException(&quot;Email darf nicht null sein&quot;);</span>
+        }
+<span class="nc" id="L198">        this.email = email;</span>
+<span class="nc" id="L199">    }</span>
+
     @Override
     public boolean equals(Object o) {
-<span class="fc bfc" id="L194" title="All 2 branches covered.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        if (!(o instanceof Voter)) return false;</span>
-<span class="fc" id="L196">        Voter voter = (Voter) o;</span>
-<span class="fc" id="L197">        return voterId.equals(voter.voterId); // Identität basiert auf voterId</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">        if (!(o instanceof Voter)) return false;</span>
+<span class="fc" id="L205">        Voter voter = (Voter) o;</span>
+<span class="fc" id="L206">        return voterId.equals(voter.voterId); // Identität basiert auf voterId</span>
     }
 
     @Override
     public int hashCode() {
-<span class="fc" id="L202">        return Objects.hash(voterId);</span>
+<span class="fc" id="L211">        return Objects.hash(voterId);</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L207">        return &quot;Voter{&quot; +</span>
+<span class="nc" id="L216">        return &quot;Voter{&quot; +</span>
                 &quot;voterId='&quot; + voterId + '\'' +
                 &quot;, name=&quot; + name +
                 &quot;, wahlkreis='&quot; + wahlkreis + '\'' +
                 &quot;, isVerified=&quot; + isVerified +
-<span class="nc" id="L212">                &quot;, votedPolls=&quot; + votedPollIds.size() +</span>
+<span class="nc" id="L221">                &quot;, votedPolls=&quot; + votedPollIds.size() +</span>
                 '}';
     }
 }

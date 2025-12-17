@@ -34,6 +34,11 @@ public class VoterController {
     public VoterResponse getById(@PathVariable(&quot;id&quot;) String id) {
 <span class="nc" id="L35">        return service.getById(id);</span>
     }
+
+    @PutMapping(&quot;/{id}&quot;)
+    public VoterResponse updateProfile(@PathVariable(&quot;id&quot;) String id, @RequestBody String email) {
+<span class="nc" id="L40">        return service.getEmail(id, email);</span>
+    }
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
