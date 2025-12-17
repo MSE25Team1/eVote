@@ -34,5 +34,10 @@ public class VoterController {
     public VoterResponse getById(@PathVariable("id") String id) {
         return service.getById(id);
     }
+
+    @PutMapping("/{id}")
+    public VoterResponse updateProfile(@PathVariable("id") String id, @RequestBody String email) {
+        return service.getEmail(id, email);
+    }
 }
 
