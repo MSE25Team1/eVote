@@ -34,6 +34,9 @@ public class VoteController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid VoteCreateRequest req) {
+        // DEBUG: Konsolenausgabe für erfolgreiche Abstimmung. Könnte/Sollte durch nen logger ersetzt werden
+        System.out.println("Backend empfängt Stimme für Poll: " + req.pollId() + " - Option: " + req.optionId());
+
         service.create(req);
         return ResponseEntity.created(null).build();
     }
