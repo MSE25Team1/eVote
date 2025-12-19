@@ -1,4 +1,4 @@
-package evote.stimmvergabe.infrastructure.web;
+package evote.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * Globaler Exception Handler für Vote-API Fehler.
+ * Global Exception Handler für die gesamte eVote-Anwendung.
  * Konvertiert Domain-Exceptions zu HTTP Response Codes.
  */
 @RestControllerAdvice
-public class VoteControllerExceptionHandler {
+public class GlobalExceptionHandler {
 
     /**
      * Konvertiert IllegalArgumentException zu 400 Bad Request
-     * (bei ungültigen Eingabedaten wie ungültiger Poll ID)
+     * (bei ungültigen Eingabedaten)
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
