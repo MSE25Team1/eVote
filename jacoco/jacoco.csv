@@ -27,6 +27,8 @@ evote,evote.stimmvergabe.events,VoteCastEvent,0,28,0,8,0,4,0,5,0,1
 evote,evote.config.seeder,PollSeeder,0,183,0,0,0,37,0,3,0,3
 evote,evote.config.seeder,SeederConfiguration,0,52,0,0,0,17,0,4,0,4
 evote,evote.config.seeder,VoterSeeder,0,237,0,0,0,37,0,3,0,3
+evote,evote.config,GlobalExceptionHandler,0,17,0,0,0,7,0,3,0,3
+evote,evote.config,CorsConfiguration,0,45,0,0,0,6,0,2,0,2
 evote,evote.config,PersistenceConfiguration,0,21,0,0,0,6,0,6,0,6
 evote,evote.aspects,RequestLoggingAspect,135,7,10,0,32,2,8,2,3,2
 evote,evote.aspects,LoggingAspect,39,10,0,0,9,3,2,2,2,2
@@ -38,6 +40,6 @@ evote,evote.buergerverwaltung.domain.valueobjects,Adresse,19,133,2,24,2,29,2,18,
 evote,evote.buergerverwaltung.domain.valueobjects,Email,0,21,0,4,0,5,0,4,0,2
 evote,evote.abstimmungsverwaltung.infrastructure.persistence,InMemoryPollRepository,4,51,0,4,2,11,1,6,1,4
 evote,evote.stimmvergabe.infrastructure.web,VoteController,0,14,0,0,0,5,0,2,0,2
-evote,evote.stimmvergabe.infrastructure.web,VoteControllerExceptionHandler,0,10,0,0,0,4,0,2,0,2
+evote,evote.stimmvergabe.infrastructure.web,VoteControllerExceptionHandler,14,3,0,0,6,1,2,1,2,1
 evote,evote.buergerverwaltung.domain.model,Voter,27,211,3,13,6,56,4,25,2,19
 evote,evote.buergerverwaltung.infrastructure.persistence,InMemoryVoterRepository,0,58,0,0,0,13,0,8,0,8

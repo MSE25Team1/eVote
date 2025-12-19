@@ -18,9 +18,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity&lt;String&gt; handleIllegalArgumentException(IllegalArgumentException ex) {
-<span class="fc" id="L21">        return ResponseEntity</span>
-<span class="fc" id="L22">                .status(HttpStatus.BAD_REQUEST)</span>
-<span class="fc" id="L23">                .body(&quot;Invalid input: &quot; + ex.getMessage());</span>
+<span class="nc" id="L21">        return ResponseEntity</span>
+<span class="nc" id="L22">                .status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L23">                .body(&quot;Invalid input: &quot; + ex.getMessage());</span>
+    }
+
+    /**
+     * Konvertiert IllegalStateException zu 409 Conflict
+     * (bei Zustandskonflikten wie bereits erfolgte Abstimmung)
+     */
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity&lt;String&gt; handleIllegalStateException(IllegalStateException ex) {
+<span class="nc" id="L32">        return ResponseEntity</span>
+<span class="nc" id="L33">                .status(HttpStatus.CONFLICT)</span>
+<span class="nc" id="L34">                .body(&quot;Conflict: &quot; + ex.getMessage());</span>
     }
 }
 
