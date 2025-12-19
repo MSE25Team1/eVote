@@ -500,6 +500,32 @@ class VoteControllerTest {
     }
 
     @Test
+    @DisplayName("POST /api/vote – Service wirft IllegalStateException → 409 Conflict (Voter hat bereits abgestimmt)")
+    void create_serviceThrowsIllegalStateException_returnsConflict() throws Exception {
+        // ---------- Arrange ----------
+        VoteCreateRequest requestDto = new VoteCreateRequest(
+                "POLL-CK-2026",
+                "OPTION-MIX",
+                "VOTER-001",
+                "correlation-uuid-double-voting"
+        );
+
+        doThrow(new IllegalStateException("Voter has already voted for this poll. Voter ID: VOTER-001, Poll ID: POLL-CK-2026"))
+                .when(voteService).create(any(VoteCreateRequest.class));
+
+        String jsonBody = objectMapper.writeValueAsString(requestDto);
+
+        // ---------- Act & Assert ----------
+        mockMvc.perform(post("/api/vote")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonBody))
+                .andExpect(status().isConflict())  // 409 statt 500
+                .andExpect(status().is(409));
+
+        verify(voteService).create(any(VoteCreateRequest.class));
+    }
+
+    @Test
     @DisplayName("POST /api/vote – mehrere Requests hintereinander → beide erfolgreich")
     void create_multipleRequestsSequentially_bothSucceed() throws Exception {
         // ---------- Arrange ----------
