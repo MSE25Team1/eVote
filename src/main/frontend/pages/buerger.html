@@ -40,7 +40,7 @@
                 <a href="buerger.html"
                    class="nav-link d-flex align-items-center gap-2">
                     <i class="bi bi-person-circle"></i>
-                    <strong>Max Mustermann</strong>
+                    <strong id="navbarVoterName">Profil</strong>
                 </a>
 
                 <!-- (Fake) Logout -->
@@ -92,11 +92,11 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label" for="vorname">Vorname:</label>
-                    <input id="vorname" class="form-control" type="text" value="Max" disabled>
+                    <input id="vorname" class="form-control" type="text" value="" disabled>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label" for="nachname">Nachname:</label>
-                    <input id="nachname" class="form-control" type="text" value="Mustermann" disabled>
+                    <input id="nachname" class="form-control" type="text" value="" disabled>
                 </div>
             </div>
 
@@ -106,7 +106,7 @@
                     <input id="email"
                            class="form-control"
                            type="email"
-                           value="max.mustermann@example.org">
+                           value="">
                     <span class="input-group-text" aria-hidden="true">
                         <i class="bi bi-pencil"></i>
                     </span>
@@ -118,23 +118,23 @@
 
             <div class="mb-3">
                 <label class="form-label" for="strasse">Straße und Hausnummer:</label>
-                <input id="strasse" class="form-control" type="text" value="Musterstraße 12" disabled>
+                <input id="strasse" class="form-control" type="text" value="" disabled>
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label class="form-label" for="plz">PLZ:</label>
-                    <input id="plz" class="form-control" type="text" value="12345" disabled>
+                    <input id="plz" class="form-control" type="text" value="" disabled>
                 </div>
                 <div class="col-md-8 mb-3">
                     <label class="form-label" for="ort">Ort:</label>
-                    <input id="ort" class="form-control" type="text" value="Musterstadt" disabled>
+                    <input id="ort" class="form-control" type="text" value="" disabled>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="wahlkreis">Wahlkreis:</label>
-                <input id="wahlkreis" class="form-control" type="text" value="101" disabled>
+                <input id="wahlkreis" class="form-control" type="text" value="" disabled>
             </div>
 
             <!-- Speichern -->
@@ -208,10 +208,7 @@
 
 <script src="../assets/bootstrap.bundle.min.js"></script>
 
-<script type="module" src="../api/voterApi.js"></script>
-<script type="module" src="../ui/dom.js"></script>
-<script type="module" src="../ui/buerger-create.js"></script>
-<script type="module" src="../ui/buerger-view.js"></script>
+<script type="module" src="../ui/buerger-profile.js"></script>
 
 </body>
 </html>
