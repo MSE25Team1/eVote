@@ -26,6 +26,11 @@ public class InMemoryPollRepository implements PollRepository {
     }
 
     @Override
+    public List<Poll> findAll() {
+        return new ArrayList<>(store.values());
+    }
+
+    @Override
     public List<Poll> findAllOpenAt(Instant instant) {
         List<Poll> result = new ArrayList<>();
         for (Poll poll : store.values()) {

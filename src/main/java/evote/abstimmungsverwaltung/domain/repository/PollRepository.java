@@ -13,6 +13,11 @@ public interface PollRepository {
     Optional<Poll> findById(String pollId);
 
     /**
+     * Liefert alle Abstimmungen.
+     */
+    List<Poll> findAll();
+
+    /**
      * Liefert alle Abstimmungen, die zum gegebenen Zeitpunkt geöffnet sind.
      */
     List<Poll> findAllOpenAt(Instant instant);
