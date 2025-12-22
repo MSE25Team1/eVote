@@ -60,10 +60,11 @@ src/
 - Übersicht über Abstimmungen:
 - Navbar mit Mock-Login („Max Mustermann“) und Logout-Link
 
-`pages/buerger.html` Profil / Bürgerverwaltung 
-- Anzeige der Bürgerstammdaten 
+`pages/buerger.html` Profil / Bürgerverwaltung
+- Anzeige der Bürgerstammdaten
 - Änderbar ist aktuell nur die Kontakt-E-Mail
-- Speichern löst später REST-Call über voterApi.js aus 
+- Speichern löst einen REST-Call über `voterApi.js` aus, um die neue E-Mail per **PUT /api/voter/{id}** zu speichern
+- `ui/buerger-profile.js` lädt beim Seitenstart die aktuellen Bürgerdaten und füllt damit das Formular
 - Zusätzlich: kleines Feedback-Formular („Fehler in deinen Daten entdeckt?“) – Demo ohne Backend-Logik
 
 `pages/voting001.html` Beispielabstimmung „Campus-Kantinenkonzept 2026“
