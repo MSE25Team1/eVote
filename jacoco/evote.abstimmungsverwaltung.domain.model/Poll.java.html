@@ -127,13 +127,25 @@ public class Poll {
 <span class="fc" id="L127">        return eligibleVoterCount;</span>
     }
 
+    public LocalDateTime getStartDate() {
+<span class="fc" id="L131">        return startDate;</span>
+    }
+
+    public LocalDateTime getEndDate() {
+<span class="fc" id="L135">        return endDate;</span>
+    }
+
+    public List&lt;String&gt; getOptions() {
+<span class="fc" id="L139">        return List.copyOf(options);</span>
+    }
+
     // Optional, falls du intern Counts prüfen willst
     public int getVoteCountFor(String optionId) {
-<span class="fc" id="L132">        Integer count = voteCounts.get(optionId);</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (count == null) {</span>
-<span class="fc" id="L134">            throw new IllegalArgumentException(&quot;Unknown option: &quot; + optionId);</span>
+<span class="fc" id="L144">        Integer count = voteCounts.get(optionId);</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (count == null) {</span>
+<span class="fc" id="L146">            throw new IllegalArgumentException(&quot;Unknown option: &quot; + optionId);</span>
         }
-<span class="fc" id="L136">        return count;</span>
+<span class="fc" id="L148">        return count;</span>
     }
 
     // ----------------------------------------------------------------------
@@ -141,24 +153,24 @@ public class Poll {
     // ----------------------------------------------------------------------
 
     public boolean isOpen() {
-<span class="fc" id="L144">        Instant instantNow = Instant.now(clock);</span>
-<span class="fc" id="L145">        return isOpenAt(instantNow);</span>
+<span class="fc" id="L156">        Instant instantNow = Instant.now(clock);</span>
+<span class="fc" id="L157">        return isOpenAt(instantNow);</span>
     }
 
     public boolean isOpenAt(Instant instant) {
-<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (manuallyClosed) {</span>
-<span class="fc" id="L150">            return false;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (manuallyClosed) {</span>
+<span class="fc" id="L162">            return false;</span>
         }
-<span class="fc" id="L152">        ZoneId zone = clock.getZone();</span>
-<span class="fc" id="L153">        LocalDateTime now = LocalDateTime.ofInstant(instant,zone);</span>
+<span class="fc" id="L164">        ZoneId zone = clock.getZone();</span>
+<span class="fc" id="L165">        LocalDateTime now = LocalDateTime.ofInstant(instant,zone);</span>
         // [startDate, endDate) – an Endzeitpunkt ist die Abstimmung geschlossen
-<span class="fc bfc" id="L155" title="All 4 branches covered.">        return !now.isBefore(startDate) &amp;&amp; now.isBefore(endDate);</span>
+<span class="fc bfc" id="L167" title="All 4 branches covered.">        return !now.isBefore(startDate) &amp;&amp; now.isBefore(endDate);</span>
     }
 
     public void close() {
         // idempotent
-<span class="fc" id="L160">        this.manuallyClosed = true;</span>
-<span class="fc" id="L161">    }</span>
+<span class="fc" id="L172">        this.manuallyClosed = true;</span>
+<span class="fc" id="L173">    }</span>
 
 
 
@@ -170,23 +182,23 @@ public class Poll {
 
     public void recordVote(String optionId) {
         // Poll muss geöffnet sein
-<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (!isOpen()) {</span>
-<span class="fc" id="L174">            throw new IllegalStateException(&quot;Poll is not open for voting&quot;);</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        if (!isOpen()) {</span>
+<span class="fc" id="L186">            throw new IllegalStateException(&quot;Poll is not open for voting&quot;);</span>
         }
 
         // Option muss gültig sein
-<span class="fc bfc" id="L178" title="All 6 branches covered.">        if (optionId == null || optionId.trim().isEmpty() || !voteCounts.containsKey(optionId)) {</span>
-<span class="fc" id="L179">            throw new IllegalArgumentException(&quot;Unknown or invalid option: &quot; + optionId);</span>
+<span class="fc bfc" id="L190" title="All 6 branches covered.">        if (optionId == null || optionId.trim().isEmpty() || !voteCounts.containsKey(optionId)) {</span>
+<span class="fc" id="L191">            throw new IllegalArgumentException(&quot;Unknown or invalid option: &quot; + optionId);</span>
         }
 
         // Anzahl wahlberechtigter Personen nicht überschreiten (falls gesetzt)
-<span class="fc bfc" id="L183" title="All 4 branches covered.">        if (eligibleVoterCount &gt; 0 &amp;&amp; totalVotes &gt;= eligibleVoterCount) {</span>
-<span class="fc" id="L184">            throw new IllegalStateException(&quot;Maximum number of eligible votes reached&quot;);</span>
+<span class="fc bfc" id="L195" title="All 4 branches covered.">        if (eligibleVoterCount &gt; 0 &amp;&amp; totalVotes &gt;= eligibleVoterCount) {</span>
+<span class="fc" id="L196">            throw new IllegalStateException(&quot;Maximum number of eligible votes reached&quot;);</span>
         }
 
         // Vote registrieren
-<span class="fc" id="L188">        voteCounts.computeIfPresent(optionId, (opt, count) -&gt; count + 1);</span>
-<span class="fc" id="L189">        totalVotes++;</span>
-<span class="fc" id="L190">    }</span>
+<span class="fc" id="L200">        voteCounts.computeIfPresent(optionId, (opt, count) -&gt; count + 1);</span>
+<span class="fc" id="L201">        totalVotes++;</span>
+<span class="fc" id="L202">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

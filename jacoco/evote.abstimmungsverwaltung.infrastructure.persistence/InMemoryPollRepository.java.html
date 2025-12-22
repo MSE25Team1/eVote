@@ -26,20 +26,25 @@ import evote.abstimmungsverwaltung.domain.repository.PollRepository;
     }
 
     @Override
+    public List&lt;Poll&gt; findAll() {
+<span class="fc" id="L30">        return new ArrayList&lt;&gt;(store.values());</span>
+    }
+
+    @Override
     public List&lt;Poll&gt; findAllOpenAt(Instant instant) {
-<span class="fc" id="L30">        List&lt;Poll&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L31" title="All 2 branches covered.">        for (Poll poll : store.values()) {</span>
-<span class="fc bfc" id="L32" title="All 2 branches covered.">            if (poll.isOpenAt(instant)) {</span>
-<span class="fc" id="L33">                result.add(poll);</span>
+<span class="fc" id="L35">        List&lt;Poll&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        for (Poll poll : store.values()) {</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">            if (poll.isOpenAt(instant)) {</span>
+<span class="fc" id="L38">                result.add(poll);</span>
             }
-<span class="fc" id="L35">        }</span>
-<span class="fc" id="L36">        return result;</span>
+<span class="fc" id="L40">        }</span>
+<span class="fc" id="L41">        return result;</span>
     }
 
     // optional für Tests
     public void clear() {
-<span class="nc" id="L41">        store.clear();</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L46">        store.clear();</span>
+<span class="nc" id="L47">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
