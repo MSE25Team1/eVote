@@ -41,7 +41,7 @@ class PollServiceTest {
     void findActivePollsForVoter_filtersParticipationAndTimeAndSortsByEndDate() {
         Voter voter = Voter.register(
                 new Name("Sandra", "Schmidt"),
-                new Adresse("Hauptstrasse 1", "12345", "Berlin"),
+                new Adresse("Hauptstrasse", "1", "", "12345", "Berlin"),
                 new Email("sandra@example.com"),
                 LocalDate.of(2000, 1, 1),
                 "Berlin"
