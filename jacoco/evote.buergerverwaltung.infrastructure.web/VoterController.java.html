@@ -3,6 +3,7 @@
 import evote.buergerverwaltung.application.VoterService;
 import evote.buergerverwaltung.application.dto.VoterCreateRequest;
 import evote.buergerverwaltung.application.dto.VoterResponse;
+import evote.buergerverwaltung.application.dto.VoterUpdateRequest;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -21,23 +22,24 @@ public class VoterController {
 
     private final VoterService service;
 
-<span class="fc" id="L24">    public VoterController(VoterService service) {</span>
-<span class="fc" id="L25">        this.service = service;</span>
-<span class="fc" id="L26">    }</span>
+<span class="fc" id="L25">    public VoterController(VoterService service) {</span>
+<span class="fc" id="L26">        this.service = service;</span>
+<span class="fc" id="L27">    }</span>
 
     @PostMapping
     public VoterResponse create(@RequestBody @Valid VoterCreateRequest req) {
-<span class="nc" id="L30">        return service.create(req);</span>
+<span class="nc" id="L31">        return service.create(req);</span>
     }
 
     @GetMapping(&quot;/{id}&quot;)
     public VoterResponse getById(@PathVariable(&quot;id&quot;) String id) {
-<span class="nc" id="L35">        return service.getById(id);</span>
+<span class="nc" id="L36">        return service.getById(id);</span>
     }
 
     @PutMapping(&quot;/{id}&quot;)
-    public VoterResponse updateProfile(@PathVariable(&quot;id&quot;) String id, @RequestBody String email) {
-<span class="nc" id="L40">        return service.getEmail(id, email);</span>
+    public VoterResponse updateProfile(@PathVariable(&quot;id&quot;) String id,
+                                       @RequestBody @Valid VoterUpdateRequest request) {
+<span class="nc" id="L42">        return service.updateEmail(id, request.email());</span>
     }
 }
 

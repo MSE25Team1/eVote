@@ -5,7 +5,9 @@ import evote.buergerverwaltung.application.dto.VoterResponse;
 import evote.buergerverwaltung.domain.model.Voter;
 import evote.buergerverwaltung.domain.repository.VoterRepository;
 import evote.buergerverwaltung.domain.valueobjects.Email;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * VoterService - Application Service
@@ -19,42 +21,51 @@ public class VoterService {
     private final VoterRepository repo;
     private final VoterAssembler assembler;
 
-<span class="fc" id="L22">    public VoterService(VoterRepository repo, VoterAssembler assembler) {</span>
-<span class="fc" id="L23">        this.repo = repo;</span>
-<span class="fc" id="L24">        this.assembler = assembler;</span>
-<span class="fc" id="L25">    }</span>
+<span class="fc" id="L24">    public VoterService(VoterRepository repo, VoterAssembler assembler) {</span>
+<span class="fc" id="L25">        this.repo = repo;</span>
+<span class="fc" id="L26">        this.assembler = assembler;</span>
+<span class="fc" id="L27">    }</span>
 
     /**
      * Use Case: Register a new voter
      */
     public VoterResponse create(VoterCreateRequest request) {
-<span class="fc" id="L31">        Voter voter = assembler.toDomain(request);</span>
+<span class="fc" id="L33">        Voter voter = assembler.toDomain(request);</span>
         
         // Für das Bürgerverwaltungs-Frontend direkt verifizieren,
         // damit isVerified / registeredAt gesetzt sind.
-<span class="fc" id="L35">        voter.verify();</span>
+<span class="fc" id="L37">        voter.verify();</span>
         
-<span class="fc" id="L37">        repo.save(voter);</span>
+<span class="fc" id="L39">        repo.save(voter);</span>
         
-<span class="fc" id="L39">        return assembler.toResponse(voter);</span>
+<span class="fc" id="L41">        return assembler.toResponse(voter);</span>
     }
 
     /**
      * Use Case: Retrieve voter by ID
      */
     public VoterResponse getById(String id) {
-<span class="fc" id="L46">        Voter voter = repo.findById(id)</span>
-<span class="pc" id="L47">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Voter mit ID &quot; + id + &quot; nicht gefunden&quot;));</span>
-<span class="nc" id="L48">        return assembler.toResponse(voter);</span>
+<span class="nc" id="L48">        Voter voter = findVoterOrThrow(id);</span>
+<span class="nc" id="L49">        return assembler.toResponse(voter);</span>
     }
 
-    public VoterResponse getEmail(String voterId, String email) {
-<span class="nc" id="L52">        Voter voter = repo.findById(voterId)</span>
-<span class="nc" id="L53">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Bürger nicht gefunden!&quot;));</span>
+    public VoterResponse updateEmail(String voterId, String email) {
+<span class="nc" id="L53">        Voter voter = findVoterOrThrow(voterId);</span>
 
-<span class="nc" id="L55">        voter.setEmail(new Email(email));</span>
-<span class="nc" id="L56">        repo.save(voter);</span>
-<span class="nc" id="L57">        return assembler.toResponse(voter);</span>
+        try {
+<span class="nc" id="L56">            voter.setEmail(new Email(email));</span>
+<span class="nc" id="L57">            repo.save(voter);</span>
+<span class="nc" id="L58">        } catch (IllegalArgumentException ex) {</span>
+<span class="nc" id="L59">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);</span>
+<span class="nc" id="L60">        }</span>
+
+<span class="nc" id="L62">        return assembler.toResponse(voter);</span>
+    }
+
+    private Voter findVoterOrThrow(String id) {
+<span class="pc" id="L66">        return repo.findById(id)</span>
+<span class="pc" id="L67">                .orElseThrow(() -&gt; new ResponseStatusException(HttpStatus.NOT_FOUND,</span>
+                        &quot;Bürger mit ID &quot; + id + &quot; nicht gefunden&quot;));
     }
 }
 
