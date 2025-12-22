@@ -48,7 +48,7 @@ public class VoterService {
         return assembler.toResponse(voter);
     }
 
-    public VoterResponse getEmail(String voterId, String email) {
+    public VoterResponse updateEmail(String voterId, String email) {
         Voter voter = repo.findById(voterId)
                 .orElseThrow(() -> new IllegalArgumentException("Bürger nicht gefunden!"));
 

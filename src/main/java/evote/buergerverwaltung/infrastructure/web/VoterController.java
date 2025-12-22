@@ -3,6 +3,7 @@ package evote.buergerverwaltung.infrastructure.web;
 import evote.buergerverwaltung.application.VoterService;
 import evote.buergerverwaltung.application.dto.VoterCreateRequest;
 import evote.buergerverwaltung.application.dto.VoterResponse;
+import evote.buergerverwaltung.application.dto.VoterUpdateRequest;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -36,8 +37,9 @@ public class VoterController {
     }
 
     @PutMapping("/{id}")
-    public VoterResponse updateProfile(@PathVariable("id") String id, @RequestBody String email) {
-        return service.getEmail(id, email);
+    public VoterResponse updateProfile(@PathVariable("id") String id,
+                                       @RequestBody @Valid VoterUpdateRequest request) {
+        return service.updateEmail(id, request.email());
     }
 }
 
