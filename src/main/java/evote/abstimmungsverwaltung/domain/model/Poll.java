@@ -127,6 +127,18 @@ public class Poll {
         return eligibleVoterCount;
     }
 
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public List<String> getOptions() {
+        return List.copyOf(options);
+    }
+
     // Optional, falls du intern Counts prüfen willst
     public int getVoteCountFor(String optionId) {
         Integer count = voteCounts.get(optionId);
