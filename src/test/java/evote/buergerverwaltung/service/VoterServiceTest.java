@@ -7,6 +7,8 @@ import evote.buergerverwaltung.infrastructure.persistence.InMemoryVoterRepositor
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,9 +55,11 @@ class VoterServiceTest {
     }
 
     @Test
-    @DisplayName("getById() should throw IllegalArgumentException when voter does not exist")
+    @DisplayName("getById() should throw 404 when voter does not exist")
     void getById_shouldThrowException() {
-        assertThrows(IllegalArgumentException.class,
+        var ex = assertThrows(ResponseStatusException.class,
                 () -> service.getById("unknown-id"));
+
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
 }
