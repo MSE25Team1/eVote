@@ -1,5 +1,6 @@
 package evote.abstimmungsverwaltung.domain.model;
 
+import evote.abstimmungsverwaltung.events.PollEndedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -416,6 +417,81 @@ class PollTest {
 
         // Assert
         assertEquals(1234, poll.getEligibleVoterCount());
+    }
+
+    // ----------------------------------------------------------------------
+    // close() & PollEndedEvent
+    // ----------------------------------------------------------------------
+
+    @Test
+    void close_shouldCreatePollEndedEvent() {
+        // Arrange
+        Poll poll = createDefaultPoll();
+        List<Object> eventsBeforeClose = poll.getDomainEvents();
+
+        // Act
+        poll.close();
+
+        // Assert
+        List<Object> eventsAfterClose = poll.getDomainEvents();
+        assertEquals(1, eventsAfterClose.size());
+        assertTrue(eventsAfterClose.get(0) instanceof PollEndedEvent);
+    }
+
+    @Test
+    void close_shouldCreateEventWithCorrectPollId() {
+        // Arrange
+        Poll poll = createPollWithId("poll-abc-123");
+
+        // Act
+        poll.close();
+
+        // Assert
+        List<Object> events = poll.getDomainEvents();
+        PollEndedEvent event = (PollEndedEvent) events.get(0);
+        assertEquals("poll-abc-123", event.pollId());
+    }
+
+    @Test
+    void close_shouldCreateEventWithCurrentTimestamp() {
+        // Arrange
+        Poll poll = createDefaultPoll();
+        var closedAtBeforeClose = java.time.Instant.now(fixedClock);
+
+        // Act
+        poll.close();
+
+        // Assert
+        List<Object> events = poll.getDomainEvents();
+        PollEndedEvent event = (PollEndedEvent) events.get(0);
+        assertEquals(closedAtBeforeClose, event.endedAt());
+    }
+
+    @Test
+    void close_shouldNotDuplicateEvent_whenCalledMultipleTimes() {
+        // Arrange
+        Poll poll = createDefaultPoll();
+
+        // Act
+        poll.close();
+        poll.close();
+        poll.close();
+
+        // Assert
+        List<Object> events = poll.getDomainEvents();
+        assertEquals(3, events.size());
+        assertTrue(events.stream().allMatch(e -> e instanceof PollEndedEvent));
+    }
+
+    @Test
+    void getDomainEvents_shouldReturnImmutableList() {
+        // Arrange
+        Poll poll = createDefaultPoll();
+        poll.close();
+        List<Object> events = poll.getDomainEvents();
+
+        // Act & Assert
+        assertThrows(UnsupportedOperationException.class, () -> events.add(new Object()));
     }
 
     // ----------------------------------------------------------------------

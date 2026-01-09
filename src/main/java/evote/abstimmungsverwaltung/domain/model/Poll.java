@@ -1,5 +1,6 @@
 package evote.abstimmungsverwaltung.domain.model;
 
+import evote.abstimmungsverwaltung.events.PollEndedEvent;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class Poll {
     private boolean manuallyClosed = false;
     private int totalVotes = 0;
     private final Map<String, Integer> voteCounts = new HashMap<>();
+    private final List<Object> domainEvents = new ArrayList<>();
 
     public Poll(
             String pollId,
@@ -170,6 +172,15 @@ public class Poll {
     public void close() {
         // idempotent
         this.manuallyClosed = true;
+
+        // Erzeuge PollEndedEvent
+        Instant closedAt = Instant.now(clock);
+        domainEvents.add(new PollEndedEvent(pollId, closedAt));
+    }
+
+    // Methode zur Abfrage der Domain Events
+    public List<Object> getDomainEvents() {
+        return List.copyOf(domainEvents);
     }
 
 
