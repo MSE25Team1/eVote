@@ -8,7 +8,6 @@ import java.time.Instant;
  * This is implemented as a Java record to reduce boilerplate. A compact canonical
  * constructor performs input validation equivalent to the previous class.
  */
-// TODO: wird von der close Methode der Poll ausgelöst.
 public record PollEndedEvent(String pollId, Instant endedAt) {
 
     public PollEndedEvent {
