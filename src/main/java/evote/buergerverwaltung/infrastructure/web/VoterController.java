@@ -9,11 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 /**
- * VoterController - REST Adapter (Infrastructure Layer)
- * 
- * Responsibility: Exposes HTTP endpoints for voter management.
- * This is an adapter that translates HTTP requests into application service calls.
- * Thin layer - all business logic is in the application/domain layers.
+ * REST-Adapter der Infrastruktur, der HTTP-Aufrufe in Use-Cases der Anwendungsschicht übersetzt.
+ * Die Fachlogik bleibt in Domäne und Anwendungsschicht.
  */
 @RestController
 @RequestMapping("/api/voter")
@@ -42,4 +39,3 @@ public class VoterController {
         return service.updateEmail(id, request.email());
     }
 }
-

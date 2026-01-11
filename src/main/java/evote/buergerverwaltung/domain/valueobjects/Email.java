@@ -1,5 +1,8 @@
 package evote.buergerverwaltung.domain.valueobjects;
 
+/**
+ * Value Object für validierte E-Mail-Adressen im Bürgerkontext.
+ */
 public record Email(String value) {
 
     public Email {

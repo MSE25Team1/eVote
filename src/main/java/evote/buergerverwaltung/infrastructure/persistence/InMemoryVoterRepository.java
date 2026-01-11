@@ -6,10 +6,7 @@ import evote.buergerverwaltung.domain.repository.VoterRepository;
 import java.util.*;
 
 /**
- * InMemoryVoterRepository - Persistence Adapter (Infrastructure Layer)
- * 
- * Responsibility: Implements VoterRepository interface using in-memory storage.
- * This is an infrastructure concern - the domain only knows about the interface.
+ * In-Memory-Implementierung des Repository-Ports der Domäne (Infrastruktur-Adapter).
  */
 public class InMemoryVoterRepository implements VoterRepository {
 
@@ -47,4 +44,3 @@ public class InMemoryVoterRepository implements VoterRepository {
         store.remove(voterId);
     }
 }
-

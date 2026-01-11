@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+/**
+ * Aggregat der Abstimmungsverwaltung, das eine Abstimmung samt Optionen und Zeitfenster kapselt.
+ */
 public class Poll {
 
     private final String pollId;

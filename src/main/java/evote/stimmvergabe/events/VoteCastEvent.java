@@ -3,9 +3,8 @@ package evote.stimmvergabe.events;
 import java.time.Instant;
 
 /**
- * Immutable event representing that a vote has been cast.
- * Implemented as a Java record to remove boilerplate while keeping
- * input validation and backward-compatible accessor names.
+ * Domänenereignis, das die erfolgreiche Stimmabgabe beschreibt.
+ * Der Record stellt eine schlanke, validierende Darstellung bereit.
  */
 public record VoteCastEvent(String voteId, String pollId, String optionId, Instant castAt) {
 

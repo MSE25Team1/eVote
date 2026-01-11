@@ -10,6 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import evote.abstimmungsverwaltung.domain.model.Poll;
 import evote.abstimmungsverwaltung.domain.repository.PollRepository;
 
+/**
+ * In-Memory-Repository als Infrastruktur-Adapter für Abstimmungen.
+ */
 public class InMemoryPollRepository implements PollRepository {
 
     private final Map<String, Poll> store = new ConcurrentHashMap<>();
@@ -46,4 +49,3 @@ public class InMemoryPollRepository implements PollRepository {
         store.clear();
     }
 }
-

@@ -6,8 +6,7 @@ import java.time.Clock;
 import java.time.Instant;
 
 /**
- * Vote - A value object representing a cast vote in Domain-Driven Design.
- * Records signal immutability and provide automatic equals(), hashCode(), and toString() implementations.
+ * Value Object der Stimmvergabe, das eine abgegebene Stimme samt Zeitstempel abbildet.
  */
 public record Vote(
         String voteId,
@@ -18,8 +17,7 @@ public record Vote(
 ) {
 
     /**
-     * Compact constructor for validation.
-     * Ensures all fields are valid before creating a Vote instance.
+     * Kompakter Konstruktor zur Validierung aller Pflichtfelder.
      */
     public Vote {
         if (voteId == null || voteId.trim().isEmpty()) {
@@ -40,8 +38,7 @@ public record Vote(
     }
 
     /**
-     * Static factory method to create a Vote with a Clock.
-     * This method accepts a Clock and captures the current instant for the vote.
+     * Factory-Methode zum Erzeugen einer Stimme mit Zeitstempel aus einer Clock.
      */
     public static Vote of(String voteId, String pollId, String optionId, String correlationId, Clock clock) {
         if (clock == null) {
@@ -51,42 +48,42 @@ public record Vote(
     }
 
     /**
-     * Backward-compatible getter for voteId.
+     * Getter für die Vote-ID (kompatibel mit bestehendem Code).
      */
     public String getVoteId() {
         return voteId;
     }
 
     /**
-     * Backward-compatible getter for pollId.
+     * Getter für die Poll-ID (kompatibel mit bestehendem Code).
      */
     public String getPollId() {
         return pollId;
     }
 
     /**
-     * Backward-compatible getter for optionId.
+     * Getter für die Options-ID (kompatibel mit bestehendem Code).
      */
     public String getOptionId() {
         return optionId;
     }
 
     /**
-     * Backward-compatible getter for correlationId.
+     * Getter für die Correlation-ID (kompatibel mit bestehendem Code).
      */
     public String getCorrelationId() {
         return correlationId;
     }
 
     /**
-     * Backward-compatible getter for castAt.
+     * Getter für den Zeitpunkt der Stimmabgabe (kompatibel mit bestehendem Code).
      */
     public Instant getCastAt() {
         return castAt;
     }
 
     /**
-     * Domain Event, created when the vote was cast.
+     * Erzeugt das Domänenereignis für die abgegebene Stimme.
      */
     public VoteCastEvent getDomainEvent() {
         return new VoteCastEvent(voteId, pollId, optionId, castAt);

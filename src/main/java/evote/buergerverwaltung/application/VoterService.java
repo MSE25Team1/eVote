@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- * VoterService - Application Service
- * 
- * Responsibility: Orchestrates use cases for voter management.
- * Delegates mapping to VoterAssembler, keeping this layer thin.
+ * Anwendungsschnittstelle der Bürgerverwaltung, die die Use-Cases orchestriert
+ * und das Mapping an den {@link VoterAssembler} delegiert.
  */
 @Service
 public class VoterService {
@@ -27,7 +25,7 @@ public class VoterService {
     }
 
     /**
-     * Use Case: Register a new voter
+     * Use Case: Registriert eine neue wahlberechtigte Person.
      */
     public VoterResponse create(VoterCreateRequest request) {
         Voter voter = assembler.toDomain(request);
@@ -42,7 +40,7 @@ public class VoterService {
     }
 
     /**
-     * Use Case: Retrieve voter by ID
+     * Use Case: Lädt eine wahlberechtigte Person per ID.
      */
     public VoterResponse getById(String id) {
         Voter voter = findVoterOrThrow(id);
@@ -68,4 +66,3 @@ public class VoterService {
                         "Bürger mit ID " + id + " nicht gefunden"));
     }
 }
-

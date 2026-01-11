@@ -3,13 +3,8 @@ package evote.buergerverwaltung.events;
 import java.time.LocalDateTime;
 
 /**
- * VoterRegisteredEvent - Domain Event
- *
- * Published when a new Voter successfully completes registration and verification.
- * This is a factual record of what happened in the domain, used for:
- * - Triggering side effects (e.g., sending confirmation email)
- * - Synchronizing other Bounded Contexts (e.g., poll eligibility)
- * - Audit logging
+ * Domänenereignis, das nach erfolgreicher Registrierung und Verifikation ausgelöst wird.
+ * Dient der Synchronisation anderer Bounded Contexts und dem Nachvollziehen von Abläufen.
  */
 public record VoterRegisteredEvent(
         String voterId,
