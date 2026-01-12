@@ -7,11 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * VoteController - REST Adapter (Infrastructure Layer)
- *
- * Responsibility: Exposes HTTP endpoints for vote casting.
- * This is an adapter that translates HTTP requests into application service calls.
- * Thin layer - all business logic is in the application/domain layers.
+ * REST-Adapter der Stimmvergabe, der HTTP-Requests an den VoteService weiterleitet.
  */
 @RestController
 @RequestMapping(&quot;/api/vote&quot;)
@@ -20,9 +16,9 @@ public class VoteController {
 
     private final VoteService service;
 
-<span class="fc" id="L23">    public VoteController(VoteService service) {</span>
-<span class="fc" id="L24">        this.service = service;</span>
-<span class="fc" id="L25">    }</span>
+<span class="fc" id="L19">    public VoteController(VoteService service) {</span>
+<span class="fc" id="L20">        this.service = service;</span>
+<span class="fc" id="L21">    }</span>
 
     /**
      * POST /api/vote
@@ -34,8 +30,8 @@ public class VoteController {
 
     @PostMapping
     public ResponseEntity&lt;Void&gt; create(@RequestBody @Valid VoteCreateRequest req) {
-<span class="fc" id="L37">        service.create(req);</span>
-<span class="fc" id="L38">        return ResponseEntity.created(null).build();</span>
+<span class="fc" id="L33">        service.create(req);</span>
+<span class="fc" id="L34">        return ResponseEntity.created(null).build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

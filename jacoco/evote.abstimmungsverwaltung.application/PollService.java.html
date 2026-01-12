@@ -11,6 +11,10 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Anwendungsschicht der Abstimmungsverwaltung, die verfügbare Abstimmungen
+ * für wahlberechtigte Personen ermittelt.
+ */
 @Service
 public class PollService {
 
@@ -22,28 +26,28 @@ public class PollService {
     public PollService(PollRepository pollRepository,
                        VoterRepository voterRepository,
                        Clock clock,
-<span class="fc" id="L25">                       PollAssembler pollAssembler) {</span>
-<span class="fc" id="L26">        this.pollRepository = pollRepository;</span>
-<span class="fc" id="L27">        this.voterRepository = voterRepository;</span>
-<span class="fc" id="L28">        this.clock = clock;</span>
-<span class="fc" id="L29">        this.pollAssembler = pollAssembler;</span>
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L29">                       PollAssembler pollAssembler) {</span>
+<span class="fc" id="L30">        this.pollRepository = pollRepository;</span>
+<span class="fc" id="L31">        this.voterRepository = voterRepository;</span>
+<span class="fc" id="L32">        this.clock = clock;</span>
+<span class="fc" id="L33">        this.pollAssembler = pollAssembler;</span>
+<span class="fc" id="L34">    }</span>
 
     /**
      * Liefert alle aktuell offenen Abstimmungen, an denen der Voter noch teilnehmen kann.
      */
     public List&lt;PollDTO&gt; findActivePollsForVoter(String voterId) {
-<span class="fc" id="L36">        Voter voter = voterRepository.findById(voterId)</span>
-<span class="fc" id="L37">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Voter not found: &quot; + voterId));</span>
+<span class="fc" id="L40">        Voter voter = voterRepository.findById(voterId)</span>
+<span class="fc" id="L41">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Voter not found: &quot; + voterId));</span>
 
-<span class="fc" id="L39">        Instant now = Instant.now(clock);</span>
+<span class="fc" id="L43">        Instant now = Instant.now(clock);</span>
 
-<span class="fc" id="L41">        return pollRepository.findAll().stream()</span>
-<span class="fc bfc" id="L42" title="All 2 branches covered.">                .filter(poll -&gt; !voter.hasVoted(poll.getPollId()))</span>
-<span class="fc" id="L43">                .filter(poll -&gt; poll.isOpenAt(now))</span>
-<span class="fc" id="L44">                .map(pollAssembler::toDTO)</span>
-<span class="fc" id="L45">                .sorted(Comparator.comparing(PollDTO::endDate))</span>
-<span class="fc" id="L46">                .toList();</span>
+<span class="fc" id="L45">        return pollRepository.findAll().stream()</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">                .filter(poll -&gt; !voter.hasVoted(poll.getPollId()))</span>
+<span class="fc" id="L47">                .filter(poll -&gt; poll.isOpenAt(now))</span>
+<span class="fc" id="L48">                .map(pollAssembler::toDTO)</span>
+<span class="fc" id="L49">                .sorted(Comparator.comparing(PollDTO::endDate))</span>
+<span class="fc" id="L50">                .toList();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+/**
+ * Aggregat der Abstimmungsverwaltung, das eine Abstimmung samt Optionen und Zeitfenster kapselt.
+ */
 public class Poll {
 
     private final String pollId;
@@ -17,10 +20,10 @@ public class Poll {
     private final int eligibleVoterCount;
     private final Clock clock;
 
-<span class="fc" id="L20">    private boolean manuallyClosed = false;</span>
-<span class="fc" id="L21">    private int totalVotes = 0;</span>
-<span class="fc" id="L22">    private final Map&lt;String, Integer&gt; voteCounts = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L23">    private final List&lt;Object&gt; domainEvents = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L23">    private boolean manuallyClosed = false;</span>
+<span class="fc" id="L24">    private int totalVotes = 0;</span>
+<span class="fc" id="L25">    private final Map&lt;String, Integer&gt; voteCounts = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L26">    private final List&lt;Object&gt; domainEvents = new ArrayList&lt;&gt;();</span>
 
     public Poll(
             String pollId,
@@ -30,25 +33,25 @@ public class Poll {
             LocalDateTime endDate,
             int eligibleVoterCount,
             Clock clock
-<span class="fc" id="L33">    ) {</span>
-<span class="fc" id="L34">        validateConstructorArguments(pollId, title, options, startDate, endDate, eligibleVoterCount, clock);</span>
+<span class="fc" id="L36">    ) {</span>
+<span class="fc" id="L37">        validateConstructorArguments(pollId, title, options, startDate, endDate, eligibleVoterCount, clock);</span>
 
-<span class="fc" id="L36">        this.pollId = pollId;</span>
-<span class="fc" id="L37">        this.title = title;</span>
-<span class="fc" id="L38">        this.options = List.copyOf(options); // unveränderliche Kopie</span>
-<span class="fc" id="L39">        this.startDate = startDate;</span>
-<span class="fc" id="L40">        this.endDate = endDate;</span>
-<span class="fc" id="L41">        this.eligibleVoterCount = eligibleVoterCount;</span>
-<span class="fc" id="L42">        this.clock = clock;</span>
+<span class="fc" id="L39">        this.pollId = pollId;</span>
+<span class="fc" id="L40">        this.title = title;</span>
+<span class="fc" id="L41">        this.options = List.copyOf(options); // unveränderliche Kopie</span>
+<span class="fc" id="L42">        this.startDate = startDate;</span>
+<span class="fc" id="L43">        this.endDate = endDate;</span>
+<span class="fc" id="L44">        this.eligibleVoterCount = eligibleVoterCount;</span>
+<span class="fc" id="L45">        this.clock = clock;</span>
 
-<span class="fc" id="L44">        initializeVoteCounts();</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L47">        initializeVoteCounts();</span>
+<span class="fc" id="L48">    }</span>
 
     private void initializeVoteCounts() {
-<span class="fc bfc" id="L48" title="All 2 branches covered.">        for (String opt : this.options) {</span>
-<span class="fc" id="L49">            voteCounts.put(opt, 0);</span>
-<span class="fc" id="L50">        }</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        for (String opt : this.options) {</span>
+<span class="fc" id="L52">            voteCounts.put(opt, 0);</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">    }</span>
 
     private void validateConstructorArguments(
             String pollId,
@@ -60,94 +63,94 @@ public class Poll {
             Clock clock
     ) {
         // --- Null-Checks ---
-<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (pollId == null) {</span>
-<span class="fc" id="L64">            throw new IllegalArgumentException(&quot;pollId must not be null&quot;);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (pollId == null) {</span>
+<span class="fc" id="L67">            throw new IllegalArgumentException(&quot;pollId must not be null&quot;);</span>
         }
-<span class="fc bfc" id="L66" title="All 4 branches covered.">        if (startDate == null || endDate == null) {</span>
-<span class="fc" id="L67">            throw new IllegalArgumentException(&quot;startDate and endDate must not be null&quot;);</span>
+<span class="fc bfc" id="L69" title="All 4 branches covered.">        if (startDate == null || endDate == null) {</span>
+<span class="fc" id="L70">            throw new IllegalArgumentException(&quot;startDate and endDate must not be null&quot;);</span>
         }
-<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (clock == null) {</span>
-<span class="fc" id="L70">            throw new IllegalArgumentException(&quot;clock must not be null&quot;);</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (clock == null) {</span>
+<span class="fc" id="L73">            throw new IllegalArgumentException(&quot;clock must not be null&quot;);</span>
         }
 
         // --- Titel prüfen ---
-<span class="fc bfc" id="L74" title="All 4 branches covered.">        if (title == null || title.trim().isEmpty()) {</span>
-<span class="fc" id="L75">            throw new IllegalArgumentException(&quot;title must not be null or blank&quot;);</span>
+<span class="fc bfc" id="L77" title="All 4 branches covered.">        if (title == null || title.trim().isEmpty()) {</span>
+<span class="fc" id="L78">            throw new IllegalArgumentException(&quot;title must not be null or blank&quot;);</span>
         }
 
         // --- Options prüfen ---
-<span class="fc" id="L79">        validateOptions(options);</span>
+<span class="fc" id="L82">        validateOptions(options);</span>
 
         // --- Zeit-Invariante: startDate &lt; endDate ---
-<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (!startDate.isBefore(endDate)) {</span>
-<span class="fc" id="L83">            throw new IllegalArgumentException(&quot;startDate must be before endDate&quot;);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (!startDate.isBefore(endDate)) {</span>
+<span class="fc" id="L86">            throw new IllegalArgumentException(&quot;startDate must be before endDate&quot;);</span>
         }
 
         // --- Wahlberechtigte ---
-<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (eligibleVoterCount &lt; 0) {</span>
-<span class="fc" id="L88">            throw new IllegalArgumentException(&quot;eligibleVoterCount must not be negative&quot;);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (eligibleVoterCount &lt; 0) {</span>
+<span class="fc" id="L91">            throw new IllegalArgumentException(&quot;eligibleVoterCount must not be negative&quot;);</span>
         }
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L93">    }</span>
 
     private void validateOptions(List&lt;String&gt; options) {
-<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (options == null) {</span>
-<span class="fc" id="L94">            throw new NullPointerException(&quot;options must not be null&quot;);</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (options == null) {</span>
+<span class="fc" id="L97">            throw new NullPointerException(&quot;options must not be null&quot;);</span>
         }
-<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (options.isEmpty()) {</span>
-<span class="fc" id="L97">            throw new IllegalArgumentException(&quot;options must not be empty&quot;);</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (options.isEmpty()) {</span>
+<span class="fc" id="L100">            throw new IllegalArgumentException(&quot;options must not be empty&quot;);</span>
         }
 
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (String opt : options) {</span>
-<span class="fc bfc" id="L101" title="All 4 branches covered.">            if (opt == null || opt.trim().isEmpty()) {</span>
-<span class="fc" id="L102">                throw new IllegalArgumentException(&quot;options must not contain null or blank values&quot;);</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        for (String opt : options) {</span>
+<span class="fc bfc" id="L104" title="All 4 branches covered.">            if (opt == null || opt.trim().isEmpty()) {</span>
+<span class="fc" id="L105">                throw new IllegalArgumentException(&quot;options must not contain null or blank values&quot;);</span>
             }
-<span class="fc" id="L104">        }</span>
+<span class="fc" id="L107">        }</span>
 
-<span class="fc" id="L106">        Set&lt;String&gt; unique = new HashSet&lt;&gt;(options);</span>
-<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (unique.size() != options.size()) {</span>
-<span class="fc" id="L108">            throw new IllegalArgumentException(&quot;options must not contain duplicates&quot;);</span>
+<span class="fc" id="L109">        Set&lt;String&gt; unique = new HashSet&lt;&gt;(options);</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (unique.size() != options.size()) {</span>
+<span class="fc" id="L111">            throw new IllegalArgumentException(&quot;options must not contain duplicates&quot;);</span>
         }
-<span class="fc" id="L110">    }</span>
+<span class="fc" id="L113">    }</span>
 
     // ----------------------------------------------------------------------
     // Getter, die in den Tests verwendet werden
     // ----------------------------------------------------------------------
 
     public String getPollId() {
-<span class="fc" id="L117">        return pollId;</span>
+<span class="fc" id="L120">        return pollId;</span>
     }
 
     public String getTitle() {
-<span class="fc" id="L121">        return title;</span>
+<span class="fc" id="L124">        return title;</span>
     }
 
     public int getTotalOptions() {
-<span class="fc" id="L125">        return options.size();</span>
+<span class="fc" id="L128">        return options.size();</span>
     }
 
     public int getEligibleVoterCount() {
-<span class="fc" id="L129">        return eligibleVoterCount;</span>
+<span class="fc" id="L132">        return eligibleVoterCount;</span>
     }
 
     public LocalDateTime getStartDate() {
-<span class="fc" id="L133">        return startDate;</span>
+<span class="fc" id="L136">        return startDate;</span>
     }
 
     public LocalDateTime getEndDate() {
-<span class="fc" id="L137">        return endDate;</span>
+<span class="fc" id="L140">        return endDate;</span>
     }
 
     public List&lt;String&gt; getOptions() {
-<span class="fc" id="L141">        return List.copyOf(options);</span>
+<span class="fc" id="L144">        return List.copyOf(options);</span>
     }
 
     // Optional, falls du intern Counts prüfen willst
     public int getVoteCountFor(String optionId) {
-<span class="fc" id="L146">        Integer count = voteCounts.get(optionId);</span>
-<span class="fc bfc" id="L147" title="All 2 branches covered.">        if (count == null) {</span>
-<span class="fc" id="L148">            throw new IllegalArgumentException(&quot;Unknown option: &quot; + optionId);</span>
+<span class="fc" id="L149">        Integer count = voteCounts.get(optionId);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (count == null) {</span>
+<span class="fc" id="L151">            throw new IllegalArgumentException(&quot;Unknown option: &quot; + optionId);</span>
         }
-<span class="fc" id="L150">        return count;</span>
+<span class="fc" id="L153">        return count;</span>
     }
 
     // ----------------------------------------------------------------------
@@ -155,32 +158,32 @@ public class Poll {
     // ----------------------------------------------------------------------
 
     public boolean isOpen() {
-<span class="fc" id="L158">        Instant instantNow = Instant.now(clock);</span>
-<span class="fc" id="L159">        return isOpenAt(instantNow);</span>
+<span class="fc" id="L161">        Instant instantNow = Instant.now(clock);</span>
+<span class="fc" id="L162">        return isOpenAt(instantNow);</span>
     }
 
     public boolean isOpenAt(Instant instant) {
-<span class="fc bfc" id="L163" title="All 2 branches covered.">        if (manuallyClosed) {</span>
-<span class="fc" id="L164">            return false;</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (manuallyClosed) {</span>
+<span class="fc" id="L167">            return false;</span>
         }
-<span class="fc" id="L166">        ZoneId zone = clock.getZone();</span>
-<span class="fc" id="L167">        LocalDateTime now = LocalDateTime.ofInstant(instant,zone);</span>
+<span class="fc" id="L169">        ZoneId zone = clock.getZone();</span>
+<span class="fc" id="L170">        LocalDateTime now = LocalDateTime.ofInstant(instant,zone);</span>
         // [startDate, endDate) – an Endzeitpunkt ist die Abstimmung geschlossen
-<span class="fc bfc" id="L169" title="All 4 branches covered.">        return !now.isBefore(startDate) &amp;&amp; now.isBefore(endDate);</span>
+<span class="fc bfc" id="L172" title="All 4 branches covered.">        return !now.isBefore(startDate) &amp;&amp; now.isBefore(endDate);</span>
     }
 
     public void close() {
         // idempotent
-<span class="fc" id="L174">        this.manuallyClosed = true;</span>
+<span class="fc" id="L177">        this.manuallyClosed = true;</span>
 
         // Erzeuge PollEndedEvent
-<span class="fc" id="L177">        Instant closedAt = Instant.now(clock);</span>
-<span class="fc" id="L178">        domainEvents.add(new PollEndedEvent(pollId, closedAt));</span>
-<span class="fc" id="L179">    }</span>
+<span class="fc" id="L180">        Instant closedAt = Instant.now(clock);</span>
+<span class="fc" id="L181">        domainEvents.add(new PollEndedEvent(pollId, closedAt));</span>
+<span class="fc" id="L182">    }</span>
 
     // Methode zur Abfrage der Domain Events
     public List&lt;Object&gt; getDomainEvents() {
-<span class="fc" id="L183">        return List.copyOf(domainEvents);</span>
+<span class="fc" id="L186">        return List.copyOf(domainEvents);</span>
     }
 
 
@@ -193,23 +196,23 @@ public class Poll {
 
     public void recordVote(String optionId) {
         // Poll muss geöffnet sein
-<span class="fc bfc" id="L196" title="All 2 branches covered.">        if (!isOpen()) {</span>
-<span class="fc" id="L197">            throw new IllegalStateException(&quot;Poll is not open for voting&quot;);</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        if (!isOpen()) {</span>
+<span class="fc" id="L200">            throw new IllegalStateException(&quot;Poll is not open for voting&quot;);</span>
         }
 
         // Option muss gültig sein
-<span class="fc bfc" id="L201" title="All 6 branches covered.">        if (optionId == null || optionId.trim().isEmpty() || !voteCounts.containsKey(optionId)) {</span>
-<span class="fc" id="L202">            throw new IllegalArgumentException(&quot;Unknown or invalid option: &quot; + optionId);</span>
+<span class="fc bfc" id="L204" title="All 6 branches covered.">        if (optionId == null || optionId.trim().isEmpty() || !voteCounts.containsKey(optionId)) {</span>
+<span class="fc" id="L205">            throw new IllegalArgumentException(&quot;Unknown or invalid option: &quot; + optionId);</span>
         }
 
         // Anzahl wahlberechtigter Personen nicht überschreiten (falls gesetzt)
-<span class="fc bfc" id="L206" title="All 4 branches covered.">        if (eligibleVoterCount &gt; 0 &amp;&amp; totalVotes &gt;= eligibleVoterCount) {</span>
-<span class="fc" id="L207">            throw new IllegalStateException(&quot;Maximum number of eligible votes reached&quot;);</span>
+<span class="fc bfc" id="L209" title="All 4 branches covered.">        if (eligibleVoterCount &gt; 0 &amp;&amp; totalVotes &gt;= eligibleVoterCount) {</span>
+<span class="fc" id="L210">            throw new IllegalStateException(&quot;Maximum number of eligible votes reached&quot;);</span>
         }
 
         // Vote registrieren
-<span class="fc" id="L211">        voteCounts.computeIfPresent(optionId, (opt, count) -&gt; count + 1);</span>
-<span class="fc" id="L212">        totalVotes++;</span>
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L214">        voteCounts.computeIfPresent(optionId, (opt, count) -&gt; count + 1);</span>
+<span class="fc" id="L215">        totalVotes++;</span>
+<span class="fc" id="L216">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

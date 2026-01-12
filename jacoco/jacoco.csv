@@ -40,7 +40,7 @@ evote,evote.buergerverwaltung.config,VoterValidationConfiguration,0,7,0,0,0,2,0,
 evote,evote.buergerverwaltung.domain.valueobjects,Name,0,71,0,12,0,16,0,10,0,4
 evote,evote.buergerverwaltung.domain.valueobjects,Adresse,19,133,2,24,2,29,2,18,1,6
 evote,evote.buergerverwaltung.domain.valueobjects,Email,0,21,0,4,0,5,0,4,0,2
-evote,evote.abstimmungsverwaltung.infrastructure.persistence,InMemoryPollRepository,4,58,0,4,2,12,1,7,1,5
+evote,evote.abstimmungsverwaltung.infrastructure.persistence,InMemoryPollRepository,4,44,0,0,2,9,1,6,1,6
 evote,evote.abstimmungsverwaltung.application,PollAssembler,0,17,0,0,0,7,0,2,0,2
 evote,evote.abstimmungsverwaltung.application,PollService,0,69,0,2,0,15,0,6,0,5
 evote,evote.stimmvergabe.infrastructure.web,VoteController,0,14,0,0,0,5,0,2,0,2

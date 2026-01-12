@@ -4,16 +4,19 @@ import evote.abstimmungsverwaltung.application.dto.PollDTO;
 import evote.abstimmungsverwaltung.domain.model.Poll;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper der Anwendungsschicht, der Poll-Domainobjekte in DTOs für die API übersetzt.
+ */
 @Component
-<span class="fc" id="L8">public class PollAssembler {</span>
+<span class="fc" id="L11">public class PollAssembler {</span>
 
     public PollDTO toDTO(Poll poll) {
-<span class="fc" id="L11">        return new PollDTO(</span>
-<span class="fc" id="L12">                poll.getPollId(),</span>
-<span class="fc" id="L13">                poll.getTitle(),</span>
-<span class="fc" id="L14">                poll.getStartDate(),</span>
-<span class="fc" id="L15">                poll.getEndDate(),</span>
-<span class="fc" id="L16">                poll.getOptions()</span>
+<span class="fc" id="L14">        return new PollDTO(</span>
+<span class="fc" id="L15">                poll.getPollId(),</span>
+<span class="fc" id="L16">                poll.getTitle(),</span>
+<span class="fc" id="L17">                poll.getStartDate(),</span>
+<span class="fc" id="L18">                poll.getEndDate(),</span>
+<span class="fc" id="L19">                poll.getOptions()</span>
         );
     }
 }

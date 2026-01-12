@@ -10,41 +10,41 @@ import java.util.concurrent.ConcurrentHashMap;
 import evote.abstimmungsverwaltung.domain.model.Poll;
 import evote.abstimmungsverwaltung.domain.repository.PollRepository;
 
-<span class="fc" id="L13">public class InMemoryPollRepository implements PollRepository {</span>
+/**
+ * In-Memory-Repository als Infrastruktur-Adapter für Abstimmungen.
+ */
+<span class="fc" id="L16">public class InMemoryPollRepository implements PollRepository {</span>
 
-<span class="fc" id="L15">    private final Map&lt;String, Poll&gt; store = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L18">    private final Map&lt;String, Poll&gt; store = new ConcurrentHashMap&lt;&gt;();</span>
 
     @Override
     public Poll save(Poll poll) {
-<span class="fc" id="L19">        store.put(poll.getPollId(), poll);</span>
-<span class="fc" id="L20">        return poll;</span>
+<span class="fc" id="L22">        store.put(poll.getPollId(), poll);</span>
+<span class="fc" id="L23">        return poll;</span>
     }
 
     @Override
     public Optional&lt;Poll&gt; findById(String pollId) {
-<span class="fc" id="L25">        return Optional.ofNullable(store.get(pollId));</span>
+<span class="fc" id="L28">        return Optional.ofNullable(store.get(pollId));</span>
     }
 
     @Override
     public List&lt;Poll&gt; findAll() {
-<span class="fc" id="L30">        return new ArrayList&lt;&gt;(store.values());</span>
+<span class="fc" id="L33">        return new ArrayList&lt;&gt;(store.values());</span>
     }
 
     @Override
     public List&lt;Poll&gt; findAllOpenAt(Instant instant) {
-<span class="fc" id="L35">        List&lt;Poll&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L36" title="All 2 branches covered.">        for (Poll poll : store.values()) {</span>
-<span class="fc bfc" id="L37" title="All 2 branches covered.">            if (poll.isOpenAt(instant)) {</span>
-<span class="fc" id="L38">                result.add(poll);</span>
-            }
-<span class="fc" id="L40">        }</span>
-<span class="fc" id="L41">        return result;</span>
+<span class="fc" id="L38">        return store.values().stream()</span>
+                // Reine Funktion: filtert die Polls basierend auf dem Instant
+<span class="fc" id="L40">                .filter(poll -&gt; poll.isOpenAt(instant))</span>
+                // Sammelt das Ergebnis unveränderlich
+<span class="fc" id="L42">                .toList();</span>
     }
 
     // optional für Tests
     public void clear() {
-<span class="nc" id="L46">        store.clear();</span>
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L47">        store.clear();</span>
+<span class="nc" id="L48">    }</span>
 }
-
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

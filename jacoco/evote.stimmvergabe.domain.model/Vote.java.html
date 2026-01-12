@@ -6,8 +6,7 @@ import java.time.Clock;
 import java.time.Instant;
 
 /**
- * Vote - A value object representing a cast vote in Domain-Driven Design.
- * Records signal immutability and provide automatic equals(), hashCode(), and toString() implementations.
+ * Value Object der Stimmvergabe, das eine abgegebene Stimme samt Zeitstempel abbildet.
  */
 public record Vote(
         String voteId,
@@ -18,78 +17,76 @@ public record Vote(
 ) {
 
     /**
-     * Compact constructor for validation.
-     * Ensures all fields are valid before creating a Vote instance.
+     * Kompakter Konstruktor zur Validierung aller Pflichtfelder.
      */
-<span class="fc" id="L24">    public Vote {</span>
-<span class="fc bfc" id="L25" title="All 4 branches covered.">        if (voteId == null || voteId.trim().isEmpty()) {</span>
-<span class="fc" id="L26">            throw new IllegalArgumentException(&quot;voteId must not be null or blank&quot;);</span>
+<span class="fc" id="L22">    public Vote {</span>
+<span class="fc bfc" id="L23" title="All 4 branches covered.">        if (voteId == null || voteId.trim().isEmpty()) {</span>
+<span class="fc" id="L24">            throw new IllegalArgumentException(&quot;voteId must not be null or blank&quot;);</span>
         }
-<span class="fc bfc" id="L28" title="All 4 branches covered.">        if (pollId == null || pollId.trim().isEmpty()) {</span>
-<span class="fc" id="L29">            throw new IllegalArgumentException(&quot;pollId must not be null or blank&quot;);</span>
+<span class="fc bfc" id="L26" title="All 4 branches covered.">        if (pollId == null || pollId.trim().isEmpty()) {</span>
+<span class="fc" id="L27">            throw new IllegalArgumentException(&quot;pollId must not be null or blank&quot;);</span>
         }
-<span class="fc bfc" id="L31" title="All 4 branches covered.">        if (optionId == null || optionId.trim().isEmpty()) {</span>
-<span class="fc" id="L32">            throw new IllegalArgumentException(&quot;optionId must not be null or blank&quot;);</span>
+<span class="fc bfc" id="L29" title="All 4 branches covered.">        if (optionId == null || optionId.trim().isEmpty()) {</span>
+<span class="fc" id="L30">            throw new IllegalArgumentException(&quot;optionId must not be null or blank&quot;);</span>
         }
-<span class="fc bfc" id="L34" title="All 4 branches covered.">        if (correlationId == null || correlationId.trim().isEmpty()) {</span>
-<span class="fc" id="L35">            throw new IllegalArgumentException(&quot;correlationId must not be null or blank&quot;);</span>
+<span class="fc bfc" id="L32" title="All 4 branches covered.">        if (correlationId == null || correlationId.trim().isEmpty()) {</span>
+<span class="fc" id="L33">            throw new IllegalArgumentException(&quot;correlationId must not be null or blank&quot;);</span>
         }
-<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (castAt == null) {</span>
-<span class="fc" id="L38">            throw new IllegalArgumentException(&quot;castAt must not be null&quot;);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (castAt == null) {</span>
+<span class="fc" id="L36">            throw new IllegalArgumentException(&quot;castAt must not be null&quot;);</span>
         }
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L38">    }</span>
 
     /**
-     * Static factory method to create a Vote with a Clock.
-     * This method accepts a Clock and captures the current instant for the vote.
+     * Factory-Methode zum Erzeugen einer Stimme mit Zeitstempel aus einer Clock.
      */
     public static Vote of(String voteId, String pollId, String optionId, String correlationId, Clock clock) {
-<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (clock == null) {</span>
-<span class="nc" id="L48">            throw new IllegalArgumentException(&quot;clock must not be null&quot;);</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (clock == null) {</span>
+<span class="nc" id="L45">            throw new IllegalArgumentException(&quot;clock must not be null&quot;);</span>
         }
-<span class="fc" id="L50">        return new Vote(voteId, pollId, optionId, correlationId, clock.instant());</span>
+<span class="fc" id="L47">        return new Vote(voteId, pollId, optionId, correlationId, clock.instant());</span>
     }
 
     /**
-     * Backward-compatible getter for voteId.
+     * Getter für die Vote-ID (kompatibel mit bestehendem Code).
      */
     public String getVoteId() {
-<span class="fc" id="L57">        return voteId;</span>
+<span class="fc" id="L54">        return voteId;</span>
     }
 
     /**
-     * Backward-compatible getter for pollId.
+     * Getter für die Poll-ID (kompatibel mit bestehendem Code).
      */
     public String getPollId() {
-<span class="fc" id="L64">        return pollId;</span>
+<span class="fc" id="L61">        return pollId;</span>
     }
 
     /**
-     * Backward-compatible getter for optionId.
+     * Getter für die Options-ID (kompatibel mit bestehendem Code).
      */
     public String getOptionId() {
-<span class="fc" id="L71">        return optionId;</span>
+<span class="fc" id="L68">        return optionId;</span>
     }
 
     /**
-     * Backward-compatible getter for correlationId.
+     * Getter für die Correlation-ID (kompatibel mit bestehendem Code).
      */
     public String getCorrelationId() {
-<span class="fc" id="L78">        return correlationId;</span>
+<span class="fc" id="L75">        return correlationId;</span>
     }
 
     /**
-     * Backward-compatible getter for castAt.
+     * Getter für den Zeitpunkt der Stimmabgabe (kompatibel mit bestehendem Code).
      */
     public Instant getCastAt() {
-<span class="fc" id="L85">        return castAt;</span>
+<span class="fc" id="L82">        return castAt;</span>
     }
 
     /**
-     * Domain Event, created when the vote was cast.
+     * Erzeugt das Domänenereignis für die abgegebene Stimme.
      */
     public VoteCastEvent getDomainEvent() {
-<span class="fc" id="L92">        return new VoteCastEvent(voteId, pollId, optionId, castAt);</span>
+<span class="fc" id="L89">        return new VoteCastEvent(voteId, pollId, optionId, castAt);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

@@ -9,11 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 /**
- * VoterController - REST Adapter (Infrastructure Layer)
- * 
- * Responsibility: Exposes HTTP endpoints for voter management.
- * This is an adapter that translates HTTP requests into application service calls.
- * Thin layer - all business logic is in the application/domain layers.
+ * REST-Adapter der Infrastruktur, der HTTP-Aufrufe in Use-Cases der Anwendungsschicht übersetzt.
+ * Die Fachlogik bleibt in Domäne und Anwendungsschicht.
  */
 @RestController
 @RequestMapping(&quot;/api/voter&quot;)
@@ -22,25 +19,24 @@ public class VoterController {
 
     private final VoterService service;
 
-<span class="fc" id="L25">    public VoterController(VoterService service) {</span>
-<span class="fc" id="L26">        this.service = service;</span>
-<span class="fc" id="L27">    }</span>
+<span class="fc" id="L22">    public VoterController(VoterService service) {</span>
+<span class="fc" id="L23">        this.service = service;</span>
+<span class="fc" id="L24">    }</span>
 
     @PostMapping
     public VoterResponse create(@RequestBody @Valid VoterCreateRequest req) {
-<span class="nc" id="L31">        return service.create(req);</span>
+<span class="nc" id="L28">        return service.create(req);</span>
     }
 
     @GetMapping(&quot;/{id}&quot;)
     public VoterResponse getById(@PathVariable(&quot;id&quot;) String id) {
-<span class="nc" id="L36">        return service.getById(id);</span>
+<span class="nc" id="L33">        return service.getById(id);</span>
     }
 
     @PutMapping(&quot;/{id}&quot;)
     public VoterResponse updateProfile(@PathVariable(&quot;id&quot;) String id,
                                        @RequestBody @Valid VoterUpdateRequest request) {
-<span class="nc" id="L42">        return service.updateEmail(id, request.email());</span>
+<span class="nc" id="L39">        return service.updateEmail(id, request.email());</span>
     }
 }
-
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

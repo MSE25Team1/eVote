@@ -3,16 +3,15 @@
 import java.time.Instant;
 
 /**
- * Immutable event representing that a vote has been cast.
- * Implemented as a Java record to remove boilerplate while keeping
- * input validation and backward-compatible accessor names.
+ * Domänenereignis, das die erfolgreiche Stimmabgabe beschreibt.
+ * Der Record stellt eine schlanke, validierende Darstellung bereit.
  */
 public record VoteCastEvent(String voteId, String pollId, String optionId, Instant castAt) {
 
-<span class="fc" id="L12">    public VoteCastEvent {</span>
-<span class="fc bfc" id="L13" title="All 8 branches covered.">        if (voteId == null || pollId == null || optionId == null || castAt == null) {</span>
-<span class="fc" id="L14">            throw new IllegalArgumentException(&quot;All event fields must be non-null&quot;);</span>
+<span class="fc" id="L11">    public VoteCastEvent {</span>
+<span class="fc bfc" id="L12" title="All 8 branches covered.">        if (voteId == null || pollId == null || optionId == null || castAt == null) {</span>
+<span class="fc" id="L13">            throw new IllegalArgumentException(&quot;All event fields must be non-null&quot;);</span>
         }
-<span class="fc" id="L16">    }</span>
+<span class="fc" id="L15">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

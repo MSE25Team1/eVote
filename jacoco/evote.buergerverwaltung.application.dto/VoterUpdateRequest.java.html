@@ -3,7 +3,10 @@
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-<span class="nc" id="L6">public record VoterUpdateRequest(</span>
+/**
+ * Request-DTO zum Aktualisieren der E-Mail einer wahlberechtigten Person.
+ */
+<span class="nc" id="L9">public record VoterUpdateRequest(</span>
         @NotBlank @Email String email
 ) {
 }

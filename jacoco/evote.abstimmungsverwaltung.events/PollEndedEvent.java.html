@@ -3,20 +3,18 @@
 import java.time.Instant;
 
 /**
- * Immutable event representing that a poll has ended.
- *
- * This is implemented as a Java record to reduce boilerplate. A compact canonical
- * constructor performs input validation equivalent to the previous class.
+ * Domänenereignis, das das Ende einer Abstimmung signalisiert.
+ * Der Record übernimmt zugleich die Validierung der Eingaben.
  */
 public record PollEndedEvent(String pollId, Instant endedAt) {
 
-<span class="fc" id="L13">    public PollEndedEvent {</span>
-<span class="fc bfc" id="L14" title="All 4 branches covered.">        if (pollId == null || pollId.trim().isEmpty()) {</span>
-<span class="fc" id="L15">            throw new IllegalArgumentException(&quot;pollId must not be null or blank&quot;);</span>
+<span class="fc" id="L11">    public PollEndedEvent {</span>
+<span class="fc bfc" id="L12" title="All 4 branches covered.">        if (pollId == null || pollId.trim().isEmpty()) {</span>
+<span class="fc" id="L13">            throw new IllegalArgumentException(&quot;pollId must not be null or blank&quot;);</span>
         }
-<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (endedAt == null) {</span>
-<span class="fc" id="L18">            throw new IllegalArgumentException(&quot;endedAt must not be null&quot;);</span>
+<span class="fc bfc" id="L15" title="All 2 branches covered.">        if (endedAt == null) {</span>
+<span class="fc" id="L16">            throw new IllegalArgumentException(&quot;endedAt must not be null&quot;);</span>
         }
-<span class="fc" id="L20">    }</span>
+<span class="fc" id="L18">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>
