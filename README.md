@@ -52,20 +52,19 @@ Zusätzlich existieren:
 
 ### Backend
 
-- Java 17 – stabile LTS-Version 
+- Java 25 – LTS-Version 
 - Spring Boot – Webserver, REST-API und Dependency Injection
 - Maven – Build, Tests und Reports 
 - JUnit 5 & Mockito – Unit-Tests 
 - JaCoCo – Testabdeckung mit Mindestanforderung 
 - AspectJ – Logging und Cross-Cutting Concerns 
-- **InMemory-Persistenz** – bewusst ohne Datenbank
+- InMemory-Persistenz –  ohne Datenbank
 
 ### Frontend
 
 - HTML, CSS, JavaScript – bewusst ohne Framework 
 - Bootstrap 5 – Layout und Basis-Styling 
 - Node.js mit Express – lokaler Dev-Server 
-- Mock-Login – keine echte Authentifizierung
 
 Backend läuft auf Port **8080**. Frontend läuft auf Port **3000**. 
 
@@ -120,3 +119,6 @@ npm start
 mvn spring-boot:run
 # Strg+C zum Beenden
 ```
+
+## Wiki
+mehr zum Projekt inkl. Lösunden der Übungesaufgaben in der Wiki unter https://github.com/MSE25Team1/eVote/wiki 
