@@ -7,11 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * VoteController - REST Adapter (Infrastructure Layer)
- *
- * Responsibility: Exposes HTTP endpoints for vote casting.
- * This is an adapter that translates HTTP requests into application service calls.
- * Thin layer - all business logic is in the application/domain layers.
+ * REST-Adapter der Stimmvergabe, der HTTP-Requests an den VoteService weiterleitet.
  */
 @RestController
 @RequestMapping("/api/vote")

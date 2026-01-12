@@ -11,16 +11,14 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 /**
- * VoterAssembler - Mapper between Domain and Application DTOs
- * 
- * Responsibility: Translate between the domain model (Voter) and DTOs used by the API.
- * This keeps the domain model pure and free from presentation concerns.
+ * Mapper der Anwendungsschicht, der zwischen Domain-Objekten und API-DTOs übersetzt,
+ * damit die Domäne frei von Präsentationslogik bleibt.
  */
 @Component
 public class VoterAssembler {
 
     /**
-     * Maps a VoterCreateRequest DTO to a domain Voter entity.
+     * Wandelt ein VoterCreateRequest-DTO in ein Domain-Objekt um.
      */
     public Voter toDomain(VoterCreateRequest request) {
         Name name = new Name(request.name().vorname(), request.name().nachname());
@@ -35,7 +33,7 @@ public class VoterAssembler {
     }
 
     /**
-     * Maps a domain Voter entity to a VoterResponse DTO.
+     * Wandelt eine Domain-Entität in ein VoterResponse-DTO um.
      */
     public VoterResponse toResponse(Voter voter) {
         var name = new VoterResponse.NameDTO(
@@ -64,8 +62,8 @@ public class VoterAssembler {
     }
 
     /**
-     * Parses address from DTO and handles street/house number extraction.
-     * This is presentation-layer logic, not domain logic.
+     * Parst Adressdaten aus dem DTO und trennt Straße/Hausnummer
+     * als Präsentationslogik der Anwendungsschicht.
      */
     private Adresse parseAdresse(VoterCreateRequest.AdresseRequest req) {
         if (req.strasse() == null || req.strasse().isBlank()) {
@@ -87,7 +85,7 @@ public class VoterAssembler {
     }
 
     /**
-     * Formats address for display purposes.
+     * Formatiert eine Adresse für die Anzeige.
      */
     private String formatAddress(Adresse adresse) {
         return String.format("%s %s, %s %s",
@@ -98,4 +96,3 @@ public class VoterAssembler {
         );
     }
 }
-

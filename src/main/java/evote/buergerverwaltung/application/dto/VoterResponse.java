@@ -1,5 +1,8 @@
 package evote.buergerverwaltung.application.dto;
 
+/**
+ * Antwort-DTO der Bürgerverwaltung für das Frontend.
+ */
 public record VoterResponse(
         String id,
         NameDTO name,
@@ -9,12 +12,18 @@ public record VoterResponse(
         String registeredAt,
         boolean verified
 ) {
+    /**
+     * Kompakter Name für die API-Ausgabe.
+     */
     public static record NameDTO(
             String firstName,
             String lastName,
             String fullName
     ) {}
 
+    /**
+     * Adressdarstellung für die API-Ausgabe.
+     */
     public static record AddressDTO(
             String street,
             String houseNumber,
@@ -23,4 +32,3 @@ public record VoterResponse(
             String formatted
     ) {}
 }
-

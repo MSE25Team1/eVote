@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * In-Memory-Repository als Infrastruktur-Adapter für die Stimmvergabe.
+ */
 public class InMemoryVoteRepository implements VoteRepository {
 
     private final Map<String, Vote> votesById = new ConcurrentHashMap<>();
@@ -75,4 +78,3 @@ public class InMemoryVoteRepository implements VoteRepository {
         votesByCorrelationId.clear();
     }
 }
-

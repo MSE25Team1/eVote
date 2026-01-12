@@ -3,10 +3,8 @@ package evote.abstimmungsverwaltung.events;
 import java.time.Instant;
 
 /**
- * Immutable event representing that a poll has ended.
- *
- * This is implemented as a Java record to reduce boilerplate. A compact canonical
- * constructor performs input validation equivalent to the previous class.
+ * Domänenereignis, das das Ende einer Abstimmung signalisiert.
+ * Der Record übernimmt zugleich die Validierung der Eingaben.
  */
 public record PollEndedEvent(String pollId, Instant endedAt) {
 

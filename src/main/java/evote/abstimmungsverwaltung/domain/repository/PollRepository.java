@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import evote.abstimmungsverwaltung.domain.model.Poll;
 
+/**
+ * Repository-Port der Domäne für Abstimmungen.
+ */
 public interface PollRepository {
 
     Poll save(Poll poll);

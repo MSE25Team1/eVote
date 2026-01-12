@@ -11,6 +11,10 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Anwendungsschicht der Abstimmungsverwaltung, die verfügbare Abstimmungen
+ * für wahlberechtigte Personen ermittelt.
+ */
 @Service
 public class PollService {
 
