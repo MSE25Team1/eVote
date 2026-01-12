@@ -35,13 +35,11 @@ public class InMemoryPollRepository implements PollRepository {
 
     @Override
     public List<Poll> findAllOpenAt(Instant instant) {
-        List<Poll> result = new ArrayList<>();
-        for (Poll poll : store.values()) {
-            if (poll.isOpenAt(instant)) {
-                result.add(poll);
-            }
-        }
-        return result;
+        return store.values().stream()
+                // Reine Funktion: filtert die Polls basierend auf dem Instant
+                .filter(poll -> poll.isOpenAt(instant))
+                // Sammelt das Ergebnis unveränderlich
+                .toList();
     }
 
     // optional für Tests
